@@ -1,4 +1,4 @@
-package com.aji.donasi;
+package com.aji.donasi.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.aji.donasi.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -35,9 +36,7 @@ public class BuatFragment extends Fragment {
         TabLayout tabs = view.findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
 
-
         return view;
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
