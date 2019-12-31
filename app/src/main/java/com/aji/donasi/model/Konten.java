@@ -41,7 +41,21 @@ public class Konten {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    @SerializedName("user")
+
+    public Konten(Integer id, Integer idUser, Integer idKategori, String judul, String deskripsi, String gambar, Integer target, Integer terkumpul, Integer lamaDonasi, String nomorrekening, String createdAt, String updatedAt) {
+        this.id = id;
+        this.idUser = idUser;
+        this.idKategori = idKategori;
+        this.judul = judul;
+        this.deskripsi = deskripsi;
+        this.gambar = gambar;
+        this.target = target;
+        this.terkumpul = terkumpul;
+        this.lamaDonasi = lamaDonasi;
+        this.nomorrekening = nomorrekening;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     public Integer getId() {
         return id;

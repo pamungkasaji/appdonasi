@@ -1,17 +1,21 @@
 package com.aji.donasi.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class KontenResponse {
 
+    @SerializedName("error")
+    @Expose
     private boolean error;
 
     @SerializedName("data")
-    private List <Konten> konten;
+    @Expose
+    private List<Konten> konten;
 
-    public KontenResponse(boolean error, List<Konten> konten) {
+    public KontenResponse(Boolean error, List<Konten> konten) {
         this.error = error;
         this.konten = konten;
     }
