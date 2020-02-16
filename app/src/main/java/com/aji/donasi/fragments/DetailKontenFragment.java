@@ -58,9 +58,10 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
             @Override
             public void onResponse(Call<Konten> call, Response<Konten> response) {
 
-                tv_judul.setText(response.body().getJudul());
-                tv_deskripsi.setText(response.body().getDeskripsi());
-                tv_tanggal.setText(response.body().getCreatedAt());
+//                tv_judul.setText(response.body().getJudul());
+//                tv_deskripsi.setText(response.body().getDeskripsi());
+//                tv_tanggal.setText(response.body().getCreatedAt());
+
                 //if (response.body()!=null) {
                     //WResponse wResponse = response.body();
 //

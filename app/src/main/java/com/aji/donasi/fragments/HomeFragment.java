@@ -64,10 +64,13 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
             @Override
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
-                //kontenList = response.body().getKonten();
-                kontenList = (ArrayList<Konten>) response.body().getKonten();
-                adapter = new KontenAdapter(getActivity(), kontenList);
-                recyclerView.setAdapter(adapter);
+                if (response.body() != null) {
+                    KontenResponse kontenResponse = response.body();
+
+                    kontenList = (ArrayList<Konten>) kontenResponse.getKonten();
+                    adapter = new KontenAdapter(getActivity(), kontenList);
+                    recyclerView.setAdapter(adapter);
+                }
 
                 adapter.setOnItemClickListener(HomeFragment.this);
             }

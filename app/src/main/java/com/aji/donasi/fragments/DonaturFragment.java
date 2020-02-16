@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
@@ -32,8 +31,6 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
     private DonaturAdapter adapter;
     private ArrayList<Donatur> donaturList;
 
-    TextView textview;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,8 +46,6 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
 //            id_konten = bundle.getInt("id", 0);
 //        }
 
-        textview = view.findViewById(R.id.textview);
-
         if (getActivity() instanceof DetailKontenActivity) {
             ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
         }
@@ -58,7 +53,7 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        donaturList = new ArrayList<>();
+        //donaturList = new ArrayList<>();
     }
 
     @Override
@@ -68,7 +63,7 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
         displayData(data);
     }
 
-    public void displayData(int id_konten) {
+    private void displayData(int id_konten) {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -78,10 +73,16 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
 
-                donaturList = (ArrayList<Donatur>) response.body().getData();
-                adapter = new DonaturAdapter(getActivity(), donaturList);
-                recyclerView.setAdapter(adapter);
+                if (response.body() != null) {
+                    DonaturResponse donaturResponse = response.body();
 
+                    donaturList = (ArrayList<Donatur>) donaturResponse.getData();
+                    adapter = new DonaturAdapter(getActivity(), donaturList);
+                    recyclerView.setAdapter(adapter);
+                }
+//                donaturList = (ArrayList<Donatur>) donaturResponse.getData();
+//                adapter = new DonaturAdapter(getActivity(), donaturList);
+//                recyclerView.setAdapter(adapter);
             }
 
             @Override

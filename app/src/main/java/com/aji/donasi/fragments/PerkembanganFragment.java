@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
@@ -31,9 +30,6 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
     private RecyclerView recyclerView;
     private PerkembanganAdapter adapter;
     private ArrayList<Perkembangan> perkembanganList;
-    //private int id_konten;
-
-    TextView textview;
 
     @Nullable
     @Override
@@ -50,8 +46,6 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
 //            id_konten = bundle.getInt("id", 0);
 //        }
 
-        textview = view.findViewById(R.id.textview);
-
         if (getActivity() instanceof DetailKontenActivity) {
             ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
         }
@@ -59,7 +53,7 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        perkembanganList = new ArrayList<>();
+        //perkembanganList = new ArrayList<>();
     }
 
     @Override
@@ -69,7 +63,7 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
         displayData(data);
     }
 
-    public void displayData(int id_konten) {
+    private void displayData(int id_konten) {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -79,10 +73,17 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
             @Override
             public void onResponse(Call<PerkembanganResponse> call, Response<PerkembanganResponse> response) {
 
-                perkembanganList = (ArrayList<Perkembangan>) response.body().getData();
-                adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
-                recyclerView.setAdapter(adapter);
+                if (response.body() != null) {
+                    PerkembanganResponse perkembanganResponse = response.body();
 
+                    perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
+                    adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
+                    recyclerView.setAdapter(adapter);
+                }
+
+//                perkembanganList = (ArrayList<Perkembangan>) response.body().getData();
+//                adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
+//                recyclerView.setAdapter(adapter);
             }
 
             @Override
