@@ -1,5 +1,6 @@
-package com.aji.donasi.fragment;
+package com.aji.donasi.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,22 +13,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.R;
-import com.aji.donasi.adapter.KontenAdapter;
+import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.adapters.KontenAdapter;
+import com.aji.donasi.api.Api;
+import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.api.RetrofitClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private KontenAdapter adapter;
-    private List<Konten> kontenList;
+    //private List<Konten> kontenList;
+    private ArrayList<Konten> kontenList;
+
+    public static final String EXTRA_IDKONTEN = "idkonten";
 
     @Nullable
     @Override
@@ -42,16 +51,25 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerKonten);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        kontenList = new ArrayList<>();
 
-        Call<KontenResponse> call = RetrofitClient.getInstance().getApi().getKonten();
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+
+        Call<KontenResponse> call = api.getKonten();
+
+        //Call<KontenResponse> call = RetrofitClient.getInstance().getApi().getKonten();
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
-                kontenList = response.body().getKonten();
+                //kontenList = response.body().getKonten();
+                kontenList = (ArrayList<Konten>) response.body().getKonten();
                 adapter = new KontenAdapter(getActivity(), kontenList);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(HomeFragment.this);
             }
 
             @Override
@@ -60,5 +78,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
+        Konten clickedItem = kontenList.get(position);
+
+        detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+
+        startActivity(detailIntent);
     }
 }

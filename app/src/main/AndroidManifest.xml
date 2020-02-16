@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.aji.donasi.activities.BuatKontenActivity" />
+        <activity android:name="com.aji.donasi.activities.DetailKontenActivity" />
     </application>
 
 </manifest>

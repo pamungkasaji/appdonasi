@@ -1,4 +1,4 @@
-package com.aji.donasi.adapter;
+package com.aji.donasi.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,18 +11,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Konten;
 import androidx.annotation.NonNull;
+import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenViewHolder> {
 
     private Context mCtx;
-    private List<Konten> kontenList;
+    //private List<Konten> kontenList;
+    private ArrayList<Konten> kontenList;
 
-    public KontenAdapter(Context mCtx, List<Konten> kontenList) {
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public KontenAdapter(Context mCtx, ArrayList<Konten> kontenList) {
         this.mCtx = mCtx;
         this.kontenList = kontenList;
     }
+
+//    public KontenAdapter(Context mCtx, List<Konten> kontenList) {
+//        this.mCtx = mCtx;
+//        this.kontenList = kontenList;
+//    }
 
     @NonNull
     @Override
@@ -36,7 +54,7 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         Konten konten = kontenList.get(position);
 
         holder.tvJudul.setText(konten.getJudul());
-        holder.tvTarget.setText(konten.getDeskripsi());
+        holder.tvTarget.setText(String.valueOf(konten.getTerkumpul()));
         holder.tvTerkumpul.setText(konten.getNomorrekening());
     }
 
@@ -55,6 +73,18 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
             tvJudul = itemView.findViewById(R.id.tvJudul);
             tvTarget = itemView.findViewById(R.id.tvTarget);
             tvTerkumpul = itemView.findViewById(R.id.tvTerkumpul);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

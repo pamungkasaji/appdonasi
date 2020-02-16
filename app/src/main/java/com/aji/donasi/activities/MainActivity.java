@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.aji.donasi.R;
-import com.aji.donasi.fragment.AkunFragment;
-import com.aji.donasi.fragment.BuatFragment;
-import com.aji.donasi.fragment.HomeFragment;
+import com.aji.donasi.fragments.AkunFragment;
+import com.aji.donasi.fragments.BuatFragment;
+import com.aji.donasi.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

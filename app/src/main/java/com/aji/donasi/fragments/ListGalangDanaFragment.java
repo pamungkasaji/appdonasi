@@ -1,4 +1,4 @@
-package com.aji.donasi.fragment;
+package com.aji.donasi.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
