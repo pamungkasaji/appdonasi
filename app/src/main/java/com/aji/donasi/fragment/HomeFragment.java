@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.R;
 import com.aji.donasi.adapter.KontenAdapter;
 import com.aji.donasi.api.RetrofitClient;
-import com.aji.donasi.model.Konten;
-import com.aji.donasi.model.KontenResponse;
+import com.aji.donasi.models.Konten;
+import com.aji.donasi.models.KontenResponse;
 
 import java.util.List;
 

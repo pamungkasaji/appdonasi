@@ -41,7 +41,7 @@ public class BuatFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new GalangDanaFragment(), "Galang Dana");
+        adapter.addFragment(new ListGalangDanaFragment(), "Galang Dana");
         adapter.addFragment(new DonasiMasukFragment(), "Donasi Masuk");
         viewPager.setAdapter(adapter);
     }

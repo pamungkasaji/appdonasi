@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http://donasi.tegaronbangkit.id/api/";
+    private static final String BASE_URL = "http://donasisosial.xyz/api/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 

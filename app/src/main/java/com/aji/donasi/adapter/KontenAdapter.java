@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.R;
-import com.aji.donasi.model.Konten;
+import com.aji.donasi.models.Konten;
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -36,8 +36,8 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         Konten konten = kontenList.get(position);
 
         holder.tvJudul.setText(konten.getJudul());
-        holder.tvTarget.setText(konten.getTarget());
-        holder.tvTerkumpul.setText(konten.getTerkumpul());
+        holder.tvTarget.setText(konten.getDeskripsi());
+        holder.tvTerkumpul.setText(konten.getNomorrekening());
     }
 
     @Override

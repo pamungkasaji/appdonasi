@@ -1,4 +1,4 @@
-package com.aji.donasi.model;
+package com.aji.donasi.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

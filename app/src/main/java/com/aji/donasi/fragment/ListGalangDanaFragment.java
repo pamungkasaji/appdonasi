@@ -2,21 +2,22 @@ package com.aji.donasi.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.aji.donasi.R;
 import com.aji.donasi.activities.BuatKontenActivity;
 
-public class GalangDanaFragment extends Fragment {
+public class ListGalangDanaFragment extends Fragment {
 
-    public GalangDanaFragment() {
+    public ListGalangDanaFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +26,7 @@ public class GalangDanaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_galangdana, container, false);
+        return inflater.inflate(R.layout.fragment_listgalangdana, container, false);
     }
 
     @Override
