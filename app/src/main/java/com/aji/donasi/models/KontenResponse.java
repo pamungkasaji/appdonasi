@@ -7,24 +7,44 @@ import java.util.List;
 
 public class KontenResponse {
 
-    @SerializedName("error")
+    @SerializedName("success")
     @Expose
-    private boolean error;
-
+    private Boolean success;
+    @SerializedName("message")
+    @Expose
+    private String message;
     @SerializedName("data")
     @Expose
-    private List<Konten> konten;
+    private List<Konten> data = null;
+    @SerializedName("konten")
+    @Expose
+    private Konten konten;
 
-    public KontenResponse(Boolean error, List<Konten> konten) {
-        this.error = error;
-        this.konten = konten;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public boolean isError() {
-        return error;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
-    public List<Konten> getKonten() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<Konten> getData() {
+        return data;
+    }
+
+    public void setData(List<Konten> data) {
+        this.data = data;
+    }
+
+    public Konten getKonten() {
         return konten;
     }
 }

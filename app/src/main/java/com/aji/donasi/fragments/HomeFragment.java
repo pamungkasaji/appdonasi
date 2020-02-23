@@ -12,12 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.KontenAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
-import com.aji.donasi.api.RetrofitClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 
@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
         Call<KontenResponse> call = api.getKonten();
 
-        //Call<KontenResponse> call = RetrofitClient.getInstance().getApi().getKonten();
-
         call.enqueue(new Callback<KontenResponse>() {
             @Override
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
@@ -67,9 +65,12 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
 
-                    kontenList = (ArrayList<Konten>) kontenResponse.getKonten();
+                    kontenList = (ArrayList<Konten>) kontenResponse.getData();
                     adapter = new KontenAdapter(getActivity(), kontenList);
                     recyclerView.setAdapter(adapter);
+                } else {
+                    Helper.warningDialog(getActivity(), "Kesalahan",
+                            "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
 
                 adapter.setOnItemClickListener(HomeFragment.this);
@@ -77,7 +78,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-
+                Helper.warningDialog(getActivity(), "Kesalahan",
+                        "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
 

@@ -11,9 +11,6 @@ public class Konten {
     @SerializedName("id_user")
     @Expose
     private Integer idUser;
-    @SerializedName("id_kategori")
-    @Expose
-    private Integer idKategori;
     @SerializedName("judul")
     @Expose
     private String judul;
@@ -35,27 +32,15 @@ public class Konten {
     @SerializedName("nomorrekening")
     @Expose
     private String nomorrekening;
-    @SerializedName("created_at")
+    @SerializedName("is_verif")
     @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
+    private Integer isVerif;
+    @SerializedName("tanggal")
     @Expose
-    private String updatedAt;
-
-    public Konten(Integer id, Integer idUser, Integer idKategori, String judul, String deskripsi, String gambar, Integer target, Integer terkumpul, Integer lamaDonasi, String nomorrekening, String createdAt, String updatedAt) {
-        this.id = id;
-        this.idUser = idUser;
-        this.idKategori = idKategori;
-        this.judul = judul;
-        this.deskripsi = deskripsi;
-        this.gambar = gambar;
-        this.target = target;
-        this.terkumpul = terkumpul;
-        this.lamaDonasi = lamaDonasi;
-        this.nomorrekening = nomorrekening;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    private String tanggal;
+    @SerializedName("user")
+    @Expose
+    private User user;
 
     public Integer getId() {
         return id;
@@ -71,14 +56,6 @@ public class Konten {
 
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
-    }
-
-    public Integer getIdKategori() {
-        return idKategori;
-    }
-
-    public void setIdKategori(Integer idKategori) {
-        this.idKategori = idKategori;
     }
 
     public String getJudul() {
@@ -137,21 +114,28 @@ public class Konten {
         this.nomorrekening = nomorrekening;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public Integer getIsVerif() {
+        return isVerif;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setIsVerif(Integer isVerif) {
+        this.isVerif = isVerif;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

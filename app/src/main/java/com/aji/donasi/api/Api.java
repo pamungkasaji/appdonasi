@@ -37,18 +37,6 @@ public interface Api {
     Call<PerkembanganResponse> getPerkembangan(@Path("id") int id);
 
     @Multipart
-    @POST("register")
-    Call<DefaultResponse> createUser(
-            @Part MultipartBody.Part partimage,
-            @Part("username") RequestBody username,
-            @Part("password") RequestBody password,
-            @Part("nohp") RequestBody nohp,
-            @Part("namalengkap") RequestBody namalengkap,
-            @Part("alamat") RequestBody alamat,
-            @Part("nomorktp") RequestBody nomorktp
-    );
-
-    @Multipart
     @POST("konten")
     Call<DefaultResponse> createKonten(
             @Part MultipartBody.Part partimage,
@@ -58,6 +46,25 @@ public interface Api {
             @Part("lama_donasi") RequestBody lama_donasi,
             @Part("nomorrekening") RequestBody nomorrekening,
             @Part("id_user") RequestBody id_user
+    );
+
+    @FormUrlEncoded
+    @POST("userlogin")
+    Call<LoginResponse> userLogin(
+            @Field("username") String username,
+            @Field("password") String password
+    );
+
+    @Multipart
+    @POST("register")
+    Call<DefaultResponse> createUser(
+            @Part MultipartBody.Part partimage,
+            @Part("username") RequestBody username,
+            @Part("password") RequestBody password,
+            @Part("nohp") RequestBody nohp,
+            @Part("namalengkap") RequestBody namalengkap,
+            @Part("alamat") RequestBody alamat,
+            @Part("nomorktp") RequestBody nomorktp
     );
 
 //    @FormUrlEncoded
@@ -76,12 +83,7 @@ public interface Api {
     );
 
 
-    @FormUrlEncoded
-    @POST("userlogin")
-    Call<LoginResponse> userLogin(
-            @Field("email") String email,
-            @Field("password") String password
-    );
+
 
     @FormUrlEncoded
     @PUT("updateuser/{id}")

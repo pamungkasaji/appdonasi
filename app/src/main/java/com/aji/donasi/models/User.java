@@ -29,21 +29,12 @@ public class User {
     @SerializedName("fotoktp")
     @Expose
     private String fotoktp;
-    @SerializedName("confirmed")
+    @SerializedName("is_verif")
     @Expose
-    private Integer confirmed;
-    @SerializedName("created_at")
+    private Integer isVerif;
+    @SerializedName("tanggal")
     @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
-
-    public User(Integer id, String username, String alamat) {
-        this.id = id;
-        this.username = username;
-        this.alamat = alamat;
-    }
+    private String tanggal;
 
     public Integer getId() {
         return id;
@@ -109,27 +100,20 @@ public class User {
         this.fotoktp = fotoktp;
     }
 
-    public Integer getConfirmed() {
-        return confirmed;
+    public Integer getIsVerif() {
+        return isVerif;
     }
 
-    public void setConfirmed(Integer confirmed) {
-        this.confirmed = confirmed;
+    public void setIsVerif(Integer isVerif) {
+        this.isVerif = isVerif;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

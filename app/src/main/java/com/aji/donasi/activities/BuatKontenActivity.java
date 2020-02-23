@@ -24,6 +24,7 @@ import com.aji.donasi.R;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.DonaturResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -154,11 +155,11 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 //Toast.makeText(BuatActivity.this, "berhasil", Toast.LENGTH_LONG).show();
 
-                //if (response.code() == 201) {
+                if (response.body() != null) {
+                    DefaultResponse defaultResponse = response.body();
 
-                    DefaultResponse dr = response.body();
-                    Toast.makeText(BuatKontenActivity.this, dr.getMessage(), Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(BuatKontenActivity.this, defaultResponse.getMessage(), Toast.LENGTH_LONG).show();
+                }
                 //}
 //                else if (response.code() == 422) {
 //                    Toast.makeText(BuatActivity.this, "Username sudah digunakan", Toast.LENGTH_LONG).show();

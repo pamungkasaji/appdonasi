@@ -1,19 +1,29 @@
 package com.aji.donasi.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
 
-    private boolean success;
+    @SerializedName("success")
+    @Expose
+    private Boolean success;
+    @SerializedName("message")
+    @Expose
     private String message;
+    @SerializedName("user")
+    @Expose
     private User user;
+    @SerializedName("token")
+    @Expose
+    private String token;
 
-    public LoginResponse(boolean success, String message, User user) {
-        this.success = success;
-        this.message = message;
-        this.user = user;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
     public String getMessage() {
@@ -22,5 +32,17 @@ public class LoginResponse {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
