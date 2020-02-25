@@ -12,7 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
+import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.LoginResponse;
@@ -70,11 +72,19 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (loginResponse.getSuccess()) {
                         // SP user dan token
+                        Session.getInstance(LoginActivity.this).saveUser(loginResponse.getUser());
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+
+//                        Toast.makeText(LoginActivity.this, loginResponse.getUser().getUsername(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LoginActivity.this, loginResponse.getToken(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        Helper.warningDialog(LoginActivity.this, "Kesalahan", loginResponse.getMessage());
                     }
                 } else {
-
+                    Helper.warningDialog(LoginActivity.this, "Kesalahan", "Terjadi kesalaha saat login");
                 }
             }
 

@@ -49,7 +49,7 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("userlogin")
+    @POST("login")
     Call<LoginResponse> userLogin(
             @Field("username") String username,
             @Field("password") String password

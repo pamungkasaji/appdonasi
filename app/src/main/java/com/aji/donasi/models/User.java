@@ -36,6 +36,12 @@ public class User {
     @Expose
     private String tanggal;
 
+    public User(Integer id, String username, String namalengkap) {
+        this.id = id;
+        this.username = username;
+        this.namalengkap = namalengkap;
+    }
+
     public Integer getId() {
         return id;
     }
