@@ -29,7 +29,7 @@ public interface Api {
     Call<KontenResponse> getKonten();
 
     @GET("konten/{id}")
-    Call<Konten> getKontenDetail(@Path("id") int id);
+    Call<KontenResponse> getKontenDetail(@Path("id") int id);
 
     @GET("konten/{id}/donatur")
     Call<DonaturResponse> getDonatur(@Path("id") int id);

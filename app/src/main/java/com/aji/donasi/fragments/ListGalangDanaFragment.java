@@ -64,7 +64,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
         kontenList = new ArrayList<>();
 
-        listKonten();
+        listKontenUser();
 
         buttonBuat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +75,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         });
     }
 
-    private void listKonten() {
+    private void listKontenUser() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 

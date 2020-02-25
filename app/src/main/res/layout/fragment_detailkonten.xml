@@ -22,7 +22,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tv_tanggal"
+            android:id="@+id/tv_target"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tanggal: " />
@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:lineSpacingExtra="8sp"
-            android:padding="16dp"
             />
 
     </LinearLayout>

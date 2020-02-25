@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
@@ -79,6 +81,9 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);
+                } else {
+                    //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar perkembangan tidak dapat ditampilkan");
+                    Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
 
 //                perkembanganList = (ArrayList<Perkembangan>) response.body().getData();
@@ -88,7 +93,8 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
 
             @Override
             public void onFailure(Call<PerkembanganResponse> call, Throwable t) {
-
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
     }

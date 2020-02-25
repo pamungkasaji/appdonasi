@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.activities.LoginActivity;
 import com.aji.donasi.adapters.DonaturAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
@@ -79,6 +81,8 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     adapter = new DonaturAdapter(getActivity(), donaturList);
                     recyclerView.setAdapter(adapter);
+                } else {
+                    Helper.warningDialog(getActivity(), "Kesalahan", "Daftar donatur tidak dapat ditampilkan");
                 }
 //                donaturList = (ArrayList<Donatur>) donaturResponse.getData();
 //                adapter = new DonaturAdapter(getActivity(), donaturList);
@@ -87,7 +91,7 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
 
             @Override
             public void onFailure(Call<DonaturResponse> call, Throwable t) {
-
+                Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
             }
         });
     }
