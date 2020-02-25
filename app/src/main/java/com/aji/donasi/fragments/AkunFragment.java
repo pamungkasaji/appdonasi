@@ -40,13 +40,13 @@ public class AkunFragment extends Fragment {
             }
         });
 
-//        button_register.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        button_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

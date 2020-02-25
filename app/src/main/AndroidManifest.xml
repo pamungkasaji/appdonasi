@@ -25,6 +25,9 @@
         <activity android:name="com.aji.donasi.activities.BuatKontenActivity" />
         <activity android:name="com.aji.donasi.activities.DetailKontenActivity" />
         <activity android:name="com.aji.donasi.activities.LoginActivity" />
+        <activity android:name="com.aji.donasi.activities.RegisterActivity" />
+
+
     </application>
 
 </manifest>

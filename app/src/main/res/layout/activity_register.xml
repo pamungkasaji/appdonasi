@@ -6,32 +6,76 @@
     android:padding="10dp"
     android:gravity="center">
 
-    <EditText
-        android:id="@+id/et_username"
-        android:inputType="text"
+    <TextView
+        android:text="Registrasi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"/>
+
+    <EditText
+        android:id="@+id/editTextNamaLengkap"
+        android:hint="Nama Lengkap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editTextAlamat"
+        android:hint="Alamat"
+        android:minLines="3"
+        android:maxLines="8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editTextNoKtp"
+        android:hint="Nomor KTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editTextNoHp"
+        android:hint="No HP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
         android:hint="Username"
-        android:autofillHints="masukkan Username"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password"
-        android:autofillHints="Masukkan Password"/>
+        android:hint="Password" />
+
+
+    <EditText
+        android:id="@+id/editTextConfirmPassword"
+        android:hint="Konfirmasi Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <Button
-        android:id="@+id/user_login"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonChoose"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"/>
+        android:text="Upload Foto KTP" />
 
     <Button
-        android:id="@+id/user_register"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonRegis"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrasi"/>
+        android:text="Submit" />
+
+    <ImageView
+        android:id="@+id/imageKtp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
