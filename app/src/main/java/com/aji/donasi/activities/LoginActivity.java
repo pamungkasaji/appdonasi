@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (loginResponse.getSuccess()) {
                         // SP user dan token
                         Session.getInstance(LoginActivity.this).saveUser(loginResponse.getUser());
+                        Session.getInstance(LoginActivity.this).saveToken(loginResponse.getToken());
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

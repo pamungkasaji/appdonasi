@@ -20,6 +20,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface Api {
 
@@ -65,6 +66,11 @@ public interface Api {
             @Part("namalengkap") RequestBody namalengkap,
             @Part("alamat") RequestBody alamat,
             @Part("nomorktp") RequestBody nomorktp
+    );
+
+    @GET("user/me/konten")
+    Call<KontenResponse> getKontenUser(
+            @Query("token") String token
     );
 
 //    @FormUrlEncoded
