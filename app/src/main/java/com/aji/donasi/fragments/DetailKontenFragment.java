@@ -4,9 +4,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,11 @@ import retrofit2.Retrofit;
 public class DetailKontenFragment extends Fragment implements DetailKontenActivity.FragmentCommunicator {
 
     private TextView tv_judul, tv_deskripsi, tv_target;
+    private int id_konten;
+    private ProgressBar progressBar;
+
+    private static final String TAG = "DetailKontenFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,15 +49,20 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
         tv_deskripsi = view.findViewById(R.id.tv_deskripsi);
         tv_target = view.findViewById(R.id.tv_target);
 
+        //progressBar = view.findViewById(R.id.progBar);
+
         if (getActivity() instanceof DetailKontenActivity) {
             ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
         }
+
+        displayDetail(id_konten);
 
     }
 
     @Override
     public void sendData(Integer data) {
-        displayDetail(data);
+        id_konten = data;
+        //displayDetail(data);
     }
 
     private void displayDetail(int id_konten) {
@@ -58,30 +71,30 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
 
         Call<KontenResponse> call = api.getKontenDetail(id_konten);
 
+        //progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<KontenResponse>() {
             @Override
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
                 if (response.body() != null) {
-                    tv_judul.setText(response.body().getKonten().getJudul());
-                    tv_deskripsi.setText(response.body().getKonten().getDeskripsi());
-                    tv_target.setText(String.valueOf(response.body().getKonten().getTarget()));
-
+                    KontenResponse kontenResponse = response.body();
+                    Log.i(TAG, "Muat ulang");
+                    tv_judul.setText(kontenResponse.getKonten().getJudul());
+                    tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
+                    tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
+                    //progressBar.setVisibility(View.GONE);
                 } else {
-                    Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Body kosong");
+                    //Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
-                //if (response.body()!=null) {
-                    //WResponse wResponse = response.body();
-//
-//                    responseText.setText("Temp: "+wResponse.getMain().getTemp() +"\n " +
-//                            "Humidity: "+wResponse.getMain().getHumidity()+"\n" +
-//                            "Pressure: "+wResponse.getMain().getPressure());
-                //}
             }
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Log.e(TAG, "Request gagal");
+                //progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });

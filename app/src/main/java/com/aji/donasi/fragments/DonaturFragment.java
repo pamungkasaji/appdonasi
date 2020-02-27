@@ -6,9 +6,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
@@ -33,6 +37,10 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
     private DonaturAdapter adapter;
     private ArrayList<Donatur> donaturList;
 
+    private ProgressBar progressBar;
+
+    private static final String TAG = "DonaturFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,17 +51,14 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        Bundle bundle = this.getArguments();
-//        if (bundle != null) {
-//            id_konten = bundle.getInt("id", 0);
-//        }
-
         if (getActivity() instanceof DetailKontenActivity) {
             ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
         }
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        progressBar = view.findViewById(R.id.progBar);
 
         //donaturList = new ArrayList<>();
     }
@@ -71,19 +76,25 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
 
         Call<DonaturResponse> call = api.getDonatur(id_konten);
 
+        //progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
-
+                    Log.i(TAG, "Muat ulang");
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     adapter = new DonaturAdapter(getActivity(), donaturList);
                     recyclerView.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
                 } else {
-                    Helper.warningDialog(getActivity(), "Kesalahan", "Daftar donatur tidak dapat ditampilkan");
+                    Log.w(TAG, "Body kosong");
+                    //Toast.makeText(getActivity(), "Daftar donatur tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
+
+//                }
 //                donaturList = (ArrayList<Donatur>) donaturResponse.getData();
 //                adapter = new DonaturAdapter(getActivity(), donaturList);
 //                recyclerView.setAdapter(adapter);
@@ -91,7 +102,10 @@ public class DonaturFragment extends Fragment implements DetailKontenActivity.Fr
 
             @Override
             public void onFailure(Call<DonaturResponse> call, Throwable t) {
-                Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Toast.makeText(getActivity(), "Daftar donatur tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
             }
         });
     }

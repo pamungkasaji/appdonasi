@@ -26,9 +26,9 @@ public class Donatur {
     @SerializedName("bukti")
     @Expose
     private String bukti;
-    @SerializedName("tanggal")
+    @SerializedName("created_at")
     @Expose
-    private String tanggal;
+    private String createdAt;
 
     public Integer getId() {
         return id;
@@ -86,12 +86,12 @@ public class Donatur {
         this.bukti = bukti;
     }
 
-    public String getTanggal() {
-        return tanggal;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
 

@@ -35,9 +35,9 @@ public class Konten {
     @SerializedName("is_verif")
     @Expose
     private Integer isVerif;
-    @SerializedName("tanggal")
+    @SerializedName("created_at")
     @Expose
-    private String tanggal;
+    private String createdAt;
     @SerializedName("user")
     @Expose
     private User user;
@@ -122,12 +122,12 @@ public class Konten {
         this.isVerif = isVerif;
     }
 
-    public String getTanggal() {
-        return tanggal;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public User getUser() {

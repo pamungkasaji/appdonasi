@@ -17,15 +17,13 @@
             android:id="@+id/tv_judul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Judul :"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_target"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tanggal: " />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_deskripsi"

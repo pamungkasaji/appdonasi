@@ -2,9 +2,11 @@ package com.aji.donasi.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +38,10 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
     //private List<Konten> kontenList;
     private ArrayList<Konten> kontenList;
 
+    private ProgressBar progressBar;
+
+    private static final String TAG = "HomeFragment";
+
     public static final String EXTRA_IDKONTEN = "idkonten";
 
     @Nullable
@@ -51,6 +57,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
         recyclerView = view.findViewById(R.id.recyclerKonten);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        progressBar = view.findViewById(R.id.progBar);
+
         kontenList = new ArrayList<>();
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -64,13 +72,14 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-
+                    Log.i(TAG, "Muat ulang");
                     kontenList = (ArrayList<Konten>) kontenResponse.getData();
                     adapter = new KontenAdapter(getActivity(), kontenList);
                     recyclerView.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
                 } else {
-                    Helper.warningDialog(getActivity(), "Kesalahan",
-                            "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                    Log.w(TAG, "Body kosong");
+                    //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
 
                 adapter.setOnItemClickListener(HomeFragment.this);
@@ -78,8 +87,9 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Helper.warningDialog(getActivity(), "Kesalahan",
-                        "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
+                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
 

@@ -32,9 +32,9 @@ public class User {
     @SerializedName("is_verif")
     @Expose
     private Integer isVerif;
-    @SerializedName("tanggal")
+    @SerializedName("created_at")
     @Expose
-    private String tanggal;
+    private String createdAt;
 
     public User(Integer id, String username, String namalengkap) {
         this.id = id;
@@ -114,12 +114,11 @@ public class User {
         this.isVerif = isVerif;
     }
 
-    public String getTanggal() {
-        return tanggal;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
-
 }

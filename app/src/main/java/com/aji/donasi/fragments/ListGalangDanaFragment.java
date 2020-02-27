@@ -3,10 +3,12 @@ package com.aji.donasi.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
@@ -32,12 +34,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class ListGalangDanaFragment extends Fragment implements KontenAdapter.OnItemClickListener{
 
     private RecyclerView recyclerView;
     private KontenAdapter adapter;
     //private List<Konten> kontenList;
     private ArrayList<Konten> kontenList;
+
+    private static final String TAG = "ListGalangDanaFragment";
+
+    ProgressBar progressBar;
 
     public static final String EXTRA_IDKONTEN = "idkonten";
 
@@ -61,6 +69,8 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
         recyclerView = view.findViewById(R.id.recyclerKontenUser);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        progressBar = view.findViewById(R.id.progBar);
 
         kontenList = new ArrayList<>();
 
@@ -89,13 +99,14 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-
+                    Log.i(TAG, "Muat ulang");
                     kontenList = (ArrayList<Konten>) kontenResponse.getData();
                     adapter = new KontenAdapter(getActivity(), kontenList);
                     recyclerView.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
                 } else {
-                    Helper.warningDialog(getActivity(), "Kesalahan",
-                            "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                    Log.w(TAG, "Body kosong");
+                    //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
 
                 adapter.setOnItemClickListener(ListGalangDanaFragment.this);
@@ -103,8 +114,8 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Helper.warningDialog(getActivity(), "Kesalahan",
-                        "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                Log.e(TAG, "Request gagal");
+                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
     }

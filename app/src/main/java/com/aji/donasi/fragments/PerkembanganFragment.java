@@ -6,9 +6,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
@@ -33,6 +36,12 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
     private PerkembanganAdapter adapter;
     private ArrayList<Perkembangan> perkembanganList;
 
+    private ProgressBar progressBar;
+
+    private static final String TAG = "PerkembanganFragment";
+
+    private int id_user;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +51,8 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        progressBar = view.findViewById(R.id.progBar);
 
 //        Bundle bundle = this.getArguments();
 //        if (bundle != null) {
@@ -71,19 +82,22 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
 
         Call<PerkembanganResponse> call = api.getPerkembangan(id_konten);
 
+        //progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<PerkembanganResponse>() {
             @Override
             public void onResponse(Call<PerkembanganResponse> call, Response<PerkembanganResponse> response) {
 
                 if (response.body() != null) {
                     PerkembanganResponse perkembanganResponse = response.body();
-
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);
+                    Log.i(TAG, "Muat ulang");
+                    //progressBar.setVisibility(View.GONE);
                 } else {
-                    //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar perkembangan tidak dapat ditampilkan");
-                    Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "Body kosong");
+//                    Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
 
 //                perkembanganList = (ArrayList<Perkembangan>) response.body().getData();
@@ -93,6 +107,8 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
 
             @Override
             public void onFailure(Call<PerkembanganResponse> call, Throwable t) {
+                Log.e(TAG, "Request gagal");
+                //progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }

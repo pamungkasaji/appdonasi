@@ -20,9 +20,9 @@ public class Perkembangan {
     @SerializedName("deskripsi")
     @Expose
     private String deskripsi;
-    @SerializedName("tanggal")
+    @SerializedName("created_at")
     @Expose
-    private String tanggal;
+    private String createdAt;
 
     public Integer getId() {
         return id;
@@ -64,13 +64,11 @@ public class Perkembangan {
         this.deskripsi = deskripsi;
     }
 
-    public String getTanggal() {
-        return tanggal;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
-
-
 }
