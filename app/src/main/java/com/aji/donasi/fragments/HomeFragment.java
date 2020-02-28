@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.KontenAdapter;
@@ -22,6 +23,8 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +103,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId()));
+        //detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
 
         startActivity(detailIntent);
     }

@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
@@ -23,6 +24,10 @@ import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Perkembangan;
 import com.aji.donasi.models.PerkembanganResponse;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -30,17 +35,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PerkembanganFragment extends Fragment implements DetailKontenActivity.FragmentCommunicator {
+public class PerkembanganFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private PerkembanganAdapter adapter;
     private ArrayList<Perkembangan> perkembanganList;
-
+    private int id_konten;
     private ProgressBar progressBar;
 
     private static final String TAG = "PerkembanganFragment";
-
-    private int id_user;
 
     @Nullable
     @Override
@@ -52,28 +55,16 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        EventBus.getDefault().register(this);
+
         progressBar = view.findViewById(R.id.progBar);
-
-//        Bundle bundle = this.getArguments();
-//        if (bundle != null) {
-//            id_konten = bundle.getInt("id", 0);
-//        }
-
-        if (getActivity() instanceof DetailKontenActivity) {
-            ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
-        }
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //perkembanganList = new ArrayList<>();
-    }
 
-    @Override
-    public void sendData(Integer data) {
-        //id_konten = data;
-        //textview.setText(data);
-        displayData(data);
+        displayData(id_konten);
     }
 
     private void displayData(int id_konten) {
@@ -97,12 +88,8 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
-//                    Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
-
-//                perkembanganList = (ArrayList<Perkembangan>) response.body().getData();
-//                adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
-//                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -113,5 +100,18 @@ public class PerkembanganFragment extends Fragment implements DetailKontenActivi
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        id_konten = event.id_konten;
+    }
+//    @Override public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 }

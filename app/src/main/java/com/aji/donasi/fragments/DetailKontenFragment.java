@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.api.Api;
@@ -22,12 +23,16 @@ import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.PerkembanganResponse;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class DetailKontenFragment extends Fragment implements DetailKontenActivity.FragmentCommunicator {
+public class DetailKontenFragment extends Fragment {
 
     private TextView tv_judul, tv_deskripsi, tv_target;
     private int id_konten;
@@ -45,24 +50,16 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        EventBus.getDefault().register(this);
+
         tv_judul = view.findViewById(R.id.tv_judul);
         tv_deskripsi = view.findViewById(R.id.tv_deskripsi);
         tv_target = view.findViewById(R.id.tv_target);
 
         //progressBar = view.findViewById(R.id.progBar);
 
-        if (getActivity() instanceof DetailKontenActivity) {
-            ((DetailKontenActivity) getActivity()).fragmentCommunicators.add(this);
-        }
-
         displayDetail(id_konten);
 
-    }
-
-    @Override
-    public void sendData(Integer data) {
-        id_konten = data;
-        //displayDetail(data);
     }
 
     private void displayDetail(int id_konten) {
@@ -86,7 +83,7 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
-                    //Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -98,5 +95,18 @@ public class DetailKontenFragment extends Fragment implements DetailKontenActivi
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        id_konten = event.id_konten;
+    }
+//    @Override public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 }
