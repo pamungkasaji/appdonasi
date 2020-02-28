@@ -74,6 +74,11 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+
+        SharedPreferences sharedPreferencesToken = mCtx.getSharedPreferences(SHARED_PREF_TOKEN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorToken = sharedPreferencesToken.edit();
+        editorToken.clear();
+        editorToken.apply();
     }
 
 }

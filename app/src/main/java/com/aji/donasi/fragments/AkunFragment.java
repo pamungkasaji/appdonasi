@@ -17,9 +17,12 @@ import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.activities.LoginActivity;
+import com.aji.donasi.activities.MainActivity;
 import com.aji.donasi.activities.RegisterActivity;
 
 public class AkunFragment extends Fragment {
+
+    private Button button_login, button_register, button_logout;
 
     @Nullable
     @Override
@@ -31,14 +34,17 @@ public class AkunFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button button_login  = view.findViewById(R.id.button_login);
-        Button button_register = view.findViewById(R.id.button_register);
+        button_login  = view.findViewById(R.id.button_login);
+        button_register = view.findViewById(R.id.button_register);
+        button_logout = view.findViewById(R.id.button_logout);
 
         TextView username = view.findViewById(R.id.username);
         TextView token = view.findViewById(R.id.token);
 
         username.setText(Session.getInstance(getActivity()).getUser().getUsername());
         token.setText(Session.getInstance(getActivity()).getToken());
+
+        initAuth();
 
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,5 +62,30 @@ public class AkunFragment extends Fragment {
             }
         });
 
+        button_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+    }
+
+    private void initAuth(){
+        if(Session.getInstance(getActivity()).isLoggedIn()) {
+            button_login.setVisibility(View.GONE);
+            button_register.setVisibility(View.GONE);
+            button_logout.setVisibility(View.VISIBLE);
+        } else {
+            button_login.setVisibility(View.VISIBLE);
+            button_register.setVisibility(View.VISIBLE);
+            button_logout.setVisibility(View.GONE);
+        }
+    }
+
+    private void logout() {
+        Session.getInstance(getActivity()).clear();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
