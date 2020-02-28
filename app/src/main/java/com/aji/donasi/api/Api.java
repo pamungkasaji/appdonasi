@@ -73,6 +73,11 @@ public interface Api {
             @Query("token") String token
     );
 
+    @GET("user/me/donatur")
+    Call<DonaturResponse> getDonaturUser(
+            @Query("token") String token
+    );
+
 //    @FormUrlEncoded
 //    @POST("register")
 //    Call<DefaultResponse> createUser(

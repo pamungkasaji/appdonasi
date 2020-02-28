@@ -10,12 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Galang Dana"
-        android:textSize="30sp" />
-
     <Button
         android:id="@+id/buat"
         android:layout_width="match_parent"
