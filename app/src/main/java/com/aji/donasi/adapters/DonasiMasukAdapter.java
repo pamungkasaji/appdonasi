@@ -36,7 +36,7 @@ public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.
     @NonNull
     @Override
     public DonasiMasukViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mCtx).inflate(R.layout.recyclerview_donatur, parent, false);
+        View view = LayoutInflater.from(mCtx).inflate(R.layout.recyclerview_donasi_masuk, parent, false);
         return new DonasiMasukViewHolder(view);
     }
 
