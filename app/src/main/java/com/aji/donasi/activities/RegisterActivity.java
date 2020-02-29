@@ -208,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Request tidak dikirim");
+                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Registrasi gagal");
             }
         });
     }

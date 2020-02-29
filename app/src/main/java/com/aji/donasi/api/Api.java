@@ -40,13 +40,13 @@ public interface Api {
     @Multipart
     @POST("konten")
     Call<DefaultResponse> createKonten(
+            @Query("token") String token,
             @Part MultipartBody.Part partimage,
             @Part("judul") RequestBody judul,
             @Part("deskripsi") RequestBody deskripsi,
             @Part("target") RequestBody target,
             @Part("lama_donasi") RequestBody lama_donasi,
-            @Part("nomorrekening") RequestBody nomorrekening,
-            @Part("id_user") RequestBody id_user
+            @Part("nomorrekening") RequestBody nomorrekening
     );
 
     @FormUrlEncoded

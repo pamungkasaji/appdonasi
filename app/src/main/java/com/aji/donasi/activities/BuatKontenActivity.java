@@ -20,7 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
+import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
@@ -94,7 +96,6 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         String ttarget = editTextTarget.getText().toString().trim();
         String tlamadonasi = editTextLamaDonasi.getText().toString().trim();
         String tnorek = editTextNoRek.getText().toString().trim();
-        String tid_user = "1";
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
@@ -131,6 +132,8 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
+
+        String token = Session.getInstance(BuatKontenActivity.this).getToken();
         //Create a file object using file path
         File file = new File(path);
         // Create a request body with file and image media type
@@ -145,30 +148,30 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
         RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlamadonasi);
         RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
-        RequestBody id_user = RequestBody.create(MediaType.parse("multipart/form-data"), tid_user);
         //
 
-        Call<DefaultResponse> call = api.createKonten(pic, judul, deskripsi, target, lama_donasi, nomorrekening, id_user);
+        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                //Toast.makeText(BuatActivity.this, "berhasil", Toast.LENGTH_LONG).show();
-
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
 
-                    Toast.makeText(BuatKontenActivity.this, defaultResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    if (defaultResponse.getSuccess()) {
+
+                        Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                    } else {
+                        Helper.warningDialog(RegisterActivity.this, "Kesalahan", defaultResponse.getMessage());
+                    }
+                } else {
+                    Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Respon kosong");
                 }
-                //}
-//                else if (response.code() == 422) {
-//                    Toast.makeText(BuatActivity.this, "Username sudah digunakan", Toast.LENGTH_LONG).show();
-//                }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                Toast.makeText(BuatKontenActivity.this,"Registrasi gagal", Toast.LENGTH_LONG).show();
+                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });
 
