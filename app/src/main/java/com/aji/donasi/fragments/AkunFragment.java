@@ -23,6 +23,7 @@ import com.aji.donasi.activities.RegisterActivity;
 public class AkunFragment extends Fragment {
 
     private Button button_login, button_register, button_logout;
+    TextView belumauth;
 
     @Nullable
     @Override
@@ -40,6 +41,7 @@ public class AkunFragment extends Fragment {
 
         TextView username = view.findViewById(R.id.username);
         TextView token = view.findViewById(R.id.token);
+        belumauth = view.findViewById(R.id.belumauth);
 
         username.setText(Session.getInstance(getActivity()).getUser().getUsername());
         token.setText(Session.getInstance(getActivity()).getToken());
@@ -75,10 +77,13 @@ public class AkunFragment extends Fragment {
             button_login.setVisibility(View.GONE);
             button_register.setVisibility(View.GONE);
             button_logout.setVisibility(View.VISIBLE);
+            belumauth.setVisibility(View.GONE);
         } else {
             button_login.setVisibility(View.VISIBLE);
             button_register.setVisibility(View.VISIBLE);
             button_logout.setVisibility(View.GONE);
+            belumauth.setVisibility(View.VISIBLE);
+
         }
     }
 

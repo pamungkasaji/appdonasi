@@ -160,18 +160,18 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
                     if (defaultResponse.getSuccess()) {
 
-                        Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                        Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
                     } else {
-                        Helper.warningDialog(RegisterActivity.this, "Kesalahan", defaultResponse.getMessage());
+                        Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 } else {
-                    Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Respon kosong");
+                    Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
+                Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });
 
