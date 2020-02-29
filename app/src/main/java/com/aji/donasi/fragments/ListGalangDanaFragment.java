@@ -47,7 +47,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
     ProgressBar progressBar;
 
-    public static final String EXTRA_IDKONTEN = "idkonten";
+    private static final String EXTRA_IDKONTEN = "idkonten";
 
     public ListGalangDanaFragment() {
         // Required empty public constructor
@@ -125,8 +125,12 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+        if(clickedItem.getIsVerif().equals(1)) {
+            detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+            startActivity(detailIntent);
+        } else {
+            Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");
+        }
 
-        startActivity(detailIntent);
     }
 }

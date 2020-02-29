@@ -14,7 +14,7 @@ public class Helper {
                 .setIcon(R.drawable.ic_done_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Relax", v -> {})
+                .setPositiveButton("Ok", v -> {})
                 .show();
     }
 
@@ -25,7 +25,7 @@ public class Helper {
                 .setIcon(R.drawable.ic_error_outline_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Relax", v -> {})
+                .setPositiveButton("Ok", v -> {})
                 .show();
     }
 

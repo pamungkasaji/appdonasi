@@ -88,23 +88,7 @@ public interface Api {
             @Query("token") String token
     );
 
-//    @FormUrlEncoded
-//    @POST("register")
-//    Call<DefaultResponse> createUser(
-//            @Field("username") String username,
-//            @Field("password") String password
-//            //@Field("school") String school
-//    );
-
-    @Multipart
-    @POST("upload")
-    Call<ResponseBody> upload(
-            @Part("description") RequestBody description,
-            @Part MultipartBody.Part file
-    );
-
-
-
+    /////////
 
     @FormUrlEncoded
     @PUT("updateuser/{id}")
