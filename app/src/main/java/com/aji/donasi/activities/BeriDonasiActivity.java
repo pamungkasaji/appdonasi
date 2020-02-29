@@ -8,25 +8,29 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.DonaturResponse;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,13 +43,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BuatKontenActivity extends AppCompatActivity implements View.OnClickListener{
+public class BeriDonasiActivity extends AppCompatActivity{
 
     //Declaring views
     private Button buttonChoose;
     private Button buttonUpload;
     private ImageView gambar;
-    private EditText editTextJudul, editTextDeskripsi, editTextTarget, editTextLamaDonasi, editTextNoRek;
+    private EditText et_nama, et_jumlah;
+    private CheckBox anonim;
+    private String tis_anonim = "0";
+    private int id_konten;
 
     //Image request code
     private int PICK_IMAGE_REQUEST = 1;
@@ -62,7 +69,7 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buatkonten);
+        setContentView(R.layout.activity_beridonasi);
 
         //Requesting storage permission
         requestStoragePermission();
@@ -72,56 +79,43 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
-        editTextJudul = findViewById(R.id.editTextJudul);
-        editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
-        editTextTarget = findViewById(R.id.editTextTarget);
-        editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
-        editTextNoRek = findViewById(R.id.editTextNoRek);
+        et_nama = findViewById(R.id.et_nama);
+        et_jumlah = findViewById(R.id.et_jumlah);
+        anonim = findViewById(R.id.anonim);
 
-        //Setting clicklistener
-        buttonChoose.setOnClickListener(this);
-        buttonUpload.setOnClickListener(this);
+        buttonChoose.setOnClickListener((View v) -> {
+            showFileChooser();
+        });
+
+        buttonUpload.setOnClickListener((View v) -> {
+            beriDonasi();
+        });
+
+        anonim.setOnClickListener((View v) -> {
+            if (anonim.isChecked()) {
+                tis_anonim = "1";
+            }
+        });
     }
 
     /*
      * This is the method responsible for image upload
      * We need the full image path and the name for the image in this method
      * */
-    public void uploadMultipart() {
+    public void beriDonasi() {
         //getting name for the image
-        String tjudul = editTextJudul.getText().toString().trim();
-        String tdeskripsi = editTextDeskripsi.getText().toString().trim();
-        String ttarget = editTextTarget.getText().toString().trim();
-        String tlamadonasi = editTextLamaDonasi.getText().toString().trim();
-        String tnorek = editTextNoRek.getText().toString().trim();
+        String tnama = et_nama.getText().toString();
+        String tjumlah = et_jumlah.getText().toString();
 
-        if (tjudul.isEmpty()) {
-            editTextJudul.setError("Isi kolom judul");
-            editTextJudul.requestFocus();
+        if (tnama.isEmpty()) {
+            et_nama.setError("Isi nama lengkap");
+            et_nama.requestFocus();
             return;
         }
 
-        if (tdeskripsi.isEmpty()) {
-            editTextDeskripsi.setError("Isi kolom deskripsi");
-            editTextDeskripsi.requestFocus();
-            return;
-        }
-
-        if (ttarget.isEmpty()) {
-            editTextTarget.setError("Isi kolom target");
-            editTextTarget.requestFocus();
-            return;
-        }
-
-        if (tlamadonasi.isEmpty()) {
-            editTextLamaDonasi.setError("Isi kolom lamadonasi");
-            editTextLamaDonasi.requestFocus();
-            return;
-        }
-
-        if (tnorek.isEmpty()) {
-            editTextNoRek.setError("Isi kolom norek");
-            editTextNoRek.requestFocus();
+        if (tjumlah.isEmpty()) {
+            et_jumlah.setError("Isi jumlah donasi");
+            et_jumlah.requestFocus();
             return;
         }
 
@@ -131,24 +125,19 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        String token = Session.getInstance(BuatKontenActivity.this).getToken();
+        String token = Session.getInstance(BeriDonasiActivity.this).getToken();
         //Create a file object using file path
         File file = new File(path);
         // Create a request body with file and image media type
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part pic = MultipartBody.Part.createFormData("gambar", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-        //RequestBody username = RequestBody.create(MediaType.parse("text/plain"), "asdad");
+        MultipartBody.Part pic = MultipartBody.Part.createFormData("bukti", file.getName(), fileReqBody);
 
-        RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
-        RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
-        RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
-        RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlamadonasi);
-        RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
-        //
+        RequestBody nama = RequestBody.create(MediaType.parse("multipart/form-data"), tnama);
+        RequestBody jumlah = RequestBody.create(MediaType.parse("multipart/form-data"), tjumlah);
+        RequestBody is_anonim = RequestBody.create(MediaType.parse("ultipart/form-data"), tis_anonim);
 
-        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening);
+        Call<DefaultResponse> call = api.sendDonation(id_konten, pic, nama, jumlah, is_anonim);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
@@ -158,21 +147,34 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
                     if (defaultResponse.getSuccess()) {
 
-                        Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                        Helper.infoDialog(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
                     } else {
-                        Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
+                        Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 } else {
-                    Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Respon kosong");
+                    Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
+                Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Pemberian donasia gagal");
             }
         });
 
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        id_konten = event.id_konten;
+    }
+    @Override public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     //method to show file chooser
@@ -209,7 +211,7 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         cursor.close();
 
         cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -251,16 +253,4 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == buttonChoose) {
-            showFileChooser();
-        }
-        if (v == buttonUpload) {
-            uploadMultipart();
-        }
-    }
-
 }

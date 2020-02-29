@@ -28,18 +28,21 @@
 
     <EditText
         android:id="@+id/editTextTarget"
+        android:inputType="number"
         android:hint="Target Dana"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/editTextLamaDonasi"
+        android:inputType="number"
         android:hint="Lama Donasi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/editTextNoRek"
+        android:inputType="number"
         android:hint="Nomor Rekening"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

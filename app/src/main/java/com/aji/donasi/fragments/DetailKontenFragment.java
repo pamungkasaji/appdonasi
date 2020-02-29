@@ -1,5 +1,6 @@
 package com.aji.donasi.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
+import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
@@ -36,6 +39,7 @@ public class DetailKontenFragment extends Fragment {
 
     private TextView tv_judul, tv_deskripsi, tv_target;
     private int id_konten;
+    private Button beriDonasi;
     private ProgressBar progressBar;
 
     private static final String TAG = "DetailKontenFragment";
@@ -55,11 +59,16 @@ public class DetailKontenFragment extends Fragment {
         tv_judul = view.findViewById(R.id.tv_judul);
         tv_deskripsi = view.findViewById(R.id.tv_deskripsi);
         tv_target = view.findViewById(R.id.tv_target);
+        beriDonasi = view.findViewById(R.id.beriDonasi);
 
         //progressBar = view.findViewById(R.id.progBar);
 
         displayDetail(id_konten);
 
+        beriDonasi.setOnClickListener((View v) -> {
+            Intent intent = new Intent(getActivity(), BeriDonasiActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void displayDetail(int id_konten) {

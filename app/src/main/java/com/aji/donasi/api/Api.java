@@ -49,6 +49,16 @@ public interface Api {
             @Part("nomorrekening") RequestBody nomorrekening
     );
 
+    @Multipart
+    @POST("konten/{id}/donatur")
+    Call<DefaultResponse> sendDonation(
+            @Path("id") int id,
+            @Part MultipartBody.Part partimage,
+            @Part("nama") RequestBody nama,
+            @Part("jumlah") RequestBody jumlah,
+            @Part("is_anonim") RequestBody is_anonim
+    );
+
     @FormUrlEncoded
     @POST("login")
     Call<LoginResponse> userLogin(
