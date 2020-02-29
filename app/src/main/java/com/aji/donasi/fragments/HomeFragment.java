@@ -103,8 +103,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId()));
-        //detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening()));
 
         startActivity(detailIntent);
     }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private CheckBox anonim;
     private String tis_anonim = "0";
     private int id_konten;
+    private String nomorrekening;
 
     //Image request code
     private int PICK_IMAGE_REQUEST = 1;
@@ -71,6 +73,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beridonasi);
 
+        EventBus.getDefault().register(this);
+
         //Requesting storage permission
         requestStoragePermission();
 
@@ -82,6 +86,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
         et_nama = findViewById(R.id.et_nama);
         et_jumlah = findViewById(R.id.et_jumlah);
         anonim = findViewById(R.id.anonim);
+        TextView norek = findViewById(R.id.norek);
+        norek.setText(nomorrekening);
 
         buttonChoose.setOnClickListener((View v) -> {
             showFileChooser();
@@ -152,7 +158,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
                         Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 } else {
-                    Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Respon kosong");
+                    Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Silahkan coba submit lagi");
                 }
             }
 
@@ -167,11 +173,9 @@ public class BeriDonasiActivity extends AppCompatActivity{
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         id_konten = event.id_konten;
+        nomorrekening = event.nomorrekening;
     }
-    @Override public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
+
     @Override public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
