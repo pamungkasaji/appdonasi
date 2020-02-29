@@ -55,6 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView imageKtp;
     private EditText editTextNamaLengkap, editTextAlamat, editTextNoKtp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
 
+    private String cameraFilePath;
+
+    private static final int CAMERA_REQUEST_CODE = 102;
+
     //Image request code
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -74,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        requestStoragePermission();
+        //requestStoragePermission();
 
         //Initializing views
         buttonChoose = findViewById(R.id.buttonChoose);
@@ -162,6 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //getting the actual path of the image
         String path = getPath(filePath);
+//        String path = cameraFilePath;
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
@@ -203,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Terjadi kesalaha saat login");
+                Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Request tidak dikirim");
             }
         });
     }
