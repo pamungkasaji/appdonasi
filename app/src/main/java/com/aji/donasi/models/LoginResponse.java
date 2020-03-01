@@ -18,7 +18,7 @@ public class LoginResponse {
     @Expose
     private String token;
 
-    public Boolean getSuccess() {
+    public Boolean isSuccess() {
         return success;
     }
 

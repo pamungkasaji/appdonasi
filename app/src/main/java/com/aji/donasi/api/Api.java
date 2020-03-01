@@ -59,6 +59,17 @@ public interface Api {
             @Part("is_anonim") RequestBody is_anonim
     );
 
+    @Multipart
+    @POST("konten/{id}/perkembangan")
+    Call<DefaultResponse> createPerkembangan(
+            @Path("id") int id,
+            @Query("token") String token,
+            @Part MultipartBody.Part partimage,
+            @Part("judul") RequestBody judul,
+            @Part("deskripsi") RequestBody deskripsi
+    );
+
+
     @FormUrlEncoded
     @POST("login")
     Call<LoginResponse> userLogin(
@@ -85,6 +96,12 @@ public interface Api {
 
     @GET("user/me/donatur")
     Call<DonaturResponse> getDonaturUser(
+            @Query("token") String token
+    );
+
+    @GET("user/me/konten/{id}")
+    Call<DefaultResponse> isUser (
+            @Path("id") int id,
             @Query("token") String token
     );
 

@@ -28,6 +28,7 @@
         <activity android:name="com.aji.donasi.activities.LoginActivity" />
         <activity android:name="com.aji.donasi.activities.RegisterActivity" />
         <activity android:name="com.aji.donasi.activities.BeriDonasiActivity" />
+        <activity android:name="com.aji.donasi.activities.TambahPerkembanganActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

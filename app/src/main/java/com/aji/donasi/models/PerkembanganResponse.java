@@ -25,7 +25,7 @@ public class PerkembanganResponse {
         this.message = message;
     }
 
-    public Boolean getSuccess() {
+    public Boolean isSuccess() {
         return success;
     }
 

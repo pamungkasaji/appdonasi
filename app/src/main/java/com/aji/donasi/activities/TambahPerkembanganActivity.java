@@ -1,6 +1,7 @@
 package com.aji.donasi.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,17 +16,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,14 +44,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BuatKontenActivity extends AppCompatActivity implements View.OnClickListener{
+public class TambahPerkembanganActivity extends AppCompatActivity implements View.OnClickListener{
 
     //Declaring views
     private Button buttonChoose;
     private Button buttonUpload;
     private ImageView gambar;
-    private EditText editTextJudul, editTextDeskripsi, editTextTarget, editTextLamaDonasi, editTextNoRek;
-    private static final String TAG = "Buat Konten";
+    private EditText editTextJudul, editTextDeskripsi;
+    private int id_konten;
+
+    private static final String TAG = "Tambah Perkembangan";
 
     //Image request code
     private int PICK_IMAGE_REQUEST = 1;
@@ -63,7 +70,9 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buatkonten);
+        setContentView(R.layout.activity_tambahperkembangan);
+
+        EventBus.getDefault().register(this);
 
         //Requesting storage permission
         requestStoragePermission();
@@ -75,9 +84,6 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
-        editTextTarget = findViewById(R.id.editTextTarget);
-        editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
-        editTextNoRek = findViewById(R.id.editTextNoRek);
 
         //Setting clicklistener
         buttonChoose.setOnClickListener(this);
@@ -90,11 +96,8 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
      * */
     public void uploadMultipart() {
         //getting name for the image
-        String tjudul = editTextJudul.getText().toString().trim();
-        String tdeskripsi = editTextDeskripsi.getText().toString().trim();
-        String ttarget = editTextTarget.getText().toString().trim();
-        String tlamadonasi = editTextLamaDonasi.getText().toString().trim();
-        String tnorek = editTextNoRek.getText().toString().trim();
+        String tjudul = editTextJudul.getText().toString();
+        String tdeskripsi = editTextDeskripsi.getText().toString();
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
@@ -108,31 +111,13 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
             return;
         }
 
-        if (ttarget.isEmpty()) {
-            editTextTarget.setError("Isi kolom target");
-            editTextTarget.requestFocus();
-            return;
-        }
-
-        if (tlamadonasi.isEmpty()) {
-            editTextLamaDonasi.setError("Isi kolom lamadonasi");
-            editTextLamaDonasi.requestFocus();
-            return;
-        }
-
-        if (tnorek.isEmpty()) {
-            editTextNoRek.setError("Isi kolom norek");
-            editTextNoRek.requestFocus();
-            return;
-        }
-
         //getting the actual path of the image
         String path = getPath(filePath);
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        String token = Session.getInstance(BuatKontenActivity.this).getToken();
+        String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
         //Create a file object using file path
         File file = new File(path);
         // Create a request body with file and image media type
@@ -144,12 +129,8 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
         RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
         RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
-        RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
-        RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlamadonasi);
-        RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
-        //
 
-        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening);
+        Call<DefaultResponse> call = api.createPerkembangan(id_konten, token, pic, judul, deskripsi);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
@@ -159,24 +140,33 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
 
                     if (defaultResponse.isSuccess()) {
                         Log.i(TAG, "Berhasil create");
-                        Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                        Helper.infoDialog(TambahPerkembanganActivity.this, "Penambahan perkembangan sukses", defaultResponse.getMessage());
                     } else {
                         Log.w(TAG, "Gagal Create");
-                        Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
+                        Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 } else {
                     Log.w(TAG, "Body kosong");
-                    Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Respon kosong");
+                    Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
+                Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });
+    }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        id_konten = event.id_konten;
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     //method to show file chooser
@@ -213,7 +203,7 @@ public class BuatKontenActivity extends AppCompatActivity implements View.OnClic
         cursor.close();
 
         cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));

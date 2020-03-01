@@ -1,15 +1,12 @@
 package com.aji.donasi.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -21,22 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 
-import com.aji.donasi.BuildConfig;
 import com.aji.donasi.Helper;
-import com.aji.donasi.PermissionManager;
 import com.aji.donasi.R;
-import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.LoginResponse;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -194,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.body() != null){
                     DefaultResponse defaultResponse = response.body();
 
-                    if (defaultResponse.getSuccess()) {
+                    if (defaultResponse.isSuccess()) {
 
                         Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
 

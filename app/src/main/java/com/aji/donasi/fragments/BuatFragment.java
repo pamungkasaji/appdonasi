@@ -23,9 +23,9 @@ import java.util.List;
 
 public class BuatFragment extends Fragment {
 
-    ViewPager viewPager;
-    TabLayout tabs;
-    TextView autentikasi;
+    private ViewPager viewPager;
+    private TabLayout tabs;
+    private TextView autentikasi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -10,7 +10,7 @@ public class DefaultResponse {
     @SerializedName("message")
     private String message;
 
-    public boolean getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 

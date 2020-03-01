@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.BuatKontenActivity;
@@ -26,6 +27,8 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -126,7 +129,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         Konten clickedItem = kontenList.get(position);
 
         if(clickedItem.getIsVerif().equals(1)) {
-            detailIntent.putExtra(EXTRA_IDKONTEN, clickedItem.getId());
+            EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening()));
             startActivity(detailIntent);
         } else {
             Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");

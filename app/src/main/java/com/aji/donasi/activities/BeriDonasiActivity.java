@@ -151,7 +151,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
 
-                    if (defaultResponse.getSuccess()) {
+                    if (defaultResponse.isSuccess()) {
 
                         Helper.infoDialog(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
                     } else {

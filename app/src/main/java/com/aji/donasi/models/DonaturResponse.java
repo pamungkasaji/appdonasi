@@ -20,7 +20,7 @@ public class DonaturResponse {
     @Expose
     private Donatur donatur;
 
-    public Boolean getSuccess() {
+    public Boolean isSuccess() {
         return success;
     }
 

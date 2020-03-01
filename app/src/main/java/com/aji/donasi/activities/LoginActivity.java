@@ -2,12 +2,9 @@ package com.aji.donasi.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.body() != null){
                     LoginResponse loginResponse = response.body();
 
-                    if (loginResponse.getSuccess()) {
+                    if (loginResponse.isSuccess()) {
                         // SP user dan token
                         Session.getInstance(LoginActivity.this).saveUser(loginResponse.getUser());
                         Session.getInstance(LoginActivity.this).saveToken(loginResponse.getToken());

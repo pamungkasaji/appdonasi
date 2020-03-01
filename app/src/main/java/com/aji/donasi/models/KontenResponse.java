@@ -20,7 +20,7 @@ public class KontenResponse {
     @Expose
     private Konten konten;
 
-    public Boolean getSuccess() {
+    public Boolean isSuccess() {
         return success;
     }
 

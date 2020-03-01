@@ -1,5 +1,6 @@
 package com.aji.donasi.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,16 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
-import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.Session;
+import com.aji.donasi.activities.BeriDonasiActivity;
+import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Perkembangan;
 import com.aji.donasi.models.PerkembanganResponse;
 
@@ -42,6 +47,8 @@ public class PerkembanganFragment extends Fragment {
     private ArrayList<Perkembangan> perkembanganList;
     private int id_konten;
     private ProgressBar progressBar;
+    private Button tambah;
+    private String token;
 
     private static final String TAG = "PerkembanganFragment";
 
@@ -62,9 +69,23 @@ public class PerkembanganFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        token = Session.getInstance(getActivity()).getToken();
+
+        tambah = view.findViewById(R.id.tambah);
+        tambah.setVisibility(View.GONE);
+
+        if(Session.getInstance(getActivity()).isLoggedIn()) {
+            initTambah();
+        }
+
         //perkembanganList = new ArrayList<>();
 
         displayData(id_konten);
+
+        tambah.setOnClickListener((View v) -> {
+            Intent intent = new Intent(getActivity(), TambahPerkembanganActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void displayData(int id_konten) {
@@ -102,14 +123,44 @@ public class PerkembanganFragment extends Fragment {
         });
     }
 
+    private void initTambah(){
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+
+        Call<DefaultResponse> call = api.isUser(id_konten, token);
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+
+                if (response.body() != null) {
+                    DefaultResponse defaultResponse = response.body();
+                    if (defaultResponse.isSuccess()) {
+                        tambah.setVisibility(View.VISIBLE);
+                    }
+                    Log.i(TAG, "Is user iya");
+                    //progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.w(TAG, "Body kosong");
+                    //Toast.makeText(getActivity(), "Is User tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                Log.e(TAG, "Request gagal");
+                //progressBar.setVisibility(View.GONE);
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         id_konten = event.id_konten;
     }
-//    @Override public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
+
     @Override public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
