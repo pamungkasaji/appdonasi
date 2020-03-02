@@ -111,7 +111,26 @@ public interface Api {
             @Query("token") String token
     );
 
+    @FormUrlEncoded
+    @PUT("konten/{id_konten}/donatur/{id}")
+    Call<DefaultResponse> terimaDonasi (
+            @Path("id_konten") int id_konten,
+            @Path("id") int id,
+            @Query("token") String token,
+            @Field("is_diterima") int is_diterima
+    );
+
+    @DELETE("konten/{id_konten}/donatur/{id}")
+    Call<DefaultResponse> tolakDonasi(
+            @Path("id_konten") int id_konten,
+            @Path("id") int id,
+            @Query("token") String token
+    );
+
+
     /////////
+
+
 
     @FormUrlEncoded
     @PUT("updateuser/{id}")

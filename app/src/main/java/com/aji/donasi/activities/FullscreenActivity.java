@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
+import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.DonaturResponse;
 import com.aji.donasi.models.KontenResponse;
 import com.bumptech.glide.Glide;
@@ -32,6 +35,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private int id, id_konten;
     private String bukti,buktilink;
     ImageView gambarbukti;
+    private ProgressBar progressBar;
 
     private static final String TAG = "FullscreenActivity";
 
@@ -48,6 +52,8 @@ public class FullscreenActivity extends AppCompatActivity {
         FloatingActionButton  buttontolak = findViewById(R.id.buttontolak);
         gambarbukti = findViewById(R.id.bukti);
 
+        progressBar = findViewById(R.id.progBar);
+
         Intent detailIntent=getIntent();
         id = detailIntent.getIntExtra("id", -1);
         id_konten = detailIntent.getIntExtra("id_konten", -1);
@@ -55,11 +61,11 @@ public class FullscreenActivity extends AppCompatActivity {
         dataDonatur(id_konten, id);
 
         buttonterima.setOnClickListener((View v) -> {
-            terimadonatur();
+            terimaDonatur();
         });
 
         buttontolak.setOnClickListener((View v) -> {
-            tolakdonatur();
+            tolakDonatur();
         });
     }
 
@@ -69,7 +75,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         Call<DonaturResponse> call = api.getDetailDonatur(id_konten, id);
 
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
@@ -90,10 +96,10 @@ public class FullscreenActivity extends AppCompatActivity {
                             .placeholder(R.drawable.loading)
                             .into(gambarbukti);
 
-                    //progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
-                    //progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(FullscreenActivity.this, "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -108,11 +114,71 @@ public class FullscreenActivity extends AppCompatActivity {
         });
     }
 
-    private void terimadonatur() {
+    private void terimaDonatur() {
+        String token = Session.getInstance(FullscreenActivity.this).getToken();
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+        Call<DefaultResponse> call = api.terimaDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
 
+        progressBar.setVisibility(View.VISIBLE);
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+
+                if (response.body() != null) {
+                    DefaultResponse defaultResponse = response.body();
+                    Log.i(TAG, "Diterima");
+                    Helper.infoDialog(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(FullscreenActivity.this, "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void tolakdonatur() {
+    private void tolakDonatur() {
+        String token = Session.getInstance(FullscreenActivity.this).getToken();
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+        Call<DefaultResponse> call = api.tolakDonasi(id_konten, id, token);
 
+        progressBar.setVisibility(View.VISIBLE);
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+
+                if (response.body() != null) {
+                    DefaultResponse defaultResponse = response.body();
+                    Log.i(TAG, "Ditolak");
+                    Helper.infoDialog(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(FullscreenActivity.this, "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
