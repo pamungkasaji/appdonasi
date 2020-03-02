@@ -1,5 +1,6 @@
 package com.aji.donasi.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
+import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.activities.FullscreenActivity;
 import com.aji.donasi.adapters.DonasiMasukAdapter;
 import com.aji.donasi.adapters.KontenAdapter;
 import com.aji.donasi.api.Api;
@@ -24,6 +28,8 @@ import com.aji.donasi.models.DonaturResponse;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -31,14 +37,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class DonasiMasukFragment extends Fragment {
+public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private DonasiMasukAdapter adapter;
     //private List<Konten> kontenList;
     private ArrayList<Donatur> donaturList;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     private static final String TAG = "DonasiMasukFragment";
 
@@ -62,13 +68,11 @@ public class DonasiMasukFragment extends Fragment {
     }
 
     private void listDonaturUser() {
-        Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
-
         String token = Session.getInstance(getActivity()).getToken();
 
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
         Call<DonaturResponse> call = api.getDonaturUser(token);
-
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
@@ -85,8 +89,7 @@ public class DonasiMasukFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
-
-                //adapter.setOnItemClickListener(ListGalangDanaFragment.this);
+                adapter.setOnItemClickListener(DonasiMasukFragment.this);
             }
 
             @Override
@@ -98,4 +101,12 @@ public class DonasiMasukFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), FullscreenActivity.class);
+        Donatur clickedItem = donaturList.get(position);
+        detailIntent.putExtra("id", clickedItem.getId());
+        detailIntent.putExtra("id_konten", clickedItem.getIdKonten());
+        startActivity(detailIntent);
+    }
 }

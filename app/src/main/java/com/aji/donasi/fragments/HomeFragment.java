@@ -45,8 +45,6 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
     private static final String TAG = "HomeFragment";
 
-    public static final String EXTRA_IDKONTEN = "idkonten";
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

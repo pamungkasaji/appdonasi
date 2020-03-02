@@ -99,6 +99,12 @@ public interface Api {
             @Query("token") String token
     );
 
+    @GET("konten/{id_konten}/donatur/{id}")
+    Call<DonaturResponse> getDetailDonatur(
+            @Path("id_konten") int id_konten,
+            @Path("id") int id
+    );
+
     @GET("user/me/konten/{id}")
     Call<DefaultResponse> isUser (
             @Path("id") int id,

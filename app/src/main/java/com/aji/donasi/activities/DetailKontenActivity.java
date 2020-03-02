@@ -74,7 +74,6 @@ public class DetailKontenActivity extends AppCompatActivity {
         adapter.addFragment(new DonaturFragment(), "Donatur");
         adapter.addFragment(new PerkembanganFragment(), "Perkembangan");
         viewPager.setAdapter(adapter);
-
     }
 
     static class Adapter extends FragmentPagerAdapter {

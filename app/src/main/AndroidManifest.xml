@@ -29,6 +29,7 @@
         <activity android:name="com.aji.donasi.activities.RegisterActivity" />
         <activity android:name="com.aji.donasi.activities.BeriDonasiActivity" />
         <activity android:name="com.aji.donasi.activities.TambahPerkembanganActivity" />
+        <activity android:name="com.aji.donasi.activities.FullscreenActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -29,6 +29,9 @@ public class Donatur {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("konten")
+    @Expose
+    private Konten konten;
 
     public Integer getId() {
         return id;
@@ -94,5 +97,11 @@ public class Donatur {
         this.createdAt = createdAt;
     }
 
+    public Konten getKonten() {
+        return konten;
+    }
 
+    public void setKonten(Konten konten) {
+        this.konten = konten;
+    }
 }

@@ -8,6 +8,7 @@ import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 public class Helper {
 
     public static final String IMAGE_URL_KONTEN = "http://donasisosial.xyz/images/konten/";
+    public static final String IMAGE_URL_DONATUR = "http://donasisosial.xyz/images/donatur/";
 
     public static void infoDialog(final FragmentActivity activity, String title,
                                      String message) {
