@@ -7,38 +7,48 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="10dp">
+
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <TextView
             android:id="@+id/tv_judul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="sdad"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_target"
+            android:layout_below="@+id/tv_judul"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="dwd"/>
 
         <TextView
             android:id="@+id/tv_deskripsi"
+            android:layout_below="@+id/tv_target"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:lineSpacingExtra="8sp"
-            />
+            android:lineSpacingExtra="8sp" />
 
         <Button
             android:id="@+id/beriDonasi"
+            android:layout_below="@+id/tv_deskripsi"
             android:text="Beri Donasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

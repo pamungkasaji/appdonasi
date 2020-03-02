@@ -4,17 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Konten;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenViewHolder> {
 
@@ -56,6 +57,13 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         holder.tvJudul.setText(konten.getJudul());
         holder.tvTarget.setText(String.valueOf(konten.getTerkumpul()));
         holder.tvTerkumpul.setText(konten.getNomorrekening());
+
+        String imagePath= Helper.IMAGE_URL_KONTEN +kontenList.get(position).getGambar();
+
+        Glide.with(mCtx)
+                .load(imagePath)
+                .placeholder(R.drawable.loading)
+                .into(holder.gambarkonten);
     }
 
     @Override
@@ -66,10 +74,12 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
     class KontenViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvJudul, tvTarget, tvTerkumpul;
+        ImageView gambarkonten;
 
         public KontenViewHolder(View itemView) {
             super(itemView);
 
+            gambarkonten = itemView.findViewById(R.id.gambarkonten);
             tvJudul = itemView.findViewById(R.id.tvJudul);
             tvTarget = itemView.findViewById(R.id.tvTarget);
             tvTerkumpul = itemView.findViewById(R.id.tvTerkumpul);

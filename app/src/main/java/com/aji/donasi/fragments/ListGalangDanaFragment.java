@@ -129,7 +129,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         Konten clickedItem = kontenList.get(position);
 
         if(clickedItem.getIsVerif().equals(1)) {
-            EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening()));
+            EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
             startActivity(detailIntent);
         } else {
             Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");

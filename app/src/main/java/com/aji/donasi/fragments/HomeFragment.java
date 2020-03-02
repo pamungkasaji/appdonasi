@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
                     //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
 
@@ -103,7 +104,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening()));
+        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
 
         startActivity(detailIntent);
     }

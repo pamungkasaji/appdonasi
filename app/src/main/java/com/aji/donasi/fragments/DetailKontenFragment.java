@@ -61,7 +61,7 @@ public class DetailKontenFragment extends Fragment {
         tv_target = view.findViewById(R.id.tv_target);
         beriDonasi = view.findViewById(R.id.beriDonasi);
 
-        //progressBar = view.findViewById(R.id.progBar);
+        progressBar = view.findViewById(R.id.progBar);
 
         displayDetail(id_konten);
 
@@ -89,9 +89,10 @@ public class DetailKontenFragment extends Fragment {
                     tv_judul.setText(kontenResponse.getKonten().getJudul());
                     tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
                     tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
-                    //progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -100,7 +101,7 @@ public class DetailKontenFragment extends Fragment {
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });

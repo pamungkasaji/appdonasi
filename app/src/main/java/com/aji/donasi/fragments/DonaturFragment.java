@@ -74,8 +74,6 @@ public class DonaturFragment extends Fragment {
 
         Call<DonaturResponse> call = api.getDonatur(id_konten);
 
-        //progressBar.setVisibility(View.VISIBLE);
-
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
@@ -89,6 +87,7 @@ public class DonaturFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Daftar donatur tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
 

@@ -1,18 +1,18 @@
 package com.aji.donasi.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.MessageEvent;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
-import android.widget.Button;
+
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.aji.donasi.R;
 import com.aji.donasi.fragments.DetailKontenFragment;
@@ -29,6 +29,7 @@ import java.util.List;
 public class DetailKontenActivity extends AppCompatActivity {
 
     private ImageView gambar;
+    private String gambarkonten;
 
     ViewPager viewPager;
     TabLayout tabs;
@@ -37,6 +38,8 @@ public class DetailKontenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailkonten);
+
+        EventBus.getDefault().register(this);
 
         //Mendapat viewpager untuk setiap tab
         viewPager = findViewById(R.id.view_pager);
@@ -47,20 +50,23 @@ public class DetailKontenActivity extends AppCompatActivity {
 
         gambar = findViewById(R.id.gambar);
 
+        String imagePath= Helper.IMAGE_URL_KONTEN +gambarkonten;
+
+        Glide.with(this)
+                .load(imagePath)
+                .placeholder(R.drawable.loading)
+                .into(gambar);
     }
 
-//    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(MessageEvent event) {
-//        Toast.makeText(DetailKontenActivity.this, String.valueOf(event.id_konten), Toast.LENGTH_SHORT).show();
-//    }
-//    @Override public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//    @Override public void onPause() {
-//        super.onPause();
-//        EventBus.getDefault().unregister(this);
-//    }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        gambarkonten = event.gambar;
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());

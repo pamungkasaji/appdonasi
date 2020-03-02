@@ -82,6 +82,7 @@ public class DonasiMasukFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
                     //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
 
@@ -91,6 +92,7 @@ public class DonasiMasukFragment extends Fragment {
             @Override
             public void onFailure(Call<DonaturResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });

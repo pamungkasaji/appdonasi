@@ -6,17 +6,18 @@
         android:id="@+id/progBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_centerInParent="true" />
 
     <TextView
+        android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Galang Dana"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/buat"
+        android:layout_below="@+id/textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"

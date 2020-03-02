@@ -7,11 +7,17 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="10dp">
+
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <TextView
             android:id="@+id/textview"
@@ -23,15 +29,17 @@
 
         <Button
             android:id="@+id/tambah"
+            android:layout_below="@+id/textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tambah Perkembangan" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/tambah"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

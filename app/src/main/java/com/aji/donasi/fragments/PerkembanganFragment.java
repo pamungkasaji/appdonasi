@@ -94,8 +94,6 @@ public class PerkembanganFragment extends Fragment {
 
         Call<PerkembanganResponse> call = api.getPerkembangan(id_konten);
 
-        //progressBar.setVisibility(View.VISIBLE);
-
         call.enqueue(new Callback<PerkembanganResponse>() {
             @Override
             public void onResponse(Call<PerkembanganResponse> call, Response<PerkembanganResponse> response) {
@@ -106,9 +104,10 @@ public class PerkembanganFragment extends Fragment {
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);
                     Log.i(TAG, "Muat ulang");
-                    //progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -116,7 +115,7 @@ public class PerkembanganFragment extends Fragment {
             @Override
             public void onFailure(Call<PerkembanganResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
