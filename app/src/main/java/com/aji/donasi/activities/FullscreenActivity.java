@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.DonaturResponse;
-import com.aji.donasi.models.KontenResponse;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +31,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private TextView judul, nama,jumlah;
     private int id, id_konten;
-    private String bukti,buktilink;
+    private String bukti;
     ImageView gambarbukti;
     private ProgressBar progressBar;
 
