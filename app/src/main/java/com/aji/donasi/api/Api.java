@@ -7,6 +7,8 @@ import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.LoginResponse;
 import com.aji.donasi.models.PerkembanganResponse;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -36,6 +38,9 @@ public interface Api {
 
     @GET("konten/{id}/perkembangan")
     Call<PerkembanganResponse> getPerkembangan(@Path("id") int id);
+
+    @GET("konten/judul/{keyword}")
+    Call<KontenResponse> searchKonten (@Path("keyword") String keyword);
 
     @Multipart
     @POST("konten")

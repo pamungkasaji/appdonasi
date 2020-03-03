@@ -6,7 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.Helper;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
+import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.KontenAdapter;
 import com.aji.donasi.api.Api;
@@ -40,6 +45,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
     private KontenAdapter adapter;
     //private List<Konten> kontenList;
     private ArrayList<Konten> kontenList;
+    private TextView keterangan;
+    private String keyword;
 
     private ProgressBar progressBar;
 
@@ -62,6 +69,62 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
         kontenList = new ArrayList<>();
 
+        displayData();
+
+        keterangan = view.findViewById(R.id.keterangan);
+        Button button_search = view.findViewById(R.id.button_search);
+
+        button_search.setOnClickListener((View v) -> {
+            EditText cari = view.findViewById(R.id.cari);
+            keyword = cari.getText().toString();
+            searchKonten(keyword);
+        });
+    }
+
+    private void searchKonten(String kata) {
+        if (!kata.equals("")) {
+            keterangan.setVisibility(View.VISIBLE);
+            keterangan.setText(String.format("Hasil pencarian \"%s\"", kata));
+
+            Retrofit retrofit = NetworkClient.getApiClient();
+            Api api = retrofit.create(Api.class);
+
+            progressBar.setVisibility(View.VISIBLE);
+
+            Call<KontenResponse> call = api.searchKonten(keyword);
+            call.enqueue(new Callback<KontenResponse>() {
+                @Override
+                public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
+                    if (response.body() != null) {
+                        KontenResponse kontenResponse = response.body();
+                        Log.i(TAG, "hasil pencarian");
+                        kontenList = (ArrayList<Konten>) kontenResponse.getData();
+                        if (kontenList.size() == 0) {
+                            keterangan.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            keterangan.setText("Pencarian tidak ditemukan");
+                        } else {
+                            keterangan.setVisibility(View.VISIBLE);
+                            adapter = new KontenAdapter(getActivity(), kontenList);
+                            recyclerView.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Respon kosong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<KontenResponse> call, @NonNull Throwable t) {
+                    Toast.makeText(getActivity(), "Silahkan Periksa Koneksi Internet Anda", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "Isi kata pencarian", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -94,7 +157,6 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                 Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
-
     }
 
     @Override
