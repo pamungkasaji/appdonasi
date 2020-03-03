@@ -17,9 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:itemIconTint="@color/grey"
-            app:itemTextColor="@color/grey"
+            android:background="?android:attr/windowBackground"
             app:menu="@menu/bottom_navigation"
             />
     </FrameLayout>

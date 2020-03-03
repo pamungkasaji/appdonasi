@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                             keterangan.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
                             keterangan.setText("Pencarian tidak ditemukan");
+                            Toast.makeText(getActivity(), "Pencarian tidak ditemukan", Toast.LENGTH_SHORT).show();
                         } else {
                             keterangan.setVisibility(View.VISIBLE);
                             adapter = new KontenAdapter(getActivity(), kontenList);
