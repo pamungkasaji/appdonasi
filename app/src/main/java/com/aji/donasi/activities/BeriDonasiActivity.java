@@ -46,6 +46,7 @@ import retrofit2.Retrofit;
 
 public class BeriDonasiActivity extends AppCompatActivity{
 
+    //lepi baru
     //Declaring views
     private Button buttonChoose;
     private Button buttonUpload;
