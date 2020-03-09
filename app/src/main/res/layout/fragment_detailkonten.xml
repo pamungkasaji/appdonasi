@@ -42,9 +42,17 @@
             android:textSize="20sp"
             android:lineSpacingExtra="8sp" />
 
+        <TextView
+            android:id="@+id/tv_perpanjangan"
+            android:layout_below="@+id/tv_deskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:lineSpacingExtra="8sp" />
+
         <Button
             android:id="@+id/perpanjangan"
-            android:layout_below="@+id/tv_target"
+            android:layout_below="@+id/tv_perpanjangan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ajukan Perpanjangan" />

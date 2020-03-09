@@ -39,7 +39,7 @@ import retrofit2.Retrofit;
 
 public class DetailKontenFragment extends Fragment {
 
-    private TextView tv_judul, tv_deskripsi, tv_target;
+    private TextView tv_judul, tv_deskripsi, tv_target, tv_perpanjangan;
     private int id_konten;
     private Button beriDonasi;
     private ProgressBar progressBar;
@@ -65,6 +65,8 @@ public class DetailKontenFragment extends Fragment {
         tv_deskripsi = view.findViewById(R.id.tv_deskripsi);
         tv_target = view.findViewById(R.id.tv_target);
         beriDonasi = view.findViewById(R.id.beriDonasi);
+        tv_perpanjangan = view.findViewById(R.id.tv_perpanjangan);
+        tv_perpanjangan.setVisibility(View.GONE);
 
         progressBar = view.findViewById(R.id.progBar);
 
@@ -135,10 +137,13 @@ public class DetailKontenFragment extends Fragment {
                     KontenResponse kontenResponse = response.body();
                     if (kontenResponse.isSuccess()) {
                         perpanjangan.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
+                        tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
+                        tv_perpanjangan.setVisibility(View.VISIBLE);
                         Log.i(TAG, "Is user iya");
                     }
+                    Log.i(TAG, "Is user bukan");
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");

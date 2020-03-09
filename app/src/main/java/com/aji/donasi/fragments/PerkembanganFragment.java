@@ -26,6 +26,7 @@ import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
 import com.aji.donasi.models.PerkembanganResponse;
 
@@ -126,15 +127,15 @@ public class PerkembanganFragment extends Fragment {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        Call<DefaultResponse> call = api.isUser(id_konten, token);
+        Call<KontenResponse> call = api.isUser(id_konten, token);
 
-        call.enqueue(new Callback<DefaultResponse>() {
+        call.enqueue(new Callback<KontenResponse>() {
             @Override
-            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
                 if (response.body() != null) {
-                    DefaultResponse defaultResponse = response.body();
-                    if (defaultResponse.isSuccess()) {
+                    KontenResponse kontenResponse = response.body();
+                    if (kontenResponse.isSuccess()) {
                         tambah.setVisibility(View.VISIBLE);
                         Log.i(TAG, "Is user iya");
                     }
@@ -146,7 +147,7 @@ public class PerkembanganFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+            public void onFailure(Call<KontenResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
                 //progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
