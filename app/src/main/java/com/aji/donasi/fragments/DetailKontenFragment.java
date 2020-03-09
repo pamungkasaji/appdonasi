@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
+import com.aji.donasi.Session;
 import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.DonaturResponse;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -42,6 +44,9 @@ public class DetailKontenFragment extends Fragment {
     private Button beriDonasi;
     private ProgressBar progressBar;
 
+    private Button perpanjangan;
+    private String token;
+
     private static final String TAG = "DetailKontenFragment";
 
     @Nullable
@@ -62,6 +67,15 @@ public class DetailKontenFragment extends Fragment {
         beriDonasi = view.findViewById(R.id.beriDonasi);
 
         progressBar = view.findViewById(R.id.progBar);
+
+        token = Session.getInstance(getActivity()).getToken();
+
+        perpanjangan = view.findViewById(R.id.perpanjangan);
+        perpanjangan.setVisibility(View.GONE);
+
+        if(Session.getInstance(getActivity()).isLoggedIn()) {
+            initPerpanjangan();
+        }
 
         displayDetail(id_konten);
 
@@ -103,6 +117,41 @@ public class DetailKontenFragment extends Fragment {
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initPerpanjangan(){
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+
+        Call<KontenResponse> call = api.isUser(id_konten, token);
+
+        call.enqueue(new Callback<KontenResponse>() {
+            @Override
+            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
+
+                if (response.body() != null) {
+                    KontenResponse kontenResponse = response.body();
+                    if (kontenResponse.isSuccess()) {
+                        perpanjangan.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "Is user iya");
+                    }
+                    //progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.w(TAG, "Body kosong");
+                    //Toast.makeText(getActivity(), "Is User tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KontenResponse> call, Throwable t) {
+                Log.e(TAG, "Request gagal");
+                //progressBar.setVisibility(View.GONE);
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
+                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
     }

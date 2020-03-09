@@ -136,8 +136,8 @@ public class PerkembanganFragment extends Fragment {
                     DefaultResponse defaultResponse = response.body();
                     if (defaultResponse.isSuccess()) {
                         tambah.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "Is user iya");
                     }
-                    Log.i(TAG, "Is user iya");
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");

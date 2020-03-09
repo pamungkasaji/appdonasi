@@ -74,6 +74,14 @@ public interface Api {
             @Part("deskripsi") RequestBody deskripsi
     );
 
+    @FormUrlEncoded
+    @POST("konten/{id}/perpanjangan")
+    Call<DefaultResponse> perpanjangan(
+            @Path("id") int id,
+            @Query("token") String token,
+            @Field("jumlah_hari") String jumlah_hari,
+            @Field("alasan") String alasan
+    );
 
     @FormUrlEncoded
     @POST("login")
@@ -111,7 +119,7 @@ public interface Api {
     );
 
     @GET("user/me/konten/{id}")
-    Call<DefaultResponse> isUser (
+    Call<KontenResponse> isUser (
             @Path("id") int id,
             @Query("token") String token
     );

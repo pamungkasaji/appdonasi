@@ -43,8 +43,15 @@
             android:lineSpacingExtra="8sp" />
 
         <Button
+            android:id="@+id/perpanjangan"
+            android:layout_below="@+id/tv_target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ajukan Perpanjangan" />
+
+        <Button
             android:id="@+id/beriDonasi"
-            android:layout_below="@+id/tv_deskripsi"
+            android:layout_below="@+id/perpanjangan"
             android:text="Beri Donasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

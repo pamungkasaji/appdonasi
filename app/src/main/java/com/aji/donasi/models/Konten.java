@@ -41,6 +41,9 @@ public class Konten {
     @SerializedName("user")
     @Expose
     private User user;
+    @SerializedName("perpanjangan")
+    @Expose
+    private Perpanjangan perpanjangan;
 
     public Integer getId() {
         return id;
@@ -136,6 +139,14 @@ public class Konten {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Perpanjangan getPerpanjangan() {
+        return perpanjangan;
+    }
+
+    public void setPerpanjangan(Perpanjangan perpanjangan) {
+        this.perpanjangan = perpanjangan;
     }
 
 }
