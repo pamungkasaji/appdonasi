@@ -15,11 +15,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.activities.PerpanjanganActivity;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
@@ -44,6 +46,7 @@ public class DetailKontenFragment extends Fragment {
     private Button beriDonasi;
     private ProgressBar progressBar;
 
+    private int lama_donasi;
     private Button perpanjangan;
     private String token;
 
@@ -75,14 +78,19 @@ public class DetailKontenFragment extends Fragment {
         perpanjangan = view.findViewById(R.id.perpanjangan);
         perpanjangan.setVisibility(View.GONE);
 
-        if(Session.getInstance(getActivity()).isLoggedIn()) {
+        displayDetail(id_konten);
+
+        if (Session.getInstance(getActivity()).isLoggedIn() && lama_donasi == 0 ) {
             initPerpanjangan();
         }
 
-        displayDetail(id_konten);
-
         beriDonasi.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), BeriDonasiActivity.class);
+            startActivity(intent);
+        });
+
+        perpanjangan.setOnClickListener((View v) -> {
+            Intent intent = new Intent(getActivity(), PerpanjanganActivity.class);
             startActivity(intent);
         });
     }
@@ -105,6 +113,7 @@ public class DetailKontenFragment extends Fragment {
                     tv_judul.setText(kontenResponse.getKonten().getJudul());
                     tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
                     tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
+                    lama_donasi = kontenResponse.getKonten().getLamaDonasi();
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
@@ -140,10 +149,14 @@ public class DetailKontenFragment extends Fragment {
                         //Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
                         tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
-                        tv_perpanjangan.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "Is user iya");
+                        if (kontenResponse.getKonten().getPerpanjangan() == null) {
+                            tv_perpanjangan.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "Is user iya, perpanjangan empty");
+                        }
+                        Log.i(TAG, "Is user iya, bisa perpanjang");
                     }
                     Log.i(TAG, "Is user bukan");
+                    Helper.warningDialog(getActivity(), "Kesalahan", kontenResponse.getMessage());
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
