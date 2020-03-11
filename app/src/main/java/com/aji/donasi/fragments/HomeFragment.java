@@ -113,6 +113,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                     } else {
                         Toast.makeText(getActivity(), "Respon kosong", Toast.LENGTH_SHORT).show();
                     }
+
+                    adapter.setOnItemClickListener(HomeFragment.this);
                 }
 
                 @Override

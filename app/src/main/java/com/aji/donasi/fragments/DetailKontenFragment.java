@@ -80,10 +80,6 @@ public class DetailKontenFragment extends Fragment {
 
         displayDetail(id_konten);
 
-        if (Session.getInstance(getActivity()).isLoggedIn() && lama_donasi == 0 ) {
-            initPerpanjangan();
-        }
-
         beriDonasi.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), BeriDonasiActivity.class);
             startActivity(intent);
@@ -115,6 +111,11 @@ public class DetailKontenFragment extends Fragment {
                     tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
                     lama_donasi = kontenResponse.getKonten().getLamaDonasi();
                     progressBar.setVisibility(View.GONE);
+                    if (Session.getInstance(getActivity()).isLoggedIn() && lama_donasi == 0 ) {
+                        initPerpanjangan();
+                        Log.i(TAG, "init perpanjangan");
+                    }
+                    Log.i(TAG, "selesai muat");
                 } else {
                     Log.w(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
@@ -147,16 +148,19 @@ public class DetailKontenFragment extends Fragment {
                     if (kontenResponse.isSuccess()) {
                         perpanjangan.setVisibility(View.VISIBLE);
                         //Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
-                        tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
                         if (kontenResponse.getKonten().getPerpanjangan() == null) {
                             tv_perpanjangan.setVisibility(View.VISIBLE);
                             Log.i(TAG, "Is user iya, perpanjangan empty");
+                        } else {
+                            Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
+                            tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
+                            Log.i(TAG, "Is user iya, perpanjangan not empty");
                         }
-                        Log.i(TAG, "Is user iya, bisa perpanjang");
+                    } else {
+                        Log.i(TAG, "Is user bukan");
+                        Helper.warningDialog(getActivity(), "Kesalahan", kontenResponse.getMessage());
                     }
-                    Log.i(TAG, "Is user bukan");
-                    Helper.warningDialog(getActivity(), "Kesalahan", kontenResponse.getMessage());
+
                     //progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");

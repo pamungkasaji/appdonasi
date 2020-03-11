@@ -46,7 +46,6 @@ import retrofit2.Retrofit;
 public class PerpanjanganActivity extends AppCompatActivity {
 
     //Declaring views
-    private Button submit;
     private EditText editTextJumlahHari, editTextAlasan;
     private int id_konten;
 
@@ -59,14 +58,20 @@ public class PerpanjanganActivity extends AppCompatActivity {
 
         EventBus.getDefault().register(this);
 
-        //Initializing views
-        submit = findViewById(R.id.submit);
+        Button submitperpanjangan = findViewById(R.id.submitperpanjangan);
 
         editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
         editTextAlasan = findViewById(R.id.editTextAlasan);
 
-        submit.setOnClickListener((View v) -> {
-            submitPerpanjangan();
+//        submit.setOnClickListener((View v) -> {
+//            submitPerpanjangan();
+//        });
+
+        submitperpanjangan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitPerpanjangan();
+            }
         });
     }
 

@@ -1,10 +1,12 @@
 package com.aji.donasi.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,6 +38,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.IOException;
 
+import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -46,28 +49,13 @@ import retrofit2.Retrofit;
 
 public class BeriDonasiActivity extends AppCompatActivity{
 
-    //lepi baru
-    //Declaring views
-    private Button buttonChoose;
-    private Button buttonUpload;
     private ImageView gambar;
     private EditText et_nama, et_jumlah, et_nohp;
     private CheckBox anonim;
     private String tis_anonim = "0";
     private int id_konten;
     private String nomorrekening;
-
-    //Image request code
-    private int PICK_IMAGE_REQUEST = 1;
-
-    //storage permission code
-    private static final int STORAGE_PERMISSION_CODE = 123;
-
-    //Bitmap to get image from gallery
-    private Bitmap bitmap;
-
-    //Uri to store the image uri
-    private Uri filePath;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +64,9 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
         EventBus.getDefault().register(this);
 
-        //Requesting storage permission
-        requestStoragePermission();
-
         //Initializing views
-        buttonChoose = findViewById(R.id.buttonChoose);
-        buttonUpload = findViewById(R.id.buttonUpload);
+        Button buttonChoose = findViewById(R.id.buttonChoose);
+        Button buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
         et_nama = findViewById(R.id.et_nama);
@@ -92,7 +77,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         norek.setText(nomorrekening);
 
         buttonChoose.setOnClickListener((View v) -> {
-            showFileChooser();
+            captureImage();
         });
 
         buttonUpload.setOnClickListener((View v) -> {
@@ -106,10 +91,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
         });
     }
 
-    /*
-     * This is the method responsible for image upload
-     * We need the full image path and the name for the image in this method
-     * */
     public void beriDonasi() {
         //getting name for the image
         String tnama = et_nama.getText().toString();
@@ -134,15 +115,11 @@ public class BeriDonasiActivity extends AppCompatActivity{
             return;
         }
 
-        //getting the actual path of the image
-        String path = getPath(filePath);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        String token = Session.getInstance(BeriDonasiActivity.this).getToken();
         //Create a file object using file path
-        File file = new File(path);
+        File file = new File(filePath);
         // Create a request body with file and image media type
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         // Create MultipartBody.Part using file request-body,file name and part name
@@ -180,6 +157,24 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
     }
 
+    protected void captureImage(){
+        Intent i = new Intent(this, ImageSelectActivity.class);
+        i.putExtra(ImageSelectActivity.FLAG_COMPRESS, true);
+        i.putExtra(ImageSelectActivity.FLAG_CAMERA, true);
+        i.putExtra(ImageSelectActivity.FLAG_GALLERY, true);
+        startActivityForResult(i, 1213);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1213 && resultCode == Activity.RESULT_OK) {
+            filePath = data.getStringExtra(ImageSelectActivity.RESULT_FILE_PATH);
+            Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+            gambar.setImageBitmap(selectedImage);
+        }
+    }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         id_konten = event.id_konten;
@@ -191,80 +186,4 @@ public class BeriDonasiActivity extends AppCompatActivity{
         EventBus.getDefault().unregister(this);
     }
 
-    //method to show file chooser
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    //handling the image chooser activity result
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                gambar.setImageBitmap(bitmap);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //method to get the file path from uri
-    public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return path;
-    }
-
-
-    //Requesting permission
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-    }
-
-
-    //This method will be called when the user will tap on allow or deny
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        //Checking the request code of our request
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-
-            //If permission is granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Displaying a toast
-                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
-            } else {
-                //Displaying another toast if permission is not granted
-                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 }

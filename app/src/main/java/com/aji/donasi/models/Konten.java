@@ -32,9 +32,9 @@ public class Konten {
     @SerializedName("nomorrekening")
     @Expose
     private String nomorrekening;
-    @SerializedName("is_verif")
+    @SerializedName("status")
     @Expose
-    private Integer isVerif;
+    private String status;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -117,12 +117,12 @@ public class Konten {
         this.nomorrekening = nomorrekening;
     }
 
-    public Integer getIsVerif() {
-        return isVerif;
+    public String getStatus() {
+        return status;
     }
 
-    public void setIsVerif(Integer isVerif) {
-        this.isVerif = isVerif;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCreatedAt() {

@@ -38,6 +38,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.aji.donasi.Helper.VERIFIKASI;
 
 public class ListGalangDanaFragment extends Fragment implements KontenAdapter.OnItemClickListener{
 
@@ -128,12 +129,11 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        if(clickedItem.getIsVerif().equals(1)) {
+        if(clickedItem.getStatus().equals(VERIFIKASI)) {
+            Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");
+        } else {
             EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
             startActivity(detailIntent);
-        } else {
-            Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");
         }
-
     }
 }
