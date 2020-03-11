@@ -51,7 +51,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private Button buttonChoose;
     private Button buttonUpload;
     private ImageView gambar;
-    private EditText et_nama, et_jumlah;
+    private EditText et_nama, et_jumlah, et_nohp;
     private CheckBox anonim;
     private String tis_anonim = "0";
     private int id_konten;
@@ -86,6 +86,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
         et_nama = findViewById(R.id.et_nama);
         et_jumlah = findViewById(R.id.et_jumlah);
+        et_nohp = findViewById(R.id.et_nohp);
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
         norek.setText(nomorrekening);
@@ -113,6 +114,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         //getting name for the image
         String tnama = et_nama.getText().toString();
         String tjumlah = et_jumlah.getText().toString();
+        String tnohp = et_nohp.getText().toString();
 
         if (tnama.isEmpty()) {
             et_nama.setError("Isi nama lengkap");
@@ -123,6 +125,12 @@ public class BeriDonasiActivity extends AppCompatActivity{
         if (tjumlah.isEmpty()) {
             et_jumlah.setError("Isi jumlah donasi");
             et_jumlah.requestFocus();
+            return;
+        }
+
+        if (tnohp.isEmpty()) {
+            et_nohp.setError("Isi kontak yang bisa dihubungi");
+            et_nohp.requestFocus();
             return;
         }
 
@@ -142,9 +150,10 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
         RequestBody nama = RequestBody.create(MediaType.parse("multipart/form-data"), tnama);
         RequestBody jumlah = RequestBody.create(MediaType.parse("multipart/form-data"), tjumlah);
+        RequestBody nohp = RequestBody.create(MediaType.parse("multipart/form-data"), tnohp);
         RequestBody is_anonim = RequestBody.create(MediaType.parse("ultipart/form-data"), tis_anonim);
 
-        Call<DefaultResponse> call = api.sendDonation(id_konten, pic, nama, jumlah, is_anonim);
+        Call<DefaultResponse> call = api.sendDonation(id_konten, pic, nama, jumlah, nohp, is_anonim);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

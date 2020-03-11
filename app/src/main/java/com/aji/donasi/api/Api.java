@@ -61,6 +61,7 @@ public interface Api {
             @Part MultipartBody.Part partimage,
             @Part("nama") RequestBody nama,
             @Part("jumlah") RequestBody jumlah,
+            @Part("nohp") RequestBody nohp,
             @Part("is_anonim") RequestBody is_anonim
     );
 

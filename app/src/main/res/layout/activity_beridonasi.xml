@@ -33,6 +33,14 @@
         android:hint="Jumlah"
         android:autofillHints="Masukkan Jumlah"/>
 
+    <EditText
+        android:id="@+id/et_nohp"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="No HP"
+        android:autofillHints="Masukkan No HP"/>
+
     <CheckBox
         android:id="@+id/anonim"
         android:layout_width="wrap_content"
