@@ -54,31 +54,20 @@ public class PerpanjanganActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tambahperkembangan);
+        setContentView(R.layout.activity_perpanjangan);
 
         EventBus.getDefault().register(this);
 
-        Button submitperpanjangan = findViewById(R.id.submitperpanjangan);
+        Button submit = findViewById(R.id.submit);
 
         editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
         editTextAlasan = findViewById(R.id.editTextAlasan);
 
-//        submit.setOnClickListener((View v) -> {
-//            submitPerpanjangan();
-//        });
-
-        submitperpanjangan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitPerpanjangan();
-            }
+        submit.setOnClickListener((View v) -> {
+            submitPerpanjangan();
         });
     }
 
-    /*
-     * This is the method responsible for image upload
-     * We need the full image path and the name for the image in this method
-     * */
     public void submitPerpanjangan() {
         //getting name for the image
         String hari = editTextJumlahHari.getText().toString();

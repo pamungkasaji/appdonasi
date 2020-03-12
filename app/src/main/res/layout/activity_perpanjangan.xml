@@ -17,14 +17,14 @@
 
     <EditText
         android:id="@+id/editTextJumlahHari"
-        android:hint="Judul"
+        android:hint="Jumlah Hari"
         android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/editTextAlasan"
-        android:hint="Deskripsi"
+        android:hint="Alasan"
         android:inputType="textMultiLine"
         android:minLines="4"
         android:maxLines="10"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/submitperpanjangan"
+        android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit" />
