@@ -15,6 +15,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.LoginResponse;
+import com.google.android.material.textfield.TextInputLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +24,7 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText et_username, et_password;
+    private TextInputLayout et_username, et_password;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void userLogin() {
-        String username = et_username.getText().toString();
-        String password = et_password.getText().toString();
+        String username = et_username.getEditText().getText().toString();
+        String password = et_password.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

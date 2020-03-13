@@ -15,7 +15,7 @@
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:hint="Username"
+            android:hint="@string/username"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -31,7 +31,7 @@
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -40,15 +40,15 @@
 
     <Button
         android:id="@+id/user_login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"/>
+        android:text="@string/login"/>
 
     <Button
         android:id="@+id/user_register"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrasi"
+        android:text="@string/registrasi"
         app:strokeWidth="2dp"
         app:strokeColor="@color/colorPrimary"
         style="?attr/materialButtonOutlinedStyle" />

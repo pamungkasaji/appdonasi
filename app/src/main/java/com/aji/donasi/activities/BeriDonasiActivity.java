@@ -30,6 +30,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,7 +51,7 @@ import retrofit2.Retrofit;
 public class BeriDonasiActivity extends AppCompatActivity{
 
     private ImageView gambar;
-    private EditText et_nama, et_jumlah, et_nohp;
+    private TextInputLayout et_nama, et_jumlah, et_nohp;
     private CheckBox anonim;
     private String tis_anonim = "0";
     private int id_konten;
@@ -93,26 +94,32 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
     public void beriDonasi() {
         //getting name for the image
-        String tnama = et_nama.getText().toString();
-        String tjumlah = et_jumlah.getText().toString();
-        String tnohp = et_nohp.getText().toString();
+        String tnama = et_nama.getEditText().getText().toString();
+        String tjumlah = et_jumlah.getEditText().getText().toString();
+        String tnohp = et_nohp.getEditText().getText().toString();
 
         if (tnama.isEmpty()) {
             et_nama.setError("Isi nama lengkap");
             et_nama.requestFocus();
             return;
+        }else {
+            et_nama.setError(null);
         }
 
         if (tjumlah.isEmpty()) {
             et_jumlah.setError("Isi jumlah donasi");
             et_jumlah.requestFocus();
             return;
+        }else {
+            et_jumlah.setError(null);
         }
 
         if (tnohp.isEmpty()) {
             et_nohp.setError("Isi kontak yang bisa dihubungi");
             et_nohp.requestFocus();
             return;
+        }else {
+            et_nohp.setError(null);
         }
 
         Retrofit retrofit = NetworkClient.getApiClient();

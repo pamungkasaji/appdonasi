@@ -3,6 +3,28 @@
     <string name="galang_dana">Galang Dana</string>
     <string name="donasi_masuk">Donasi Masuk</string>
     <string name="iv_description">Gambar Donasi</string>
+    <string name="login">Login</string>
+    <string name="registrasi">Registrasi</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="kirim_donasi">Kirim donasi ke nomor rekening berikut :</string>
+    <string name="nama_donatur">Nama pemilik rekening</string>
+    <string name="jumlah_donasi">Jumlah Donasi</string>
+    <string name="no_hp_donatur">No HP Donatur</string>
+    <string name="anonim">Beri donasi sebagai anonim</string>
+    <string name="bukti_transfer">Bukti Transfer</string>
+    <string name="button_bukti">Upload bukti transfer</string>
+    <string name="submit">Submit</string>
+
+    <string name="buat_konten">Ajukan Konten Penggalangan Dana</string>
+    <string name="judul_konten">Judul</string>
+    <string name="deskripsi_konten">Deskripsi</string>
+    <string name="target">Target Dana</string>
+    <string name="lama_donasi">Lama Donasi</string>
+    <string name="norek_penerima">Nomor Rekening Penerima Donasi</string>
+    <string name="button_upload">Upload gambar penggalangan dana</string>
+    <string name="gambar">Gambar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

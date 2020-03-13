@@ -30,6 +30,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class BuatKontenActivity extends AppCompatActivity {
 
     //Declaring views
     private ImageView gambar;
-    private EditText editTextJudul, editTextDeskripsi, editTextTarget, editTextLamaDonasi, editTextNoRek;
+    private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextLamaDonasi, editTextNoRek;
     private static final String TAG = "Buat Konten";
     private String filePath;
 
@@ -78,11 +79,11 @@ public class BuatKontenActivity extends AppCompatActivity {
 
     private void uploadMultipart() {
 
-        String tjudul = editTextJudul.getText().toString().trim();
-        String tdeskripsi = editTextDeskripsi.getText().toString().trim();
-        String ttarget = editTextTarget.getText().toString().trim();
-        String tlamadonasi = editTextLamaDonasi.getText().toString().trim();
-        String tnorek = editTextNoRek.getText().toString().trim();
+        String tjudul = editTextJudul.getEditText().getText().toString().trim();
+        String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
+        String ttarget = editTextTarget.getEditText().getText().toString().trim();
+        String tlamadonasi = editTextLamaDonasi.getEditText().getText().toString().trim();
+        String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");

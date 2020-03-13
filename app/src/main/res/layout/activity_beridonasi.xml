@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,7 @@
     android:gravity="center">
 
     <TextView
-        android:text="Kirim donasi ke nomor rekening berikut :"
+        android:text="@string/kirim_donasi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -17,53 +18,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_nama"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nama Lengkap"
-        android:autofillHints="masukkan Nama Lengkap"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:hint="@string/nama_donatur"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_jumlah"
-        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Jumlah"
-        android:autofillHints="Masukkan Jumlah"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:hint="@string/jumlah_donasi"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_nohp"
-        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="No HP"
-        android:autofillHints="Masukkan No HP"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:hint="@string/no_hp_donatur"
+            android:inputType="phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/anonim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Beri donasi sebagai anonim"
+        android:text="@string/anonim"
         android:padding="10dp"
         android:checked="false"/>
 
     <ImageView
         android:id="@+id/gambar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/bukti_transfer"/>
 
     <Button
         android:id="@+id/buttonChoose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload Bukti Transfer" />
+        android:text="@string/button_bukti"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/colorPrimary"
+        style="?attr/materialButtonOutlinedStyle"/>
 
     <Button
         android:id="@+id/buttonUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:text="@string/submit" />
 
 </LinearLayout>
