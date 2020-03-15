@@ -13,9 +13,13 @@ import android.provider.MediaStore;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,13 +48,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BuatKontenActivity extends AppCompatActivity {
+public class BuatKontenActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     //Declaring views
     private ImageView gambar;
-    private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextLamaDonasi, editTextNoRek;
+    private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextNoRek;
     private static final String TAG = "Buat Konten";
     private String filePath;
+
+    private String tlama_donasi;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,52 +74,70 @@ public class BuatKontenActivity extends AppCompatActivity {
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
         editTextTarget = findViewById(R.id.editTextTarget);
-        editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
+        //editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
         editTextNoRek = findViewById(R.id.editTextNoRek);
+
+        spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner_lama_donasi, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         buttonChoose.setOnClickListener(v -> captureImage());
 
         buttonUpload.setOnClickListener((View v) -> {
-            uploadMultipart();
+            uploadKonten();
         });
     }
 
-    private void uploadMultipart() {
+    private void uploadKonten() {
 
         String tjudul = editTextJudul.getEditText().getText().toString().trim();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
         String ttarget = editTextTarget.getEditText().getText().toString().trim();
-        String tlamadonasi = editTextLamaDonasi.getEditText().getText().toString().trim();
+        //String tlamadonasi = editTextLamaDonasi.getEditText().getText().toString().trim();
         String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
             editTextJudul.requestFocus();
             return;
+        }else {
+            editTextJudul.setError(null);
         }
 
         if (tdeskripsi.isEmpty()) {
             editTextDeskripsi.setError("Isi kolom deskripsi");
             editTextDeskripsi.requestFocus();
             return;
+        }else {
+            editTextDeskripsi.setError(null);
         }
 
         if (ttarget.isEmpty()) {
             editTextTarget.setError("Isi kolom target");
             editTextTarget.requestFocus();
             return;
+        }else {
+            editTextTarget.setError(null);
         }
 
-        if (tlamadonasi.isEmpty()) {
-            editTextLamaDonasi.setError("Isi kolom lamadonasi");
-            editTextLamaDonasi.requestFocus();
+        if (tlama_donasi.equals("Jumlah hari penggalangan dana")) {
+            //((TextView)spinner.getSelectedView()).setError("Pilih jumlah hari");
+            Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
+            spinner.requestFocus();
             return;
+        }else {
+            ((TextView)spinner.getSelectedView()).setError(null);
         }
 
         if (tnorek.isEmpty()) {
             editTextNoRek.setError("Isi kolom norek");
             editTextNoRek.requestFocus();
             return;
+        }else {
+            editTextNoRek.setError(null);
         }
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -129,7 +154,7 @@ public class BuatKontenActivity extends AppCompatActivity {
         RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
         RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
         RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
-        RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlamadonasi);
+        RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlama_donasi);
         RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
 
         Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening);
@@ -159,7 +184,6 @@ public class BuatKontenActivity extends AppCompatActivity {
                 Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });
-
     }
 
     protected void captureImage(){
@@ -180,4 +204,13 @@ public class BuatKontenActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        tlama_donasi = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

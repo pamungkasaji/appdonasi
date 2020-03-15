@@ -110,12 +110,12 @@ public class DetailKontenFragment extends Fragment {
                     tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
                     tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
                     lama_donasi = kontenResponse.getKonten().getLamaDonasi();
-                    progressBar.setVisibility(View.GONE);
                     if (Session.getInstance(getActivity()).isLoggedIn() && lama_donasi == 0 ) {
                         initPerpanjangan();
                         Log.i(TAG, "init perpanjangan");
                     }
                     Log.i(TAG, "selesai muat");
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
@@ -147,12 +147,10 @@ public class DetailKontenFragment extends Fragment {
                     KontenResponse kontenResponse = response.body();
                     if (kontenResponse.isSuccess()) {
                         perpanjangan.setVisibility(View.VISIBLE);
-                        //Toast.makeText(getActivity(), kontenResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         if (kontenResponse.getKonten().getPerpanjangan() == null) {
                             tv_perpanjangan.setVisibility(View.VISIBLE);
                             Log.i(TAG, "Is user iya, perpanjangan empty");
                         } else {
-                            Toast.makeText(getActivity(), kontenResponse.getKonten().getPerpanjangan().getStatus(), Toast.LENGTH_SHORT).show();
                             tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
                             Log.i(TAG, "Is user iya, perpanjangan not empty");
                         }
@@ -182,10 +180,7 @@ public class DetailKontenFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         id_konten = event.id_konten;
     }
-//    @Override public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
+
     @Override public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);

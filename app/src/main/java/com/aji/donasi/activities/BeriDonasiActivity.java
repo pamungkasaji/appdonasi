@@ -102,7 +102,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             et_nama.setError("Isi nama lengkap");
             et_nama.requestFocus();
             return;
-        }else {
+        } else {
             et_nama.setError(null);
         }
 
@@ -110,7 +110,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             et_jumlah.setError("Isi jumlah donasi");
             et_jumlah.requestFocus();
             return;
-        }else {
+        } else {
             et_jumlah.setError(null);
         }
 
@@ -118,7 +118,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             et_nohp.setError("Isi kontak yang bisa dihubungi");
             et_nohp.requestFocus();
             return;
-        }else {
+        } else {
             et_nohp.setError(null);
         }
 
@@ -161,7 +161,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
                 Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Pemberian donasia gagal");
             }
         });
-
     }
 
     protected void captureImage(){

@@ -46,4 +46,7 @@ dependencies {
 
     //file picker
     implementation 'com.github.maayyaannkk:ImagePicker:1.0.4'
+
+    //image zoom
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

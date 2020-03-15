@@ -37,25 +37,35 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.user_login);
         Button register = findViewById(R.id.user_register);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userLogin();
-            }
+        login.setOnClickListener(( View v) -> {
+            userLogin();
         });
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), RegisterActivity.class);
-                startActivity(intent);
-            }
+        register.setOnClickListener((View v) -> {
+            Intent intent = new Intent(v.getContext(), RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
     private void userLogin() {
         String username = et_username.getEditText().getText().toString();
         String password = et_password.getEditText().getText().toString();
+
+        if (username.isEmpty()) {
+            et_username.setError("Isi kolom username");
+            et_username.requestFocus();
+            return;
+        }else {
+            et_username.setError(null);
+        }
+
+        if (password.isEmpty()) {
+            et_password.setError("Isi kolom password");
+            et_password.requestFocus();
+            return;
+        }else {
+            et_password.setError(null);
+        }
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
@@ -74,11 +84,8 @@ public class LoginActivity extends AppCompatActivity {
                         Session.getInstance(LoginActivity.this).saveToken(loginResponse.getToken());
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
 
-//                        Toast.makeText(LoginActivity.this, loginResponse.getUser().getUsername(), Toast.LENGTH_LONG).show();
-//                        Toast.makeText(LoginActivity.this, loginResponse.getToken(), Toast.LENGTH_SHORT).show();
                     } else {
                         Helper.warningDialog(LoginActivity.this, "Kesalahan", loginResponse.getMessage());
                     }
@@ -89,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-
+                Helper.warningDialog(LoginActivity.this, "Kesalahan", "Periksa koneksi internet anda");
             }
         });
     }

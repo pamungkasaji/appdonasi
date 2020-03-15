@@ -67,20 +67,13 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextLamaDonasi"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <Spinner
+            android:id="@+id/spinner1"
+            android:padding="10dp"
+            app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/lama_donasi"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextNoRek"
@@ -97,6 +90,13 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageView
+            android:id="@+id/gambar"
+            android:src="@drawable/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/gambar" />
+
         <Button
             android:id="@+id/buttonChoose"
             style="?attr/materialButtonOutlinedStyle"
@@ -111,13 +111,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/submit" />
-
-        <ImageView
-            android:id="@+id/gambar"
-            android:src="@drawable/loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/gambar" />
 
     </LinearLayout>
 </ScrollView>

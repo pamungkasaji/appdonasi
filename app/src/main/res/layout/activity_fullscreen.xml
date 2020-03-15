@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.aji.donasi.activities.FullscreenActivity">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/bukti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:src="@drawable/placeholder"
-        android:scaleType="centerCrop"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/progBar"

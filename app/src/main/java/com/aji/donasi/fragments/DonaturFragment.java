@@ -63,8 +63,6 @@ public class DonaturFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //donaturList = new ArrayList<>();
-
         displayData(id_konten);
     }
 

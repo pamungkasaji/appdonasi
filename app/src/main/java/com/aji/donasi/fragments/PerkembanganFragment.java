@@ -118,7 +118,7 @@ public class PerkembanganFragment extends Fragment {
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -23,6 +23,17 @@ public class Helper {
                 .show();
     }
 
+    public static void infoDialogBack(final FragmentActivity activity, String title,
+                                  String message) {
+        new LovelyStandardDialog(activity, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                .setTopColorRes(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_done_white_24dp)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Ok", v -> {})
+                .show();
+    }
+
     public static void warningDialog(final FragmentActivity activity, String title,
                                       String message) {
         new LovelyStandardDialog(activity, LovelyStandardDialog.ButtonLayout.HORIZONTAL)

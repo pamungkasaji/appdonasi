@@ -1,5 +1,6 @@
 package com.aji.donasi.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
@@ -20,7 +23,9 @@ import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.DonaturResponse;
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +37,8 @@ public class FullscreenActivity extends AppCompatActivity {
     private TextView judul, nama,jumlah;
     private int id, id_konten;
     private String bukti;
-    ImageView gambarbukti;
+    //ImageView gambarbukti;
+    private PhotoView gambarbukti;
     private ProgressBar progressBar;
 
     private static final String TAG = "FullscreenActivity";
@@ -63,8 +69,30 @@ public class FullscreenActivity extends AppCompatActivity {
         });
 
         buttontolak.setOnClickListener((View v) -> {
-            tolakDonatur();
+            initAlert();
         });
+
+    }
+
+    private void initAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.tolak_donasi)
+                .setTitle(R.string.konfirmasi);
+
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                tolakDonatur();
+            }
+        });
+        builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void dataDonatur(int id_konten, int id) {
@@ -141,7 +169,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(FullscreenActivity.this, "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,8 +189,8 @@ public class FullscreenActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
                     Log.i(TAG, "Ditolak");
-                    Helper.infoDialog(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
                     progressBar.setVisibility(View.GONE);
+                    infoDialogBack(defaultResponse.getMessage());
                 } else {
                     Log.w(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
@@ -175,8 +203,23 @@ public class FullscreenActivity extends AppCompatActivity {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(FullscreenActivity.this, "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void infoDialogBack(String message) {
+        new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                .setTopColorRes(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_done_white_24dp)
+                .setTitle(R.string.konfirmasi)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                })
+                .show();
     }
 }
