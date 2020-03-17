@@ -17,6 +17,8 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -26,7 +28,6 @@ import retrofit2.http.Query;
 
 public interface Api {
 
-    //ini
     @GET("konten")
     Call<KontenResponse> getKonten();
 
@@ -45,7 +46,7 @@ public interface Api {
     @Multipart
     @POST("konten")
     Call<DefaultResponse> createKonten(
-            @Query("token") String token,
+            @Header("Authorization") String token,
             @Part MultipartBody.Part partimage,
             @Part("judul") RequestBody judul,
             @Part("deskripsi") RequestBody deskripsi,
@@ -69,7 +70,7 @@ public interface Api {
     @POST("konten/{id}/perkembangan")
     Call<DefaultResponse> createPerkembangan(
             @Path("id") int id,
-            @Query("token") String token,
+            @Header("Authorization") String token,
             @Part MultipartBody.Part partimage,
             @Part("judul") RequestBody judul,
             @Part("deskripsi") RequestBody deskripsi
@@ -79,7 +80,7 @@ public interface Api {
     @POST("konten/{id}/perpanjangan")
     Call<DefaultResponse> perpanjangan(
             @Path("id") int id,
-            @Query("token") String token,
+            @Header("Authorization") String token,
             @Field("jumlah_hari") String jumlah_hari,
             @Field("alasan") String alasan
     );
@@ -105,12 +106,13 @@ public interface Api {
 
     @GET("user/me/konten")
     Call<KontenResponse> getKontenUser(
-            @Query("token") String token
+            @Header("Authorization") String token
+            //@Query("token") String token
     );
 
     @GET("user/me/donatur")
     Call<DonaturResponse> getDonaturUser(
-            @Query("token") String token
+            @Header("Authorization") String token
     );
 
     @GET("konten/{id_konten}/donatur/{id}")
@@ -122,7 +124,7 @@ public interface Api {
     @GET("user/me/konten/{id}")
     Call<KontenResponse> isUser (
             @Path("id") int id,
-            @Query("token") String token
+            @Header("Authorization") String token
     );
 
     @FormUrlEncoded
@@ -130,7 +132,7 @@ public interface Api {
     Call<DefaultResponse> terimaDonasi (
             @Path("id_konten") int id_konten,
             @Path("id") int id,
-            @Query("token") String token,
+            @Header("Authorization") String token,
             @Field("is_diterima") int is_diterima
     );
 
@@ -138,32 +140,7 @@ public interface Api {
     Call<DefaultResponse> tolakDonasi(
             @Path("id_konten") int id_konten,
             @Path("id") int id,
-            @Query("token") String token
+            @Header("Authorization") String token
     );
-
-
-    /////////
-
-
-
-    @FormUrlEncoded
-    @PUT("updateuser/{id}")
-    Call<LoginResponse> updateUser(
-            @Path("id") int id,
-            @Field("email") String email,
-            @Field("name") String name,
-            @Field("school") String school
-    );
-
-    @FormUrlEncoded
-    @PUT("updatepassword")
-    Call<DefaultResponse> updatePassword(
-            @Field("currentpassword") String currentpassword,
-            @Field("newpassword") String newpassword,
-            @Field("email") String email
-    );
-
-    @DELETE("deleteuser/{id}")
-    Call<DefaultResponse> deleteUser(@Path("id") int id);
 
 }

@@ -12,7 +12,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import com.aji.donasi.R;
 import com.aji.donasi.fragments.DetailKontenFragment;
@@ -56,6 +58,7 @@ public class DetailKontenActivity extends AppCompatActivity {
                 .load(imagePath)
                 .placeholder(R.drawable.loading)
                 .into(gambar);
+
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -80,7 +83,7 @@ public class DetailKontenActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public Adapter(FragmentManager manager) {
+        private Adapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -94,7 +97,7 @@ public class DetailKontenActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        private void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
