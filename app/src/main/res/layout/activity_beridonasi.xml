@@ -4,100 +4,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
 
-    <TextView
-        android:text="@string/kirim_donasi"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/norek"
-        android:textSize="40sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_nama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:hint="@string/nama_donatur"
-            android:inputType="text"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/white"
+            app:subtitleTextColor="@color/white"
+            android:background="@color/colorPrimary" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_jumlah"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:hint="@string/jumlah_donasi"
-            android:inputType="number"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:gravity="center">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:text="@string/kirim_donasi"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_nohp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:errorEnabled="true">
+                <TextView
+                    android:id="@+id/norek"
+                    android:textSize="40sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:hint="@string/no_hp_donatur"
-            android:inputType="phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:errorEnabled="true">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/nama_donatur"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-    <CheckBox
-        android:id="@+id/anonim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/anonim"
-        android:padding="10dp"
-        android:checked="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/gambar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/bukti_transfer"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_jumlah"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:errorEnabled="true">
 
-    <Button
-        android:id="@+id/buttonChoose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_bukti"
-        app:strokeWidth="2dp"
-        app:strokeColor="@color/colorPrimary"
-        style="?attr/materialButtonOutlinedStyle"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/jumlah_donasi"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/buttonUpload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/submit" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_nohp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/no_hp_donatur"
+                        android:inputType="phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/anonim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/anonim"
+                    android:padding="10dp"
+                    android:checked="false"/>
+
+                <ImageView
+                    android:id="@+id/gambar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/bukti_transfer"/>
+
+                <Button
+                    android:id="@+id/buttonChoose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_bukti"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="@color/colorPrimary"
+                    style="?attr/materialButtonOutlinedStyle"/>
+
+                <Button
+                    android:id="@+id/buttonUpload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submit" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

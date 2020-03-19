@@ -4,11 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.aji.donasi.Helper;
@@ -26,18 +31,18 @@ public class BuatFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabs;
     private TextView autentikasi;
+    private Button loginRegistrasi;
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_buat, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_buat, container, false);
-        // Setting ViewPager for each Tabs
         viewPager = view.findViewById(R.id.view_pager);
         //setupViewPager(viewPager);
         // Set Tabs inside Toolbar
@@ -47,8 +52,6 @@ public class BuatFragment extends Fragment {
         autentikasi = view.findViewById(R.id.autentikasi);
 
         initView();
-
-        return view;
     }
 
     private void initView(){
@@ -57,6 +60,7 @@ public class BuatFragment extends Fragment {
             tabs.setupWithViewPager(viewPager);
             autentikasi.setVisibility(View.GONE);
         } else {
+            tabs.setVisibility(View.GONE);
             autentikasi.setVisibility(View.VISIBLE);
         }
     }

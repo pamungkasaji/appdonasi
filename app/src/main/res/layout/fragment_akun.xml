@@ -14,6 +14,8 @@
     <TextView
         android:id="@+id/belumauth"
         android:text="Silahkan login atau registrasi"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginBottom="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

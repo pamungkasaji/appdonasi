@@ -12,7 +12,6 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
-            android:minHeight="112dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/colorPrimary"
@@ -31,9 +30,9 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
+                app:layout_collapseMode="pin"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/transparent_color"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

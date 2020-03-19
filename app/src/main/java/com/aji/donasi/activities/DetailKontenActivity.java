@@ -1,5 +1,6 @@
 package com.aji.donasi.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -34,6 +35,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.graphics.Color.WHITE;
+
 public class DetailKontenActivity extends AppCompatActivity {
 
     private ImageView gambar;
@@ -65,10 +68,15 @@ public class DetailKontenActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout);
 
-        collapsingToolbarLayout.setTitle("My Toolbar Title");
+        collapsingToolbarLayout.setTitle(kontenMessage.getJudul());
         collapsingToolbarLayout.setContentScrimResource(R.color.colorPrimary);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(WHITE);
+        collapsingToolbarLayout.setExpandedTitleColor(WHITE);
 
         String imagePath= Helper.IMAGE_URL_KONTEN +kontenMessage.getGambar();
 
@@ -77,6 +85,13 @@ public class DetailKontenActivity extends AppCompatActivity {
                 .placeholder(R.drawable.loading)
                 .into(gambar);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                onBackPressed();
+            }
+        });
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

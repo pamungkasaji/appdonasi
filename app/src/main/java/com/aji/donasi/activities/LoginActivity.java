@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
@@ -37,6 +38,15 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.user_login);
         Button register = findViewById(R.id.user_register);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Login");
+        }
+
         login.setOnClickListener(( View v) -> {
             userLogin();
         });
@@ -45,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(v.getContext(), RegisterActivity.class);
             startActivity(intent);
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     private void userLogin() {

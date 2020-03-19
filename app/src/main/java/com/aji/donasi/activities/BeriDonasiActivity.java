@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -81,6 +82,16 @@ public class BeriDonasiActivity extends AppCompatActivity{
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Beri Donasi");
+            getSupportActionBar().setSubtitle(kontenMessage.getJudul());
+        }
+
         id_konten = kontenMessage.getId();
         nomorrekening = kontenMessage.getNomorrekening();
 
@@ -99,6 +110,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
                 tis_anonim = "1";
             }
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     public void beriDonasi() {

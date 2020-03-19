@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 
@@ -77,6 +78,15 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         //editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
         editTextNoRek = findViewById(R.id.editTextNoRek);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Ajukan Konten Penggalangan Dana");
+        }
+
         spinner = findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner_lama_donasi, android.R.layout.simple_spinner_item);
@@ -89,6 +99,8 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         buttonUpload.setOnClickListener((View v) -> {
             uploadKonten();
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     private void uploadKonten() {

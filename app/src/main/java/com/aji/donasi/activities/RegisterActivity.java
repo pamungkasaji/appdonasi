@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.aji.donasi.Helper;
@@ -68,6 +69,15 @@ public class RegisterActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Registrasi");
+        }
+
         //final PermissionManager permissionManager = new PermissionManager();
 
         buttonChoose.setOnClickListener((View v) -> {
@@ -77,6 +87,8 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegis.setOnClickListener((View v) -> {
             uploadMultipart();
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     public void uploadMultipart() {

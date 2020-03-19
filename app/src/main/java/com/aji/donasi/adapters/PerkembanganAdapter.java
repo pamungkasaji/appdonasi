@@ -13,6 +13,7 @@ import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Perkembangan;
 import com.bumptech.glide.Glide;
+import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,11 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
         this.perkembanganList = perkembanganList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return TimelineView.getTimeLineViewType(position, getItemCount());
+    }
+
 //    public KontenAdapter(Context mCtx, List<Konten> kontenList) {
 //        this.mCtx = mCtx;
 //        this.kontenList = kontenList;
@@ -44,7 +50,7 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
     @Override
     public PerkembanganViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mCtx).inflate(R.layout.recyclerview_perkembangan, parent, false);
-        return new PerkembanganViewHolder(view);
+        return new PerkembanganViewHolder(view, viewType);
     }
 
     @Override
@@ -71,11 +77,17 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
     class PerkembanganViewHolder extends RecyclerView.ViewHolder {
 
+        public TimelineView mTimelineView;
+
+
         TextView tv_judul, tv_createdat, tv_deskripsi;
         ImageView gambar;
 
-        public PerkembanganViewHolder(View itemView) {
+        public PerkembanganViewHolder(View itemView, int viewType) {
             super(itemView);
+
+            mTimelineView = (TimelineView) itemView.findViewById(R.id.timeline);
+            mTimelineView.initLine(viewType);
 
             gambar = itemView.findViewById(R.id.gambar);
 
