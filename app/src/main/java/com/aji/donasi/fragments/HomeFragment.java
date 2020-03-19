@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.BeriDonasiActivity;
@@ -167,7 +168,8 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
         Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
         Konten clickedItem = kontenList.get(position);
 
-        EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
+        //EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
+        EventBus.getDefault().postSticky(new KontenMessage(clickedItem));
 
         startActivity(detailIntent);
     }

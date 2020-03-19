@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
@@ -42,13 +43,16 @@ import retrofit2.Retrofit;
 public class DetailKontenFragment extends Fragment {
 
     private TextView tv_judul, tv_deskripsi, tv_target, tv_perpanjangan;
-    private int id_konten;
     private Button beriDonasi;
     private ProgressBar progressBar;
 
     private int lama_donasi;
     private Button perpanjangan;
     private String token;
+
+    //Eventbus
+    private int id_konten;
+    private Konten kontenMessage;
 
     private static final String TAG = "DetailKontenFragment";
 
@@ -77,6 +81,8 @@ public class DetailKontenFragment extends Fragment {
 
         perpanjangan = view.findViewById(R.id.perpanjangan);
         perpanjangan.setVisibility(View.GONE);
+
+        id_konten = kontenMessage.getId();
 
         displayDetail(id_konten);
 
@@ -177,8 +183,8 @@ public class DetailKontenFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
 
     @Override public void onPause() {

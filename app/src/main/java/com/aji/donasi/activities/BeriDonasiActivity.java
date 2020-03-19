@@ -24,12 +24,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,9 +56,12 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private TextInputLayout et_nama, et_jumlah, et_nohp;
     private CheckBox anonim;
     private String tis_anonim = "0";
+    private String filePath;
+
+    //EventBus
     private int id_konten;
     private String nomorrekening;
-    private String filePath;
+    private Konten kontenMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,10 @@ public class BeriDonasiActivity extends AppCompatActivity{
         et_nohp = findViewById(R.id.et_nohp);
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
+
+        id_konten = kontenMessage.getId();
+        nomorrekening = kontenMessage.getNomorrekening();
+
         norek.setText(nomorrekening);
 
         buttonChoose.setOnClickListener((View v) -> {
@@ -182,9 +191,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
-        nomorrekening = event.nomorrekening;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
 
     @Override public void onPause() {

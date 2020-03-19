@@ -1,11 +1,17 @@
 package com.aji.donasi.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
+import com.aji.donasi.models.Konten;
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -14,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.aji.donasi.R;
 import com.aji.donasi.fragments.DetailKontenFragment;
@@ -31,7 +37,11 @@ import java.util.List;
 public class DetailKontenActivity extends AppCompatActivity {
 
     private ImageView gambar;
-    private String gambarkonten;
+    private Konten konten;
+
+    //EventBus
+    //private String gambarkonten;
+    private Konten kontenMessage;
 
     ViewPager viewPager;
     TabLayout tabs;
@@ -52,7 +62,15 @@ public class DetailKontenActivity extends AppCompatActivity {
 
         gambar = findViewById(R.id.gambar);
 
-        String imagePath= Helper.IMAGE_URL_KONTEN +gambarkonten;
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout);
+
+        collapsingToolbarLayout.setTitle("My Toolbar Title");
+        collapsingToolbarLayout.setContentScrimResource(R.color.colorPrimary);
+
+        String imagePath= Helper.IMAGE_URL_KONTEN +kontenMessage.getGambar();
 
         Glide.with(this)
                 .load(imagePath)
@@ -62,8 +80,8 @@ public class DetailKontenActivity extends AppCompatActivity {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        gambarkonten = event.gambar;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
 
     @Override public void onPause() {

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailKontenActivity;
@@ -25,6 +26,7 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
+import com.aji.donasi.models.Konten;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,9 +44,12 @@ public class DonaturFragment extends Fragment {
     private RecyclerView recyclerView;
     private DonaturAdapter adapter;
     private ArrayList<Donatur> donaturList;
-    private int id_konten;
     private ProgressBar progressBar;
     private TextView jumlahDonatur;
+
+    //EventBus
+    private int id_konten;
+    private Konten kontenMessage;
 
     private static final String TAG = "DonaturFragment";
 
@@ -65,6 +70,8 @@ public class DonaturFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        id_konten = kontenMessage.getId();
 
         displayData(id_konten);
     }
@@ -105,13 +112,10 @@ public class DonaturFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
-//    @Override public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
+
     @Override public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);

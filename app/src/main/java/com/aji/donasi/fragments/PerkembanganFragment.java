@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
@@ -26,6 +27,7 @@ import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
 import com.aji.donasi.models.PerkembanganResponse;
@@ -46,10 +48,13 @@ public class PerkembanganFragment extends Fragment {
     private RecyclerView recyclerView;
     private PerkembanganAdapter adapter;
     private ArrayList<Perkembangan> perkembanganList;
-    private int id_konten;
     private ProgressBar progressBar;
     private Button tambah;
     private String token;
+
+    //Eventbus
+    private int id_konten;
+    private Konten kontenMessage;
 
     private static final String TAG = "PerkembanganFragment";
 
@@ -79,7 +84,7 @@ public class PerkembanganFragment extends Fragment {
             initTambah();
         }
 
-        //perkembanganList = new ArrayList<>();
+        id_konten = kontenMessage.getId();
 
         displayData(id_konten);
 
@@ -157,8 +162,8 @@ public class PerkembanganFragment extends Fragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
 
     @Override public void onPause() {
