@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,8 +56,8 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         Konten konten = kontenList.get(position);
 
         holder.tvJudul.setText(konten.getJudul());
-        holder.tvTarget.setText(String.valueOf(konten.getTerkumpul()));
-        holder.tvTerkumpul.setText(konten.getNomorrekening());
+        holder.tvLama.setText(String.valueOf(konten.getLamaDonasi()));
+        holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
 
         String imagePath= Helper.IMAGE_URL_KONTEN +kontenList.get(position).getGambar();
 
@@ -73,16 +74,18 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
 
     class KontenViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvJudul, tvTarget, tvTerkumpul;
+        TextView tvJudul, tvTerkumpul, tvLama;
         ImageView gambarkonten;
+        ProgressBar progressBar;
 
         public KontenViewHolder(View itemView) {
             super(itemView);
 
             gambarkonten = itemView.findViewById(R.id.gambarkonten);
             tvJudul = itemView.findViewById(R.id.tvJudul);
-            tvTarget = itemView.findViewById(R.id.tvTarget);
+            tvLama = itemView.findViewById(R.id.tvLama);
             tvTerkumpul = itemView.findViewById(R.id.tvTerkumpul);
+            progressBar = itemView.findViewById(R.id.progressBar);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

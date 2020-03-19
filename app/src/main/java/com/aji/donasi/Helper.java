@@ -9,6 +9,7 @@ public class Helper {
 
     public static final String IMAGE_URL_KONTEN = "http://donasisosial.xyz/images/konten/";
     public static final String IMAGE_URL_DONATUR = "http://donasisosial.xyz/images/donatur/";
+    public static final String IMAGE_URL_PERKEMBANGAN = "http://donasisosial.xyz/images/perkembangan/";
     public static final String VERIFIKASI = "verifikasi";
     public static final int TERIMA_DONASI = 1;
 

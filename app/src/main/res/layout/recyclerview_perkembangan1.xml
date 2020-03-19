@@ -15,15 +15,15 @@
             android:padding="4dp">
 
             <TextView
-                android:id="@+id/tvNama"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_judul"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nama"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
             <TextView
-                android:id="@+id/tv_jumlah"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_createdat"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Terkumpul"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />

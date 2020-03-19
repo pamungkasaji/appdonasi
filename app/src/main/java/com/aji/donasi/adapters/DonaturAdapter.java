@@ -11,7 +11,12 @@ import android.widget.TextView;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Donatur;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturViewHolder> {
 
@@ -48,15 +53,16 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
     public void onBindViewHolder(@NonNull DonaturViewHolder holder, int position) {
         Donatur donatur = donaturList.get(position);
 
+        //nama
         holder.tv_nama.setText(donatur.getNama());
-        holder.tv_jumlah.setText(String.valueOf(donatur.getJumlah().toString()));
 
-//        String imagePath= "https://lorempixel.com/800/600/"+donaturList.get(position).getGambar();
-//
-//        Glide.with(mCtx)
-//                .load(imagePath)
-//                .placeholder(R.drawable.loading)
-//                .into(holder.movieImage);
+        //jumlah
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        holder.tv_jumlah.setText(formatRupiah.format((double)donatur.getJumlah()));
+
+        //tanggal
+
     }
 
     @Override
@@ -66,13 +72,14 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
 
     class DonaturViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_nama, tv_jumlah;
+        TextView tv_nama, tv_jumlah, tv_createdat;
 
         public DonaturViewHolder(View itemView) {
             super(itemView);
 
-            tv_nama = itemView.findViewById(R.id.tv_nama);
+            tv_nama = itemView.findViewById(R.id.tvNama);
             tv_jumlah = itemView.findViewById(R.id.tv_jumlah);
+            //tv_createdat = itemView.findViewById(R.id.tv_createdat);
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override

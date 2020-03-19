@@ -19,17 +19,37 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
 
-        <TextView
-            android:id="@+id/textview"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linierDonatur"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Daftar Donatur"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jumlah Donatur :"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/jumlahDonatur"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                tools:text="50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_below="@+id/textview"
+            android:layout_below="@+id/linierDonatur"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

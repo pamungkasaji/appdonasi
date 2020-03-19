@@ -14,6 +14,7 @@
         android:id="@+id/buat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Buat Konten" />
 
     <androidx.recyclerview.widget.RecyclerView

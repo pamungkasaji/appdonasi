@@ -67,7 +67,7 @@ public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.
         public DonasiMasukViewHolder(View itemView) {
             super(itemView);
 
-            tv_nama = itemView.findViewById(R.id.tv_nama);
+            tv_nama = itemView.findViewById(R.id.tvNama);
             tv_jumlah = itemView.findViewById(R.id.tv_jumlah);
 
             itemView.setOnClickListener(new View.OnClickListener() {

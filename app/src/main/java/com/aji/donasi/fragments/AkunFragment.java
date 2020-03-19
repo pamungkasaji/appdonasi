@@ -40,11 +40,9 @@ public class AkunFragment extends Fragment {
         button_logout = view.findViewById(R.id.button_logout);
 
         TextView username = view.findViewById(R.id.username);
-        TextView token = view.findViewById(R.id.token);
         belumauth = view.findViewById(R.id.belumauth);
 
         username.setText(Session.getInstance(getActivity()).getUser().getUsername());
-        token.setText(Session.getInstance(getActivity()).getToken());
 
         initAuth();
 
@@ -83,7 +81,6 @@ public class AkunFragment extends Fragment {
             button_register.setVisibility(View.VISIBLE);
             button_logout.setVisibility(View.GONE);
             belumauth.setVisibility(View.VISIBLE);
-
         }
     }
 

@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Perkembangan;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -50,14 +53,15 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
         holder.tv_judul.setText(perkembangan.getJudul());
         holder.tv_createdat.setText(perkembangan.getCreatedAt());
+        holder.tv_deskripsi.setText(perkembangan.getDeskripsi());
         //holder.tv_jumlah.setText(String.valueOf(perkembangan.getJumlah().toString()));
 
-//        String imagePath= "https://lorempixel.com/800/600/"+perkembanganList.get(position).getGambar();
-//
-//        Glide.with(mCtx)
-//                .load(imagePath)
-//                .placeholder(R.drawable.loading)
-//                .into(holder.movieImage);
+        String imagePath= Helper.IMAGE_URL_PERKEMBANGAN +perkembanganList.get(position).getGambar();
+
+        Glide.with(mCtx)
+                .load(imagePath)
+                .placeholder(R.drawable.loading)
+                .into(holder.gambar);
     }
 
     @Override
@@ -67,13 +71,17 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
     class PerkembanganViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_judul, tv_createdat;
+        TextView tv_judul, tv_createdat, tv_deskripsi;
+        ImageView gambar;
 
         public PerkembanganViewHolder(View itemView) {
             super(itemView);
 
+            gambar = itemView.findViewById(R.id.gambar);
+
             tv_judul = itemView.findViewById(R.id.tv_judul);
             tv_createdat = itemView.findViewById(R.id.tv_createdat);
+            tv_deskripsi = itemView.findViewById(R.id.tv_deskripsi);
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override

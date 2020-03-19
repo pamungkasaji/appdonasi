@@ -49,4 +49,10 @@ dependencies {
 
     //image zoom
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //timeline
+    implementation 'com.github.vipulasri:timelineview:1.1.0'
+
+    //imagecrop
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }

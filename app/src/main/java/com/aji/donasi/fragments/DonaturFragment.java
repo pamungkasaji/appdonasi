@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aji.donasi.Helper;
@@ -43,6 +44,7 @@ public class DonaturFragment extends Fragment {
     private ArrayList<Donatur> donaturList;
     private int id_konten;
     private ProgressBar progressBar;
+    private TextView jumlahDonatur;
 
     private static final String TAG = "DonaturFragment";
 
@@ -59,6 +61,7 @@ public class DonaturFragment extends Fragment {
         EventBus.getDefault().register(this);
 
         progressBar = view.findViewById(R.id.progBar);
+        jumlahDonatur = view.findViewById(R.id.jumlahDonatur);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -80,6 +83,7 @@ public class DonaturFragment extends Fragment {
                     DonaturResponse donaturResponse = response.body();
                     Log.i(TAG, "Muat ulang");
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
+                    jumlahDonatur.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonaturAdapter(getActivity(), donaturList);
                     recyclerView.setAdapter(adapter);
                     progressBar.setVisibility(View.GONE);
@@ -88,11 +92,6 @@ public class DonaturFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Daftar donatur tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
-
-//                }
-//                donaturList = (ArrayList<Donatur>) donaturResponse.getData();
-//                adapter = new DonaturAdapter(getActivity(), donaturList);
-//                recyclerView.setAdapter(adapter);
             }
 
             @Override
