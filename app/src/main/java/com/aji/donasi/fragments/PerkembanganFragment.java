@@ -106,6 +106,9 @@ public class PerkembanganFragment extends Fragment {
 
                 if (response.body() != null) {
                     PerkembanganResponse perkembanganResponse = response.body();
+                    if (perkembanganResponse.getData().isEmpty()){
+                        Toast.makeText(getActivity(), "Belum ada perkembangan", Toast.LENGTH_SHORT).show();
+                    }
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);

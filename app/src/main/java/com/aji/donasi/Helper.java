@@ -11,6 +11,7 @@ public class Helper {
     public static final String IMAGE_URL_DONATUR = "http://donasisosial.xyz/images/donatur/";
     public static final String IMAGE_URL_PERKEMBANGAN = "http://donasisosial.xyz/images/perkembangan/";
     public static final String VERIFIKASI = "verifikasi";
+    public static final String SELESAI = "selesai";
     public static final int TERIMA_DONASI = 1;
 
     public static void infoDialog(final FragmentActivity activity, String title,

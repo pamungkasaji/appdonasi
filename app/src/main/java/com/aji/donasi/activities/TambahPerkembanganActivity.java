@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,6 +57,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
     private int id_konten;
     private static final String TAG = "TambahPerkembangan";
     private String filePath;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +70,10 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         Button buttonChoose = findViewById(R.id.buttonChoose);
         Button buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
-
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
+        progressBar = findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
         buttonChoose.setOnClickListener((View v) -> {
             captureImage();
@@ -101,9 +105,9 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             return;
         }
 
+        progressBar.setVisibility(View.VISIBLE);
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
-
         String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
         //Create a file object using file path
         File file = new File(filePath);
@@ -120,25 +124,26 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                if (response.body() != null) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body()!= null) {
+                    Log.d(TAG, "respon sukses body not null")
                     DefaultResponse defaultResponse = response.body();
-
-                    if (defaultResponse.isSuccess()) {
-                        Log.i(TAG, "Berhasil create");
-                        Helper.infoDialog(TambahPerkembanganActivity.this, "Penambahan perkembangan sukses", defaultResponse.getMessage());
-                    } else {
-                        Log.w(TAG, "Gagal Create");
+                    Helper.infoDialog(TambahPerkembanganActivity.this, "Pemberitahuan", defaultResponse.getMessage());
+                }
+                else {
+                    if (response.errorBody() != null) {
+                        Log.d(TAG, "respon sukses errorBody not null")
+                        Gson gson = new Gson();
+                        DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
-                } else {
-                    Log.w(TAG, "Body kosong");
-                    Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });

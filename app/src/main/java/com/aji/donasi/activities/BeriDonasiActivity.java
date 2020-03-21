@@ -10,11 +10,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +35,9 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
+import com.aji.donasi.models.LoginResponse;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +62,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private CheckBox anonim;
     private String tis_anonim = "0";
     private String filePath;
+    private ProgressBar progressBar;
+    private static final String TAG = "BeriDonasiActivity";
 
     //EventBus
     private int id_konten;
@@ -81,6 +87,9 @@ public class BeriDonasiActivity extends AppCompatActivity{
         et_nohp = findViewById(R.id.et_nohp);
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
+
+        progressBar = findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -144,6 +153,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
             et_nohp.setError(null);
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -164,22 +175,27 @@ public class BeriDonasiActivity extends AppCompatActivity{
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                if (response.body() != null) {
+                progressBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful() && response.body()!= null) {
+                    Log.d(TAG, "respon sukses body not null")
                     DefaultResponse defaultResponse = response.body();
-
-                    if (defaultResponse.isSuccess()) {
-
-                        Helper.infoDialog(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
-                    } else {
+                    Helper.infoDialog(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
+                }
+                else {
+                    if (response.errorBody() != null) {
+                        Log.d(TAG, "respon sukses errorBody not null")
+                        Gson gson = new Gson();
+                        DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
-                } else {
-                    Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Silahkan coba submit lagi");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Pemberian donasia gagal");
             }
         });

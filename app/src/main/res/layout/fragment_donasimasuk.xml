@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp">
 
     <ProgressBar
         android:id="@+id/progBar"
@@ -9,9 +11,47 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>
 
+    <LinearLayout
+        android:id="@+id/linierDonatur"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jumlah Donasi Masuk :"
+            android:textColor="@color/grey_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/jumlahDonasiMasuk"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            tools:text="50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ket_denasi_masuk"
+        android:layout_below="@id/linierDonatur"
+        android:layout_margin="6dp"
+        android:text="@string/ket_denasi_masuk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerDonasiMasuk"
+        android:layout_below="@+id/ket_denasi_masuk"
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,6 +59,12 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         holder.tvJudul.setText(konten.getJudul());
         holder.tvLama.setText(String.valueOf(konten.getLamaDonasi()));
         holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
+        holder.progressBar.setProgress(konten.getTerkumpul() / konten.getTarget() * 100 );
+
+        if (Helper.SELESAI.equals(konten.getStatus())) {
+            holder.teksLama.setVisibility(View.GONE);
+            holder.tvLama.setText(Helper.SELESAI);
+        }
 
         String imagePath= Helper.IMAGE_URL_KONTEN +kontenList.get(position).getGambar();
 
@@ -74,7 +81,7 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
 
     class KontenViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvJudul, tvTerkumpul, tvLama;
+        TextView tvJudul, tvTerkumpul, tvLama, teksLama;
         ImageView gambarkonten;
         ProgressBar progressBar;
 
@@ -84,6 +91,7 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
             gambarkonten = itemView.findViewById(R.id.gambarkonten);
             tvJudul = itemView.findViewById(R.id.tvJudul);
             tvLama = itemView.findViewById(R.id.tvLama);
+            teksLama = itemView.findViewById(R.id.teksLama);
             tvTerkumpul = itemView.findViewById(R.id.tvTerkumpul);
             progressBar = itemView.findViewById(R.id.progressBar);
 

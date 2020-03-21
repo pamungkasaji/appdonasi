@@ -2,6 +2,7 @@ package com.aji.donasi.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,18 +57,18 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
     //Declaring views
     private ImageView gambar;
     private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextNoRek;
-    private static final String TAG = "Buat Konten";
+    private static final String TAG = "BuatKontenActivity";
     private String filePath;
 
     private String tlama_donasi;
     private Spinner spinner;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buatkonten);
-
-        //Requesting storage permission
 
         //Initializing views
         Button buttonChoose = findViewById(R.id.buttonChoose);
@@ -75,8 +78,10 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
         editTextTarget = findViewById(R.id.editTextTarget);
-        //editTextLamaDonasi = findViewById(R.id.editTextLamaDonasi);
         editTextNoRek = findViewById(R.id.editTextNoRek);
+
+        progressBar = findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,6 +157,8 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
             editTextNoRek.setError(null);
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -174,25 +181,27 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                if (response.body() != null) {
-                    DefaultResponse defaultResponse = response.body();
+                progressBar.setVisibility(View.GONE);
 
-                    if (defaultResponse.isSuccess()) {
-                        Log.i(TAG, "Berhasil create");
-                        Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
-                    } else {
-                        Log.w(TAG, "Gagal Create");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Log.d(TAG, "respon sukses body not null")
+                    DefaultResponse defaultResponse = response.body();
+                    Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                }
+                else {
+                    if (response.errorBody() != null) {
+                        Log.d(TAG, "respon sukses errorBody not null")
+                        Gson gson = new Gson();
+                        DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
-                } else {
-                    Log.w(TAG, "Body kosong");
-                    Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });

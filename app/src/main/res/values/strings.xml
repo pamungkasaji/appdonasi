@@ -3,6 +3,8 @@
 
     <string name="periksa_koneksi">Periksa koneksi internet anda</string>
 
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+
     <string name="galang_dana">Galang Dana</string>
     <string name="donasi_masuk">Donasi Masuk</string>
     <string name="iv_description">Gambar Donasi</string>
@@ -27,7 +29,12 @@
     <string name="lama_donasi">Lama Donasi</string>
     <string name="norek_penerima">Nomor Rekening Penerima Donasi</string>
     <string name="button_upload">Upload gambar penggalangan dana</string>
-    <string name="gambar">Gambar</string>
+    <string name="gambar">Gambar</string>Jumlah Donasi Masuk :
+
+    <string name="jumlah_donasi_masuk">Jumlah Donasi Masuk :</string>
+    <string name="jumlah_donatur">Jumlah Donatur :</string>
+    <string name="ket_denasi_masuk">Daftar donasi masuk yang belum divalidasi</string>
+    <string name="is_anonim">(Anonim)</string>
 
     <string name="konfirmasi">Konfirmasi</string>
     <string name="tolak_donasi">Apakah bukti transfer tidak sesuai? Validasi donatur akan ditolak</string>

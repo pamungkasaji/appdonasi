@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="8dp">
 
         <ProgressBar
             android:id="@+id/progBar"
@@ -21,6 +21,7 @@
 
         <LinearLayout
             android:id="@+id/linierDonatur"
+            android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -28,9 +29,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jumlah Donatur :"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="20sp" />
+                android:text="@string/jumlah_donatur"
+                android:textColor="@color/grey_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/jumlahDonatur"
@@ -40,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         </LinearLayout>
@@ -49,7 +50,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_below="@+id/linierDonatur"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

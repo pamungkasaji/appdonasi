@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,21 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.activities.FullscreenActivity;
 import com.aji.donasi.adapters.DonasiMasukAdapter;
-import com.aji.donasi.adapters.KontenAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
-import com.aji.donasi.models.Konten;
-import com.aji.donasi.models.KontenResponse;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -41,8 +36,8 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
     private RecyclerView recyclerView;
     private DonasiMasukAdapter adapter;
-    //private List<Konten> kontenList;
     private ArrayList<Donatur> donaturList;
+    private TextView jumlahDonasiMasuk;
 
     private ProgressBar progressBar;
 
@@ -57,10 +52,9 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         progressBar = view.findViewById(R.id.progBar);
+        jumlahDonasiMasuk = view.findViewById(R.id.jumlahDonasiMasuk);
 
         donaturList = new ArrayList<>();
-
-        //initializeRecyclerView();
 
         listDonaturUser();
 
@@ -80,14 +74,17 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
                     Log.i(TAG, "Muat ulang");
+                    if (donaturResponse.getData().isEmpty()){
+                        Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
+                    }
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
+                    jumlahDonasiMasuk.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonasiMasukAdapter(getActivity(), donaturList);
                     recyclerView.setAdapter(adapter);
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
-                    //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
                 }
                 adapter.setOnItemClickListener(DonasiMasukFragment.this);
             }

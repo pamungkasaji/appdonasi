@@ -26,6 +26,9 @@ public class Donatur {
     @SerializedName("bukti")
     @Expose
     private String bukti;
+    @SerializedName("nohp")
+    @Expose
+    private String nohp;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -87,6 +90,14 @@ public class Donatur {
 
     public void setBukti(String bukti) {
         this.bukti = bukti;
+    }
+
+    public String getNohp() {
+        return nohp;
+    }
+
+    public void setNohp(String nohp) {
+        this.nohp = nohp;
     }
 
     public String getCreatedAt() {

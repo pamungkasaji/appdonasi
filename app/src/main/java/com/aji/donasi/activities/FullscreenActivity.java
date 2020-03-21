@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ import retrofit2.Retrofit;
 
 public class FullscreenActivity extends AppCompatActivity {
 
-    private TextView judul, nama,jumlah;
+    private TextView judul, nama,jumlah, nohp, is_anonim;
     private int id, id_konten;
     private String bukti;
     //ImageView gambarbukti;
@@ -48,9 +49,13 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
 
+        RelativeLayout layout_full = findViewById(R.id.layout_full);
+
         judul = findViewById(R.id.judul);
         nama = findViewById(R.id.nama);
         jumlah = findViewById(R.id.jumlah);
+        nohp = findViewById(R.id.nohp);
+        is_anonim = findViewById(R.id.is_anonim);
 
         FloatingActionButton buttonterima = findViewById(R.id.buttonterima);
         FloatingActionButton  buttontolak = findViewById(R.id.buttontolak);
@@ -70,6 +75,14 @@ public class FullscreenActivity extends AppCompatActivity {
 
         buttontolak.setOnClickListener((View v) -> {
             initAlert();
+        });
+
+        gambarbukti.setOnClickListener((View v) -> {
+            if (layout_full.getVisibility() == View.VISIBLE) {
+                layout_full.setVisibility(View.GONE);
+            } else {
+                layout_full.setVisibility(View.VISIBLE);
+            }
         });
 
     }
@@ -112,8 +125,12 @@ public class FullscreenActivity extends AppCompatActivity {
                     Log.i(TAG, "Muat ulang");
                     judul.setText(donaturResponse.getDonatur().getKonten().getJudul());
                     nama.setText(donaturResponse.getDonatur().getNama());
+                    nohp.setText(donaturResponse.getDonatur().getNohp());
                     jumlah.setText(String.valueOf(donaturResponse.getDonatur().getJumlah()));
-                    //buktilink=donaturResponse.getDonatur().getBukti();
+
+                    if (donaturResponse.getDonatur().getIsAnonim() == 0) {
+                        is_anonim.setVisibility(View.GONE);
+                    }
 
                     bukti= Helper.IMAGE_URL_DONATUR+donaturResponse.getDonatur().getBukti();;
 

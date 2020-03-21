@@ -89,6 +89,9 @@ public class DonaturFragment extends Fragment {
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
                     Log.i(TAG, "Muat ulang");
+                    if (donaturResponse.getData().isEmpty()){
+                        Toast.makeText(getActivity(), "Belum ada donatur", Toast.LENGTH_SHORT).show();
+                    }
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     jumlahDonatur.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonaturAdapter(getActivity(), donaturList);

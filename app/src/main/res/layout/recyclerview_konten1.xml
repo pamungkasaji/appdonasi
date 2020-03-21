@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/grey_dark"
         app:layout_constraintStart_toStartOf="@+id/tvJudul"
         app:layout_constraintTop_toBottomOf="@+id/tvTerkumpul"
         tools:text="Breakfast" />
@@ -61,7 +61,7 @@
         android:id="@+id/tvLama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/grey_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressBar"
         android:layout_marginTop="4dp"
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/grey_dark"
         app:layout_constraintEnd_toEndOf="@+id/tvLama"
         app:layout_constraintTop_toBottomOf="@+id/tvLama"
         tools:text="$$" />

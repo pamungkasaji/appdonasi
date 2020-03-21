@@ -10,10 +10,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.aji.donasi.R;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,15 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ImageView imageKtp;
     private EditText editTextNamaLengkap, editTextAlamat, editTextNoKtp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
-
+    private ProgressBar progressBar;
     private String filePath;
+    private static final String TAG = "RegisterActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        //requestStoragePermission();
 
         //Initializing views
         Button buttonChoose = findViewById(R.id.buttonChoose);
@@ -68,6 +70,9 @@ public class RegisterActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
+
+        progressBar = findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,6 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
         //Create a file object using file path
@@ -170,23 +177,25 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                if (response.body() != null){
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body()!= null) {
+                    Log.d(TAG, "respon sukses body not null")
                     DefaultResponse defaultResponse = response.body();
-
-                    if (defaultResponse.isSuccess()) {
-
-                        Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
-
-                    } else {
+                    Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                }
+                else {
+                    if (response.errorBody() != null) {
+                        Log.d(TAG, "respon sukses errorBody not null")
+                        Gson gson = new Gson();
+                        DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(RegisterActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
-                } else {
-                    Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Respon kosong");
                 }
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Registrasi gagal");
             }
         });
