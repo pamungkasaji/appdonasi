@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,19 +36,22 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class DonaturFragment extends Fragment {
+public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemClickListener{
 
     private RecyclerView recyclerView;
     private DonaturAdapter adapter;
     private ArrayList<Donatur> donaturList;
     private ProgressBar progressBar;
     private TextView jumlahDonatur;
+    private ImageButton sortMenu;
 
     //EventBus
     private int id_konten;
@@ -63,20 +69,31 @@ public class DonaturFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         progressBar = view.findViewById(R.id.progBar);
         jumlahDonatur = view.findViewById(R.id.jumlahDonatur);
+        sortMenu = view.findViewById(R.id.sortMenu);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         id_konten = kontenMessage.getId();
 
-        displayData(id_konten);
+        displayData();
+
+        sortMenu.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(getActivity(), v);
+            popup.setOnMenuItemClickListener(this);
+            popup.inflate(R.menu.sort_menu);
+            popup.show();
+        });
     }
 
-    private void displayData(int id_konten) {
+
+    private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -88,10 +105,7 @@ public class DonaturFragment extends Fragment {
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
-                    if (donaturResponse.getData().isEmpty()){
-                        Toast.makeText(getActivity(), "Belum ada donatur", Toast.LENGTH_SHORT).show();
-                    }
+                    Log.d(TAG, "Muat ulang");
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     jumlahDonatur.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonaturAdapter(getActivity(), donaturList);
@@ -106,10 +120,10 @@ public class DonaturFragment extends Fragment {
 
             @Override
             public void onFailure(Call<DonaturResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
-                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Request gagal dan muat lagi");
+//              progressBar.setVisibility(View.GONE);
+                displayData();
+                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -119,8 +133,37 @@ public class DonaturFragment extends Fragment {
         kontenMessage = event.konten;
     }
 
-    @Override public void onPause() {
-        super.onPause();
+    @Override public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.terbanyak:
+                sortTerbanyak();
+                return true;
+            case R.id.terbaru:
+                sortTerbaru();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void sortTerbanyak(){
+        Collections.sort(donaturList, new Comparator<Donatur>() {
+            @Override
+            public int compare(Donatur d1, Donatur d2) {
+                return d2.getJumlah().compareTo(d1.getJumlah());
+            }
+        });
+
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortTerbaru(){
+        displayData();
     }
 }

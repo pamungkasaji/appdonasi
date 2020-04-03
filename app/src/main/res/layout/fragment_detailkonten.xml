@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -23,52 +23,257 @@
             android:id="@+id/tv_judul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sdad"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:layout_marginBottom="5dp"
+            tools:text="Ini judul"
+            android:textAppearance="@style/textstyle1" />
 
-        <TextView
-            android:id="@+id/tv_target"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_below="@+id/tv_judul"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_deskripsi"
-            android:layout_below="@+id/tv_target"
-            android:layout_width="match_parent"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:lineSpacingExtra="8sp" />
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true"
+            android:progress="65"/>
 
-        <TextView
-            android:id="@+id/tv_perpanjangan"
-            android:layout_below="@+id/tv_deskripsi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:lineSpacingExtra="8sp" />
-
-        <LinearLayout
-            android:id="@+id/layout_perpanjangan"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_dana"
+            android:layout_below="@id/progressBar"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/perpanjangan"
-                android:layout_below="@+id/tv_perpanjangan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ajukan Perpanjangan" />
+            <TextView
+                android:id="@+id/dana_terkumpul"
+                android:text="@string/teks_terkumpul"
+                android:textAppearance="@style/textstyle2"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_terkumpul"
+                tools:text="Rp 5.000.000,00"
+                android:textAppearance="@style/textstyle2"
+                app:layout_constraintStart_toEndOf="@id/dana_terkumpul"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/dana_target"
+                android:text="@string/teks_target"
+                android:textAppearance="@style/textstyle2"
+                android:layout_below="@id/tv_terkumpul"
+                android:layout_toEndOf="@id/dana_terkumpul"
+                app:layout_constraintTop_toBottomOf="@+id/tv_terkumpul"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_target"
+                tools:text="Rp 8.000.000,00"
+                android:textAppearance="@style/textstyle2"
+                android:layout_below="@id/tv_terkumpul"
+                app:layout_constraintStart_toEndOf="@id/dana_target"
+                app:layout_constraintTop_toBottomOf="@+id/tv_terkumpul"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_lama"
+                tools:text="65"
+                android:textAppearance="@style/textstyle2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_toStartOf="@id/tv_terkumpul"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/teks_lama"
+                android:text="@string/hari_lagi"
+                android:textAppearance="@style/textstyle2"
+                app:layout_constraintTop_toBottomOf="@id/tv_lama"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_selesai"
+            android:layout_below="@id/layout_dana"
+            android:orientation="vertical"
+            android:background="@color/background_grey"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_ket_selesai"
+                android:text="@string/selesai"
+                android:textSize="17sp"
+                android:textAlignment="center"
+                android:layout_margin="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/beriDonasi"
-            android:layout_below="@+id/perpanjangan"
-            android:text="Beri Donasi"
+        <View
+            android:id="@+id/view1"
+            android:layout_below="@+id/layout_selesai"
             android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:text="@string/deskripsi"
+            android:id="@+id/teks_deskripsi"
+            android:layout_below="@+id/view1"
+            android:textColor="@color/black"
+            android:textAppearance="@style/textstyle2"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_deskripsi"
+            android:layout_below="@+id/teks_deskripsi"
+            tools:text="@string/lorem"
+            android:textAppearance="@style/textstyle3"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="8sp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_below="@+id/tv_deskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"
+            >
+
+        </View>
+
+        <LinearLayout
+            android:id="@+id/layout_perpanjangan"
+            android:layout_below="@id/view2"
+            android:orientation="vertical"
+            android:background="@color/background_grey"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_perpanjangan"
+                tools:text="Bisa diperpanjang"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/textstyle2"
+                android:lineSpacingExtra="8sp" />
+
+            <TextView
+                android:id="@+id/tv_ket_perpanjangan"
+                tools:text="@string/bisa_perpanjang"
+                android:textAppearance="@style/textstyle3"
+                android:textAlignment="center"
+                android:layout_marginTop="2dp"
+                android:layout_margin="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/perpanjangan"
+                android:text="@string/ajukan_perpanjangan"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_penggalang"
+            android:layout_below="@id/layout_perpanjangan"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/info_penggalang"
+                android:text="@string/info_penggalang"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/textstyle2"
+                android:lineSpacingExtra="8sp" />
+
+            <TextView
+                android:id="@+id/teks_penggalang"
+                android:text="@string/nama"
+                android:textAppearance="@style/textstyle3"
+                android:layout_below="@id/info_penggalang"
+                android:layout_marginTop="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_penggalang"
+                android:text="@string/penggalang_dana"
+                android:layout_toEndOf="@id/teks_penggalang"
+                android:layout_below="@id/info_penggalang"
+                android:textAppearance="@style/textstyle3"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/teks_nohp"
+                android:text="@string/no_hp_"
+                android:textAppearance="@style/textstyle3"
+                android:layout_below="@id/teks_penggalang"
+                android:layout_marginTop="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_nohp"
+                tools:text="0812512545"
+                android:textAppearance="@style/textstyle3"
+                android:layout_toEndOf="@id/teks_nohp"
+                android:layout_below="@id/teks_penggalang"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@id/layout_penggalang"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
 
     </RelativeLayout>
 

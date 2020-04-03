@@ -23,7 +23,7 @@
             android:id="@+id/textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Perkembangan"
+            android:text="@string/perkembangan"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -31,14 +31,20 @@
             android:id="@+id/tambah"
             android:layout_below="@+id/textview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tambah Perkembangan" />
+            android:layout_height="60dp"
+            android:text="@string/tambah_perkembangan" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@id/tambah"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_below="@id/recyclerView"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
 
     </RelativeLayout>
 

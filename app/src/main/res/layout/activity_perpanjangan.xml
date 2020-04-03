@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
     <ProgressBar
         android:id="@+id/progBar"
@@ -15,38 +19,38 @@
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
-        <TextView
-            android:text="Pengajuan Perpanjangan"
+        <Spinner
+            android:id="@+id/spinner1"
+            android:padding="10dp"
+            app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/editTextJumlahHari"
-            android:hint="Jumlah Hari"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextAlasan"
-            android:hint="Alasan"
-            android:inputType="textMultiLine"
-            android:minLines="4"
-            android:maxLines="10"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/alasan_perpanjangan"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/submit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:layout_height="60dp"
+            android:text="@string/submit" />
 
     </LinearLayout>
 

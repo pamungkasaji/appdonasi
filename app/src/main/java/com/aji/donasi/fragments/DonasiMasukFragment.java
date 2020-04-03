@@ -24,6 +24,7 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,14 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        progressBar.setVisibility(View.VISIBLE);
+        listDonaturUser();
+        Log.d(TAG, "Fragment on resume, listDonaturUser();");
+    }
+
     private void listDonaturUser() {
         String token = Session.getInstance(getActivity()).getToken();
 
@@ -73,9 +82,10 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
+                    Log.d(TAG, "Muat ulang listDonaturUser()");
                     if (donaturResponse.getData().isEmpty()){
-                        Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Belum ada donasi masuk");
                     }
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     jumlahDonasiMasuk.setText(String.valueOf(donaturResponse.getData().size()));
@@ -83,7 +93,7 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
                     recyclerView.setAdapter(adapter);
                     progressBar.setVisibility(View.GONE);
                 } else {
-                    Log.w(TAG, "Body kosong");
+                    Log.e(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
                 }
                 adapter.setOnItemClickListener(DonasiMasukFragment.this);
@@ -101,9 +111,10 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(getActivity(), FullscreenActivity.class);
-        Donatur clickedItem = donaturList.get(position);
-        detailIntent.putExtra("id", clickedItem.getId());
-        detailIntent.putExtra("id_konten", clickedItem.getIdKonten());
+
+        Gson gson = new Gson();
+        String donatur = gson.toJson(donaturList.get(position));
+        detailIntent.putExtra("donaturObject", donatur);
         startActivity(detailIntent);
     }
 }

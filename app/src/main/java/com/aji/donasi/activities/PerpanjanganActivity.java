@@ -10,14 +10,19 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -29,6 +34,7 @@ import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Perpanjangan;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,12 +52,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PerpanjanganActivity extends AppCompatActivity {
+public class PerpanjanganActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     //Declaring views
-    private EditText editTextJumlahHari, editTextAlasan;
+    private TextInputLayout editTextAlasan;
     private int id_konten;
     private ProgressBar progressBar;
+
+    //spinner
+    private String hari;
+    private Spinner spinner;
 
     private static final String TAG = "PerpanjanganActivity";
 
@@ -63,31 +73,52 @@ public class PerpanjanganActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
 
         Button submit = findViewById(R.id.submit);
-        editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
+        //editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
         editTextAlasan = findViewById(R.id.editTextAlasan);
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Pengajuan Perpanjangan");
+        }
+
+        spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner_perpanjangan, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
         submit.setOnClickListener((View v) -> {
             submitPerpanjangan();
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     public void submitPerpanjangan() {
-        //getting name for the image
-        String hari = editTextJumlahHari.getText().toString();
-        String alasan = editTextAlasan.getText().toString();
 
-        if (hari.isEmpty()) {
-            editTextJumlahHari.setError("Isi jumlah hari");
-            editTextJumlahHari.requestFocus();
+        String alasan = editTextAlasan.getEditText().getText().toString().trim();
+
+        if (hari.equals("Jumlah hari perpanjangan")) {
+            Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
+            spinner.requestFocus();
             return;
+        }else {
+            ((TextView)spinner.getSelectedView()).setError(null);
         }
 
         if (alasan.isEmpty()) {
-            editTextAlasan.setError("Isi kolom deskripsi");
+            editTextAlasan.setError("Isi kolom alasan");
             editTextAlasan.requestFocus();
             return;
+        }else {
+            editTextAlasan.setError(null);
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -101,13 +132,13 @@ public class PerpanjanganActivity extends AppCompatActivity {
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
-                    Helper.infoDialog(PerpanjanganActivity.this, "Pemberitahuan", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(PerpanjanganActivity.this, "Pemberitahuan", defaultResponse.getMessage());
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", defaultResponse.getMessage());
@@ -122,6 +153,16 @@ public class PerpanjanganActivity extends AppCompatActivity {
                 Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", "Periksa koneksi anda");
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        hari = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

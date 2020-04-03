@@ -22,25 +22,11 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
 
     private Context mCtx;
     private ArrayList<Donatur> donaturList;
-    private OnItemClickListener mListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
 
     public DonaturAdapter(Context mCtx, ArrayList<Donatur> donaturList) {
         this.mCtx = mCtx;
         this.donaturList = donaturList;
     }
-
-//    public KontenAdapter(Context mCtx, List<Konten> kontenList) {
-//        this.mCtx = mCtx;
-//        this.kontenList = kontenList;
-//    }
 
     @NonNull
     @Override
@@ -74,24 +60,13 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
 
         TextView tv_nama, tv_jumlah, tv_createdat;
 
-        public DonaturViewHolder(View itemView) {
+        private DonaturViewHolder(View itemView) {
             super(itemView);
 
             tv_nama = itemView.findViewById(R.id.tvNama);
             tv_jumlah = itemView.findViewById(R.id.tv_jumlah);
             //tv_createdat = itemView.findViewById(R.id.tv_createdat);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mListener != null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            mListener.onItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
         }
     }
 }

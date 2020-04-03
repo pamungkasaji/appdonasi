@@ -10,9 +10,6 @@ public class PerkembanganResponse {
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("success")
-    @Expose
-    private Boolean success;
     @SerializedName("data")
     @Expose
     private List<Perkembangan> data = null;
@@ -21,24 +18,7 @@ public class PerkembanganResponse {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
     public List<Perkembangan> getData() {
         return data;
     }
-
-    public void setData(List<Perkembangan> data) {
-        this.data = data;
-    }
-
 }

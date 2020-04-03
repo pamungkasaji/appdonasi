@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
     <ProgressBar
         android:id="@+id/progBar"
@@ -9,52 +15,74 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
+    <ScrollView
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:text="Tambah Perkembangan"
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/editTextJudul"
-            android:hint="Judul"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextJudul"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        <EditText
-            android:id="@+id/editTextDeskripsi"
-            android:hint="Deskripsi"
-            android:minLines="4"
-            android:maxLines="10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/judul_konten"
+                    android:inputType="text" />
 
-        <Button
-            android:id="@+id/buttonChoose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Upload Foto" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/buttonUpload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextDeskripsi"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        <ImageView
-            android:id="@+id/gambar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/deskripsi_konten"
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
 
-    </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/gambar"
+                android:src="@drawable/placeholder"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/gambar"/>
+
+            <Button
+                android:id="@+id/buttonChoose"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/upload_foto_opsional"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/colorPrimary"
+                style="?attr/materialButtonOutlinedStyle"/>
+
+            <Button
+                android:id="@+id/buttonUpload"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/submit" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

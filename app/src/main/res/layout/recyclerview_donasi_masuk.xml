@@ -18,15 +18,22 @@
                 android:id="@+id/tvNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
+                android:text="@string/nama"
+                android:textAppearance="@style/textstyle2" />
 
             <TextView
                 android:id="@+id/tv_jumlah"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Terkumpul"
+                android:text="@string/jumlah_donasi"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tv_judul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/judul_konten"
+                android:textAppearance="@style/textstyle3" />
 
         </LinearLayout>
 

@@ -23,11 +23,10 @@
                     android:id="@+id/tvNama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nama"
-                    android:layout_alignParentStart="true"
+                    tool:text="Nama"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                    android:textAppearance="@style/textstyle2" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -39,8 +38,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:textColor="@color/grey_dark"
-                        android:text="Memberi donasi"/>
+                        android:textAppearance="@style/textstyle3"
+                        android:text="@string/memberi_donasi"/>
 
                     <TextView
                         android:id="@+id/tv_jumlah"

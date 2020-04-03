@@ -1,9 +1,21 @@
 package com.aji.donasi;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import com.aji.donasi.api.Api;
+import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.models.KontenResponse;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class Helper {
 
@@ -25,14 +37,14 @@ public class Helper {
                 .show();
     }
 
-    public static void infoDialogBack(final FragmentActivity activity, String title,
+    public static void infoDialogFinish(final FragmentActivity activity, String title,
                                   String message) {
         new LovelyStandardDialog(activity, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
                 .setTopColorRes(R.color.colorPrimary)
                 .setIcon(R.drawable.ic_done_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Ok", v -> {})
+                .setPositiveButton("Ok", v -> {activity.finish();})
                 .show();
     }
 
@@ -46,5 +58,4 @@ public class Helper {
                 .setPositiveButton("Ok", v -> {})
                 .show();
     }
-
 }

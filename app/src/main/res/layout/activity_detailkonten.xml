@@ -39,6 +39,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            app:tabTextAppearance="@style/MineCustomTabText"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
@@ -53,5 +54,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <Button
+        android:id="@+id/beriDonasi"
+        android:layout_below="@+id/layout_perpanjangan"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/beri_donasi"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

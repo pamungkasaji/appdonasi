@@ -68,7 +68,9 @@ public class PerkembanganFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         progressBar = view.findViewById(R.id.progBar);
 
@@ -80,13 +82,13 @@ public class PerkembanganFragment extends Fragment {
         tambah = view.findViewById(R.id.tambah);
         tambah.setVisibility(View.GONE);
 
+        id_konten = kontenMessage.getId();
+
         if(Session.getInstance(getActivity()).isLoggedIn()) {
             initTambah();
         }
 
-        id_konten = kontenMessage.getId();
-
-        displayData(id_konten);
+        displayData();
 
         tambah.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), TambahPerkembanganActivity.class);
@@ -94,7 +96,7 @@ public class PerkembanganFragment extends Fragment {
         });
     }
 
-    private void displayData(int id_konten) {
+    private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -106,27 +108,23 @@ public class PerkembanganFragment extends Fragment {
 
                 if (response.body() != null) {
                     PerkembanganResponse perkembanganResponse = response.body();
-                    if (perkembanganResponse.getData().isEmpty()){
-                        Toast.makeText(getActivity(), "Belum ada perkembangan", Toast.LENGTH_SHORT).show();
-                    }
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);
-                    Log.i(TAG, "Muat ulang");
-                    progressBar.setVisibility(View.GONE);
+                    Log.d(TAG, "Muat ulang");
                 } else {
                     Log.w(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Daftar perkembangan tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<PerkembanganResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
-                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                Toast.makeText(getActivity(), R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Request gagal dan muat lagi");
+                //progressBar.setVisibility(View.GONE);
+                displayData();
+                //Toast.makeText(getActivity(), R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -141,23 +139,19 @@ public class PerkembanganFragment extends Fragment {
             @Override
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
-                if (response.body() != null) {
-                    KontenResponse kontenResponse = response.body();
-                    if (kontenResponse.isSuccess()) {
-                        tambah.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "Is user iya");
-                    }
-                    //progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body() != null) {
+                    tambah.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "Is user iya");
                 } else {
-                    Log.w(TAG, "Body kosong");
-                    //Toast.makeText(getActivity(), "Is User tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "bukan user");
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                //progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
@@ -169,8 +163,8 @@ public class PerkembanganFragment extends Fragment {
         kontenMessage = event.konten;
     }
 
-    @Override public void onPause() {
-        super.onPause();
+    @Override public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 }

@@ -67,7 +67,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
     //EventBus
     private int id_konten;
-    private String nomorrekening;
     private Konten kontenMessage;
 
     @Override
@@ -87,6 +86,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         et_nohp = findViewById(R.id.et_nohp);
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
+        TextView bank = findViewById(R.id.bank);
 
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
@@ -102,9 +102,11 @@ public class BeriDonasiActivity extends AppCompatActivity{
         }
 
         id_konten = kontenMessage.getId();
-        nomorrekening = kontenMessage.getNomorrekening();
+        String nomorrekening = kontenMessage.getNomorrekening();
+        String nama_bank = kontenMessage.getBank();
 
         norek.setText(nomorrekening);
+        bank.setText(nama_bank);
 
         buttonChoose.setOnClickListener((View v) -> {
             captureImage();
@@ -178,13 +180,14 @@ public class BeriDonasiActivity extends AppCompatActivity{
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
-                    Helper.infoDialog(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(BeriDonasiActivity.this, "Berhasil", defaultResponse.getMessage());
+
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", defaultResponse.getMessage());

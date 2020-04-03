@@ -10,6 +10,7 @@ import com.aji.donasi.MessageEvent;
 import com.aji.donasi.models.Konten;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import androidx.appcompat.widget.Toolbar;
 
@@ -39,8 +41,9 @@ import static android.graphics.Color.WHITE;
 
 public class DetailKontenActivity extends AppCompatActivity {
 
+    private Button beriDonasi;
     private ImageView gambar;
-    private Konten konten;
+    //private Konten konten;
 
     //EventBus
     //private String gambarkonten;
@@ -64,6 +67,7 @@ public class DetailKontenActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
 
         gambar = findViewById(R.id.gambar);
+        beriDonasi = findViewById(R.id.beriDonasi);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,7 +80,7 @@ public class DetailKontenActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(kontenMessage.getJudul());
         collapsingToolbarLayout.setContentScrimResource(R.color.colorPrimary);
         collapsingToolbarLayout.setCollapsedTitleTextColor(WHITE);
-        collapsingToolbarLayout.setExpandedTitleColor(WHITE);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
 
         String imagePath= Helper.IMAGE_URL_KONTEN +kontenMessage.getGambar();
 
@@ -88,10 +92,17 @@ public class DetailKontenActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 onBackPressed();
             }
         });
+
+        beriDonasi.setOnClickListener((View v) -> {
+            Intent intent = new Intent(this, BeriDonasiActivity.class);
+            startActivity(intent);
+        });
+
+        beriDonasi.setEnabled(kontenMessage.getStatus().equals("aktif"));
+
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -117,7 +128,7 @@ public class DetailKontenActivity extends AppCompatActivity {
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         private Adapter(FragmentManager manager) {
-            super(manager);
+            super(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

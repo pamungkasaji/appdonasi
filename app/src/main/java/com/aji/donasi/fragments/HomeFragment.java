@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
                 public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
                     if (response.body() != null) {
                         KontenResponse kontenResponse = response.body();
-                        Log.i(TAG, "hasil pencarian");
+                        Log.d(TAG, "hasil pencarian");
                         kontenList = (ArrayList<Konten>) kontenResponse.getData();
                         if (kontenList.size() == 0) {
                             keterangan.setVisibility(View.VISIBLE);
@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
+                    Log.d(TAG, "Muat ulang");
                     kontenList = (ArrayList<Konten>) kontenResponse.getData();
                     adapter = new KontenAdapter(getActivity(), kontenList);
                     recyclerView.setAdapter(adapter);
@@ -156,9 +156,10 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
-                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                Log.e(TAG, "Request gagal dan muat lagi");
+                //progressBar.setVisibility(View.GONE);
+                displayData();
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
     }

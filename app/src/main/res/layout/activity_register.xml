@@ -11,100 +11,171 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleTextColor="@color/white"
-        app:subtitleTextColor="@color/white"
-        android:background="@color/colorPrimary" />
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:gravity="center">
-
-        <TextView
-            android:text="Registrasi"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="15dp"/>
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/editTextNamaLengkap"
-            android:inputType="text"
-            android:hint="Nama Lengkap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:text="@string/isikan_data_identitas"
+                android:textAlignment="center"
+                android:layout_margin="8dp"
+                android:textAppearance="@style/textstyle3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"/>
 
-        <EditText
-            android:id="@+id/editTextAlamat"
-            android:hint="Alamat"
-            android:inputType="textMultiLine"
-            android:minLines="4"
-            android:maxLines="10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextNamaLengkap"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        <EditText
-            android:id="@+id/editTextNoKtp"
-            android:inputType="number"
-            android:hint="Nomor KTP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nama_lengkap"
+                    android:inputType="text" />
 
-        <EditText
-            android:id="@+id/editTextNoHp"
-            android:inputType="number"
-            android:hint="No HP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextUsername"
-            android:hint="Username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextAlamat"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/alamat"
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
 
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextConfirmPassword"
-            android:inputType="textPassword"
-            android:hint="Konfirmasi Password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextNoHp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/no_hp"
+                    android:inputType="number" />
 
-        <Button
-            android:id="@+id/buttonChoose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Upload Foto KTP" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/buttonRegis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextNoktp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        <ImageView
-            android:id="@+id/imageKtp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nomor_ktp"
+                    android:inputType="number" />
 
-    </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageKtp"
+                android:src="@drawable/placeholder"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/gambar"/>
+
+            <Button
+                android:id="@+id/buttonChoose"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/upload_foto_ktp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/colorPrimary"
+                style="?attr/materialButtonOutlinedStyle"/>
+
+            <TextView
+                android:text="@string/username_dan_password_untuk"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/textstyle3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:hint="@string/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:hint="@string/konfirmasi_password"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonRegis"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/submit" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

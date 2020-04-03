@@ -11,6 +11,9 @@ public class Donatur {
     @SerializedName("id_konten")
     @Expose
     private Integer idKonten;
+    @SerializedName("judul")
+    @Expose
+    private String judul;
     @SerializedName("nama")
     @Expose
     private String nama;
@@ -46,6 +49,14 @@ public class Donatur {
 
     public Integer getIdKonten() {
         return idKonten;
+    }
+
+    public String getJudul() {
+        return judul;
+    }
+
+    public void setJudul(String judul) {
+        this.judul = judul;
     }
 
     public void setIdKonten(Integer idKonten) {

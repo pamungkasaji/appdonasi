@@ -16,13 +16,12 @@
 
     <TextView
         android:id="@+id/tvJudul"
+        android:textAppearance="@style/textstyle2"
         android:lines="2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toStartOf="@+id/tvLama"
         app:layout_constraintStart_toEndOf="@+id/gambarkonten"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,6 +33,7 @@
         android:layout_height="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/gambar"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ProgressBar
@@ -48,42 +48,42 @@
 
     <TextView
         android:id="@+id/tvTerkumpul"
+        android:textAppearance="@style/textstyle3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="@+id/tvJudul"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="Rp 4.000.000" />
 
     <TextView
         android:id="@+id/teksTerkumpul"
-        android:text="Terkumpul"
+        android:textAppearance="@style/textstyle3"
+        android:text="@string/terkumpul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:textColor="@color/grey_dark"
         app:layout_constraintStart_toStartOf="@+id/tvJudul"
         app:layout_constraintTop_toBottomOf="@+id/tvTerkumpul" />
 
     <TextView
         android:id="@+id/tvLama"
+        android:textAppearance="@style/textstyle3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="12dp"
-        android:textColor="@android:color/black"
         tools:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progressBar" />
 
     <TextView
         android:id="@+id/teksLama"
+        android:textAppearance="@style/textstyle3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:textColor="@color/grey_dark"
-        android:text="Hari lagi"
+        android:text="@string/hari_lagi"
         app:layout_constraintEnd_toEndOf="@+id/tvLama"
         app:layout_constraintTop_toBottomOf="@+id/tvLama" />
     </androidx.constraintlayout.widget.ConstraintLayout>

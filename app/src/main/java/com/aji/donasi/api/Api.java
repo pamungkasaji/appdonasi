@@ -52,7 +52,8 @@ public interface Api {
             @Part("deskripsi") RequestBody deskripsi,
             @Part("target") RequestBody target,
             @Part("lama_donasi") RequestBody lama_donasi,
-            @Part("nomorrekening") RequestBody nomorrekening
+            @Part("nomorrekening") RequestBody nomorrekening,
+            @Part("bank") RequestBody bank
     );
 
     @Multipart
@@ -100,8 +101,8 @@ public interface Api {
             @Part("password") RequestBody password,
             @Part("nohp") RequestBody nohp,
             @Part("namalengkap") RequestBody namalengkap,
-            @Part("alamat") RequestBody alamat,
-            @Part("nomorktp") RequestBody nomorktp
+            @Part("nomorktp") RequestBody nomorktp,
+            @Part("alamat") RequestBody alamat
     );
 
     @GET("user/me/konten")
@@ -115,12 +116,6 @@ public interface Api {
             @Header("Authorization") String token
     );
 
-    @GET("konten/{id_konten}/donatur/{id}")
-    Call<DonaturResponse> getDetailDonatur(
-            @Path("id_konten") int id_konten,
-            @Path("id") int id
-    );
-
     @GET("user/me/konten/{id}")
     Call<KontenResponse> isUser (
             @Path("id") int id,
@@ -128,16 +123,16 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @PUT("konten/{id_konten}/donatur/{id}")
-    Call<DefaultResponse> terimaDonasi (
+    @PUT("konten/{id_konten}/donatur/{id}/approve")
+    Call<DefaultResponse> approveDonasi(
             @Path("id_konten") int id_konten,
             @Path("id") int id,
             @Header("Authorization") String token,
             @Field("is_diterima") int is_diterima
     );
 
-    @DELETE("konten/{id_konten}/donatur/{id}")
-    Call<DefaultResponse> tolakDonasi(
+    @DELETE("konten/{id_konten}/donatur/{id}/disapprove")
+    Call<DefaultResponse> disapproveDonasi(
             @Path("id_konten") int id_konten,
             @Path("id") int id,
             @Header("Authorization") String token

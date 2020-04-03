@@ -29,6 +29,8 @@ import com.aji.donasi.R;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -48,7 +50,7 @@ import androidx.core.content.ContextCompat;
 public class RegisterActivity extends AppCompatActivity {
 
     private ImageView imageKtp;
-    private EditText editTextNamaLengkap, editTextAlamat, editTextNoKtp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
+    private TextInputLayout editTextNamaLengkap, editTextAlamat, editTextNoktp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
     private ProgressBar progressBar;
     private String filePath;
     private static final String TAG = "RegisterActivity";
@@ -65,8 +67,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         editTextNamaLengkap = findViewById(R.id.editTextNamaLengkap);
         editTextAlamat = findViewById(R.id.editTextAlamat);
-        editTextNoKtp = findViewById(R.id.editTextNoKtp);
         editTextNoHp = findViewById(R.id.editTextNoHp);
+        editTextNoktp = findViewById(R.id.editTextNoktp);
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
@@ -98,60 +100,76 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void uploadMultipart() {
         //getting name for the image
-        String tnamalengkap = editTextNamaLengkap.getText().toString().trim();
-        String talamat = editTextAlamat.getText().toString().trim();
-        String tnoktp = editTextNoKtp.getText().toString().trim();
-        String tnohp = editTextNoHp.getText().toString().trim();
-        String tusername = editTextUsername.getText().toString().trim();
-        String tpassword = editTextPassword.getText().toString().trim();
-        String tconfirmpass = editTextConfirmPassword.getText().toString().trim();
+        String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
+        String talamat = editTextAlamat.getEditText().getText().toString().trim();
+        String tnohp = editTextNoHp.getEditText().getText().toString().trim();
+        String tnomorktp = editTextNoktp.getEditText().getText().toString().trim();
+        String tusername = editTextUsername.getEditText().getText().toString().trim();
+        String tpassword = editTextPassword.getEditText().getText().toString().trim();
+        String tconfirmpass = editTextConfirmPassword.getEditText().getText().toString().trim();
 
         if (tnamalengkap.isEmpty()) {
             editTextNamaLengkap.setError("Isi kolom nama lengkap");
             editTextNamaLengkap.requestFocus();
             return;
+        }else {
+            editTextNamaLengkap.setError(null);
         }
 
         if (talamat.isEmpty()) {
             editTextAlamat.setError("Isi kolom alamat");
             editTextAlamat.requestFocus();
             return;
-        }
-
-        if (tnoktp.isEmpty()) {
-            editTextNoKtp.setError("Isi kolom no KTP");
-            editTextNoKtp.requestFocus();
-            return;
+        }else {
+            editTextAlamat.setError(null);
         }
 
         if (tnohp.isEmpty()) {
             editTextNoHp.setError("Isi kolom No HP");
             editTextNoHp.requestFocus();
             return;
+        }else {
+            editTextNoHp.setError(null);
         }
 
         if (tusername.isEmpty()) {
             editTextUsername.setError("Isi kolom username");
             editTextUsername.requestFocus();
             return;
+        }else {
+            editTextUsername.setError(null);
         }
 
         if (tpassword.isEmpty()) {
             editTextPassword.setError("Isi kolom password");
             editTextPassword.requestFocus();
             return;
+        }else {
+            editTextPassword.setError(null);
         }
 
         if (tconfirmpass.isEmpty()) {
             editTextConfirmPassword.setError("Isi kolom password lagi");
             editTextConfirmPassword.requestFocus();
             return;
+        }else {
+            editTextConfirmPassword.setError(null);
         }
 
         if (!tpassword.equals(tconfirmpass)) {
             editTextConfirmPassword.setError("Password harus sama");
             editTextConfirmPassword.requestFocus();
             return;
+        }else {
+            editTextConfirmPassword.setError(null);
+        }
+
+        if (tnomorktp.isEmpty()) {
+            editTextNoktp.setError("Isi kolom No KTP");
+            editTextNoktp.requestFocus();
+            return;
+        }else {
+            editTextNoktp.setError(null);
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -168,24 +186,24 @@ public class RegisterActivity extends AppCompatActivity {
         RequestBody username = RequestBody.create(MediaType.parse("multipart/form-data"), tusername);
         RequestBody password = RequestBody.create(MediaType.parse("multipart/form-data"), tpassword);
         RequestBody nohp = RequestBody.create(MediaType.parse("multipart/form-data"), tnohp);
-        RequestBody namalengkap = RequestBody.create(MediaType.parse("multipart/form-data"), tnamalengkap);
         RequestBody alamat = RequestBody.create(MediaType.parse("multipart/form-data"), talamat);
-        RequestBody nomorktp = RequestBody.create(MediaType.parse("multipart/form-data"), tnoktp);
+        RequestBody namalengkap = RequestBody.create(MediaType.parse("multipart/form-data"), tnamalengkap);
+        RequestBody nomorktp = RequestBody.create(MediaType.parse("multipart/form-data"), tnomorktp);
         //
-        Call<DefaultResponse> call = api.createUser(pic, username, password, nohp, namalengkap, alamat, nomorktp);
+        Call<DefaultResponse> call = api.createUser(pic, username, password, nohp, namalengkap, nomorktp, alamat);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
-                    Helper.infoDialog(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(RegisterActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(RegisterActivity.this, "Kesalahan", defaultResponse.getMessage());

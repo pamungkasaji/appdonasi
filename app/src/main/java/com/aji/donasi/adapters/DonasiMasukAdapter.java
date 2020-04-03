@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Donatur;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.DonasiMasukViewHolder> {
 
@@ -45,14 +47,12 @@ public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.
         Donatur donatur = donaturList.get(position);
 
         holder.tv_nama.setText(donatur.getNama());
-        holder.tv_jumlah.setText(String.valueOf(donatur.getJumlah().toString()));
+        holder.tv_judul.setText(donatur.getJudul());
 
-//        String imagePath= "https://lorempixel.com/800/600/"+donaturList.get(position).getGambar();
-//
-//        Glide.with(mCtx)
-//                .load(imagePath)
-//                .placeholder(R.drawable.loading)
-//                .into(holder.movieImage);
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        holder.tv_jumlah.setText(formatRupiah.format((double)donatur.getJumlah()));
+
     }
 
     @Override
@@ -62,13 +62,14 @@ public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.
 
     class DonasiMasukViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_nama, tv_jumlah;
+        TextView tv_nama, tv_jumlah, tv_judul;
 
-        public DonasiMasukViewHolder(View itemView) {
+        private DonasiMasukViewHolder(View itemView) {
             super(itemView);
 
             tv_nama = itemView.findViewById(R.id.tvNama);
             tv_jumlah = itemView.findViewById(R.id.tv_jumlah);
+            tv_judul = itemView.findViewById(R.id.tv_judul);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

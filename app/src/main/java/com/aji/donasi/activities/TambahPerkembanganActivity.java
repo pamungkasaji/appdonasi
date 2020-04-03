@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -31,6 +32,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +40,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.IOException;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -53,7 +54,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
     //Declaring views
     private ImageView gambar;
-    private EditText editTextJudul, editTextDeskripsi;
+    private TextInputLayout editTextJudul, editTextDeskripsi;
     private int id_konten;
     private static final String TAG = "TambahPerkembangan";
     private String filePath;
@@ -75,6 +76,15 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Tambah Perkembangan");
+        }
+
         buttonChoose.setOnClickListener((View v) -> {
             captureImage();
         });
@@ -82,6 +92,8 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         buttonUpload.setOnClickListener((View v) -> {
             uploadMultipart();
         });
+
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     /*
@@ -90,19 +102,23 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
      * */
     public void uploadMultipart() {
         //getting name for the image
-        String tjudul = editTextJudul.getText().toString();
-        String tdeskripsi = editTextDeskripsi.getText().toString();
+        String tjudul = editTextJudul.getEditText().getText().toString();
+        String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
             editTextJudul.requestFocus();
             return;
+        }else {
+            editTextJudul.setError(null);
         }
 
         if (tdeskripsi.isEmpty()) {
             editTextDeskripsi.setError("Isi kolom deskripsi");
             editTextDeskripsi.requestFocus();
             return;
+        }else {
+            editTextJudul.setError(null);
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -123,16 +139,16 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
-            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+            public void onResponse(@NonNull Call<DefaultResponse> call, @NonNull Response<DefaultResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
-                    Helper.infoDialog(TambahPerkembanganActivity.this, "Pemberitahuan", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(TambahPerkembanganActivity.this, "Pemberitahuan", defaultResponse.getMessage());
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", defaultResponse.getMessage());
@@ -141,7 +157,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<DefaultResponse> call,@NonNull Throwable t) {
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
                 Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");

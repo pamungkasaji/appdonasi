@@ -43,6 +43,14 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+            <ImageButton
+                android:id="@+id/sortMenu"
+                android:layout_marginStart="150dp"
+                android:src="@drawable/ic_sort_black_32dp"
+                android:contentDescription="@string/urutkan"
+                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -53,6 +61,12 @@
             android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_below="@id/recyclerView"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
 
     </RelativeLayout>
 

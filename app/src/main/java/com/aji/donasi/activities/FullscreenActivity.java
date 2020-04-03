@@ -1,11 +1,9 @@
 package com.aji.donasi.activities;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
@@ -22,11 +19,11 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.DonaturResponse;
+import com.aji.donasi.models.Donatur;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,8 +34,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private TextView judul, nama,jumlah, nohp, is_anonim;
     private int id, id_konten;
-    private String bukti;
-    //ImageView gambarbukti;
     private PhotoView gambarbukti;
     private ProgressBar progressBar;
 
@@ -62,12 +57,13 @@ public class FullscreenActivity extends AppCompatActivity {
         gambarbukti = findViewById(R.id.bukti);
 
         progressBar = findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
-        Intent detailIntent=getIntent();
-        id = detailIntent.getIntExtra("id", -1);
-        id_konten = detailIntent.getIntExtra("id_konten", -1);
-
-        dataDonatur(id_konten, id);
+        Gson gson = new Gson();
+        Donatur donatur = gson.fromJson(getIntent().getStringExtra("donaturObject"), Donatur.class);
+        initData(donatur);
+        id = donatur.getId();
+        id_konten = donatur.getIdKonten();
 
         buttonterima.setOnClickListener((View v) -> {
             terimaDonatur();
@@ -84,7 +80,22 @@ public class FullscreenActivity extends AppCompatActivity {
                 layout_full.setVisibility(View.VISIBLE);
             }
         });
+    }
 
+    private void initData(Donatur donatur){
+        judul.setText(donatur.getJudul());
+        nama.setText(donatur.getNama());
+        nohp.setText(donatur.getNohp());
+        jumlah.setText(String.valueOf(donatur.getJumlah()));
+        if (donatur.getIsAnonim() == 0) {
+            is_anonim.setVisibility(View.GONE);
+        }
+
+        String bukti= Helper.IMAGE_URL_DONATUR+donatur.getBukti();;
+        Glide.with(FullscreenActivity.this)
+                .load(bukti)
+                .placeholder(R.drawable.placeholder_full)
+                .into(gambarbukti);
     }
 
     private void initAlert() {
@@ -108,60 +119,11 @@ public class FullscreenActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void dataDonatur(int id_konten, int id) {
-        Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
-
-        Call<DonaturResponse> call = api.getDetailDonatur(id_konten, id);
-
-        progressBar.setVisibility(View.VISIBLE);
-
-        call.enqueue(new Callback<DonaturResponse>() {
-            @Override
-            public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
-
-                if (response.body() != null) {
-                    DonaturResponse donaturResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
-                    judul.setText(donaturResponse.getDonatur().getKonten().getJudul());
-                    nama.setText(donaturResponse.getDonatur().getNama());
-                    nohp.setText(donaturResponse.getDonatur().getNohp());
-                    jumlah.setText(String.valueOf(donaturResponse.getDonatur().getJumlah()));
-
-                    if (donaturResponse.getDonatur().getIsAnonim() == 0) {
-                        is_anonim.setVisibility(View.GONE);
-                    }
-
-                    bukti= Helper.IMAGE_URL_DONATUR+donaturResponse.getDonatur().getBukti();;
-
-                    Glide.with(FullscreenActivity.this)
-                            .load(bukti)
-                            .placeholder(R.drawable.loading)
-                            .into(gambarbukti);
-
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    Log.w(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(FullscreenActivity.this, "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DonaturResponse> call, Throwable t) {
-                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                Log.e(TAG, "Request gagal");
-                //progressBar.setVisibility(View.GONE);
-                Toast.makeText(FullscreenActivity.this, "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void terimaDonatur() {
         String token = Session.getInstance(FullscreenActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
-        Call<DefaultResponse> call = api.terimaDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
+        Call<DefaultResponse> call = api.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -171,8 +133,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
-                    Log.i(TAG, "Diterima");
-                    Helper.infoDialog(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
+                    Log.d(TAG, "Diterima");
+                    Helper.infoDialogFinish(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
@@ -195,7 +157,7 @@ public class FullscreenActivity extends AppCompatActivity {
         String token = Session.getInstance(FullscreenActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
-        Call<DefaultResponse> call = api.tolakDonasi(id_konten, id, token);
+        Call<DefaultResponse> call = api.disapproveDonasi(id_konten, id, token);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -205,9 +167,9 @@ public class FullscreenActivity extends AppCompatActivity {
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
-                    Log.i(TAG, "Ditolak");
+                    Log.d(TAG, "Ditolak");
                     progressBar.setVisibility(View.GONE);
-                    infoDialogBack(defaultResponse.getMessage());
+                    Helper.infoDialogFinish(FullscreenActivity.this, "Ditolak", defaultResponse.getMessage());
                 } else {
                     Log.w(TAG, "Body kosong");
                     progressBar.setVisibility(View.GONE);
@@ -223,20 +185,5 @@ public class FullscreenActivity extends AppCompatActivity {
                 Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void infoDialogBack(String message) {
-        new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
-                .setTopColorRes(R.color.colorPrimary)
-                .setIcon(R.drawable.ic_done_white_24dp)
-                .setTitle(R.string.konfirmasi)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                    }
-                })
-                .show();
     }
 }

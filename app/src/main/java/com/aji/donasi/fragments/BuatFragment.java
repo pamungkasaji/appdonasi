@@ -31,7 +31,6 @@ public class BuatFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabs;
     private TextView autentikasi;
-    private Button loginRegistrasi;
 
     @Nullable
     @Override
@@ -44,10 +43,7 @@ public class BuatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewPager = view.findViewById(R.id.view_pager);
-        //setupViewPager(viewPager);
-        // Set Tabs inside Toolbar
         tabs = view.findViewById(R.id.tab_layout);
-        //tabs.setupWithViewPager(viewPager);
 
         autentikasi = view.findViewById(R.id.autentikasi);
 
@@ -55,11 +51,12 @@ public class BuatFragment extends Fragment {
     }
 
     private void initView(){
+        //jika sudah login
         if(Session.getInstance(getActivity()).isLoggedIn()) {
             setupViewPager(viewPager);
             tabs.setupWithViewPager(viewPager);
             autentikasi.setVisibility(View.GONE);
-        } else {
+        } else { //belum login
             tabs.setVisibility(View.GONE);
             autentikasi.setVisibility(View.VISIBLE);
         }
@@ -76,12 +73,12 @@ public class BuatFragment extends Fragment {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public Adapter(FragmentManager manager) {
+        private Adapter(FragmentManager manager) {
             super(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override
-        public Fragment getItem(int position) {
+        @NonNull public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
 
@@ -90,7 +87,7 @@ public class BuatFragment extends Fragment {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        private void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

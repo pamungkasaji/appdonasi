@@ -5,14 +5,35 @@
 
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
 
+    <string name="cari">Cari</string>
+    <string name="kata_kunci">Kata Kunci</string>
+
+    <string name="info_penggalang">Penggalang Dana</string>
+    <string name="hari_lagi">Hari Lagi</string>
+    <string name="teks_target">Target :</string>
+    <string name="teks_terkumpul">Terkumpul :</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="selesai">Penggalangan dana ini telah selesai dilakukan, silahkan memberi donasi pada penggalangan dana lain</string>
+
+    <string name="pengajuan_perpanjangan">Pengajuan Perpanjangan</string>
+    <string name="alasan_perpanjangan">Alasan Perpanjangan</string>
+    <string name="bisa_perpanjang">Penggalangan dana telah melebihi batas waktu, namun target belum terpenuhi. Anda bisa mengajukan perpanjangan</string>
+    <string name="tidak_bisa_perpanjang">Penggalangan dana telah melebihi batas waktu dan target sudah terpenuhi. Perpanjangan tidak bisa diajukan dan tidak bisa menerima donasi lagi</string>
+    <string name="verif_perpanjangan">Silahkan tunggu verifikasi kelayakan perpanjangan penggalangan dana</string>
+    <string name="diterima_perpanjangan">Pengajuan perpanjangan diterima. Batas waktu penggalangan dana ditambah</string>
+    <string name="ditolak_perpanjangan">Pengajuan perpanjangan ditolak. Penggalangan dana telah selesai dan tidak bisa menerima donasi lagi</string>
+
     <string name="galang_dana">Galang Dana</string>
     <string name="donasi_masuk">Donasi Masuk</string>
     <string name="iv_description">Gambar Donasi</string>
+    <string name="silahkan_login">Silahkan login atau registrasi</string>
+    <string name="silahkan_login_akun">Menu ini bisa diakses oleh user yang sudah registrasi. Silahkan login atau registrasi di menu akun</string>
     <string name="login">Login</string>
     <string name="registrasi">Registrasi</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
 
+    <string name="beri_donasi">Beri Donasi</string>
     <string name="kirim_donasi">Kirim donasi ke nomor rekening berikut :</string>
     <string name="nama_donatur">Nama pemilik rekening</string>
     <string name="jumlah_donasi">Jumlah Donasi</string>
@@ -41,12 +62,57 @@
 
     <string-array name="spinner_lama_donasi">
         <item>Jumlah hari penggalangan dana</item>
-        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+    </string-array>
+
+    <string-array name="spinner_perpanjangan">
+        <item>Jumlah hari perpanjangan</item>
         <item>60</item>
         <item>90</item>
         <item>120</item>
     </string-array>
 
+    <string-array name="spinner_bank">
+        <item>Pilih Nama Bank</item>
+        <item>BRI</item>
+        <item>Bank Mandiri</item>
+        <item>BCA</item>
+        <item>BNI</item>
+        <item>BTN</item>
+        <item>Bank CIMB Niaga</item>
+        <item>Bank Panin</item>
+        <item>Bank OCBC</item>
+        <item>Maybank</item>
+        <item>Bank Danamon</item>
+        <item>Bank Permata</item>
+        <item>Bank Mega</item>
+        <item>Lainnya</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="upload_foto_opsional">Upload Foto (Opsional)</string>
+    <string name="alamat">Alamat</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="no_hp">No HP</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="upload_foto_ktp">Upload Foto KTP</string>
+    <string name="ajukan_perpanjangan">Ajukan Perpanjangan</string>
+    <string name="nama">Nama :</string>
+    <string name="penggalang_dana">Penggalang Dana</string>
+    <string name="no_hp_">No HP :</string>
+    <string name="lampirkan_bukti">Lampirkan bukti transfer berupa foto atau screenshot untuk menunjang validasi pemberian donasi</string>
+    <string name="nama_bank">Nama Bank</string>
+    <string name="nama_bank_tujuan">Nama Bank Tujuan :</string>
+    <string name="tambah_perkembangan">Tambah Perkembangan</string>
+    <string name="perkembangan">Perkembangan</string>
+    <string name="terkumpul">Terkumpul</string>
+    <string name="nomor_ktp">Nomor KTP</string>
+    <string name="username_dan_password_untuk">Username dan password untuk masuk ke akun anda jika verifikasi registrasi diterima</string>
+    <string name="isikan_data_identitas">Isikan data identitas pribadi untuk menunjang verifikasi registrasi</string>
+    <string name="memberi_donasi">Memberi donasi</string>
+    <string name="urutkan">Urutkan</string>
 </resources>

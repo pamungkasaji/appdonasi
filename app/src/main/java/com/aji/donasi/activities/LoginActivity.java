@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     LoginResponse loginResponse = response.body();
 
                     Session.getInstance(LoginActivity.this).saveUser(loginResponse.getUser());
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(LoginActivity.this, "Kesalahan", defaultResponse.getMessage());

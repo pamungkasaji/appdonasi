@@ -17,7 +17,9 @@ import com.aji.donasi.models.Konten;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenViewHolder> {
 
@@ -58,8 +60,13 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
 
         holder.tvJudul.setText(konten.getJudul());
         holder.tvLama.setText(String.valueOf(konten.getLamaDonasi()));
-        holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
+        //holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
         holder.progressBar.setProgress(konten.getTerkumpul() / konten.getTarget() * 100 );
+
+        //Terkumpul
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        holder.tvTerkumpul.setText(formatRupiah.format((double)konten.getTerkumpul()));
 
         if (Helper.SELESAI.equals(konten.getStatus())) {
             holder.teksLama.setVisibility(View.GONE);

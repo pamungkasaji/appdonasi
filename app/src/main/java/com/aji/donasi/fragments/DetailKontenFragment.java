@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,24 +36,34 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
+
 public class DetailKontenFragment extends Fragment {
 
-    private TextView tv_judul, tv_deskripsi, tv_target, tv_perpanjangan;
-    private Button beriDonasi;
+    private TextView tv_judul, tv_deskripsi, tv_target,  tv_perpanjangan, tv_terkumpul, tv_lama, tv_ket_perpanjangan, tv_penggalang, tv_nohp;
     private ProgressBar progressBar;
+    private LinearLayout layout_perpanjangan, layout_selesai;
 
-    private int lama_donasi;
+    //private int lama_donasi;
+    //private String status_perpanjangan = "";
     private Button perpanjangan;
     private String token;
 
     //Eventbus
     private int id_konten;
     private Konten kontenMessage;
+
+    //currency
+    private Locale localeID;
+    private NumberFormat formatRupiah;
 
     private static final String TAG = "DetailKontenFragment";
 
@@ -66,30 +77,42 @@ public class DetailKontenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         tv_judul = view.findViewById(R.id.tv_judul);
         tv_deskripsi = view.findViewById(R.id.tv_deskripsi);
         tv_target = view.findViewById(R.id.tv_target);
-        beriDonasi = view.findViewById(R.id.beriDonasi);
-        tv_perpanjangan = view.findViewById(R.id.tv_perpanjangan);
-        tv_perpanjangan.setVisibility(View.GONE);
+        tv_terkumpul = view.findViewById(R.id.tv_terkumpul);
+        tv_lama = view.findViewById(R.id.tv_lama);
+        tv_penggalang = view.findViewById(R.id.tv_penggalang);
+        tv_nohp = view.findViewById(R.id.tv_nohp);
 
+        tv_ket_perpanjangan = view.findViewById(R.id.tv_ket_perpanjangan);
+        tv_perpanjangan = view.findViewById(R.id.tv_perpanjangan);
+        layout_perpanjangan = view.findViewById(R.id.layout_perpanjangan);
+        layout_selesai = view.findViewById(R.id.layout_selesai);
+        layout_perpanjangan.setVisibility(View.GONE);
+        layout_selesai.setVisibility(View.GONE);
         progressBar = view.findViewById(R.id.progBar);
 
         token = Session.getInstance(getActivity()).getToken();
 
         perpanjangan = view.findViewById(R.id.perpanjangan);
-        perpanjangan.setVisibility(View.GONE);
+        perpanjangan.setEnabled(false);
+
+        localeID = new Locale("in", "ID");
+        formatRupiah = NumberFormat.getCurrencyInstance(localeID);
 
         id_konten = kontenMessage.getId();
 
-        displayDetail(id_konten);
-
-        beriDonasi.setOnClickListener((View v) -> {
-            Intent intent = new Intent(getActivity(), BeriDonasiActivity.class);
-            startActivity(intent);
-        });
+        displayDetail();
+        if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0)) {
+            initPerpanjangan();
+            Log.d(TAG, "init perpanjangan");
+        }
+        //progressBar.setVisibility(View.GONE);
 
         perpanjangan.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), PerpanjanganActivity.class);
@@ -97,13 +120,11 @@ public class DetailKontenFragment extends Fragment {
         });
     }
 
-    private void displayDetail(int id_konten) {
+    private void displayDetail() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
         Call<KontenResponse> call = api.getKontenDetail(id_konten);
-
-        //progressBar.setVisibility(View.VISIBLE);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
@@ -111,30 +132,39 @@ public class DetailKontenFragment extends Fragment {
 
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
+                    Log.d(TAG, "Muat ulang");
                     tv_judul.setText(kontenResponse.getKonten().getJudul());
                     tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
-                    tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
-                    lama_donasi = kontenResponse.getKonten().getLamaDonasi();
-                    if (Session.getInstance(getActivity()).isLoggedIn() && lama_donasi == 0 ) {
-                        initPerpanjangan();
-                        Log.i(TAG, "init perpanjangan");
+                    tv_lama.setText(String.valueOf(kontenResponse.getKonten().getLamaDonasi()));
+                    tv_penggalang.setText(kontenResponse.getKonten().getUser().getNamalengkap());
+                    tv_nohp.setText(kontenResponse.getKonten().getUser().getNohp());
+                    tv_target.setText(formatRupiah.format((double)kontenResponse.getKonten().getTarget()));
+                    tv_terkumpul.setText(formatRupiah.format((double)kontenResponse.getKonten().getTerkumpul()));
+                    //tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
+                    //tv_terkumpul.setText(String.valueOf(kontenResponse.getKonten().getTerkumpul()));
+
+                    if (kontenResponse.getKonten().getStatus().equals("selesai")){
+                        layout_selesai.setVisibility(View.VISIBLE);
                     }
-                    Log.i(TAG, "selesai muat");
-                    progressBar.setVisibility(View.GONE);
+
+                    //status_perpanjangan = kontenResponse.getKonten().getPerpanjangan().getStatus();
+                    //lama_donasi = kontenResponse.getKonten().getLamaDonasi();
+
+                    Log.d(TAG, "selesai muat");
                 } else {
                     Log.w(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
+                //progressBar.setVisibility(View.GONE);
+                displayDetail();
+                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -147,33 +177,42 @@ public class DetailKontenFragment extends Fragment {
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
-            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
+            public void onResponse(@NonNull Call<KontenResponse> call,@NonNull Response<KontenResponse> response) {
 
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-                    if (kontenResponse.isSuccess()) {
-                        perpanjangan.setVisibility(View.VISIBLE);
-                        if (kontenResponse.getKonten().getPerpanjangan() == null) {
-                            tv_perpanjangan.setVisibility(View.VISIBLE);
-                            Log.i(TAG, "Is user iya, perpanjangan empty");
-                        } else {
-                            tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
-                            Log.i(TAG, "Is user iya, perpanjangan not empty");
-                        }
-                    } else {
-                        Log.i(TAG, "Is user bukan");
-                        Helper.warningDialog(getActivity(), "Kesalahan", kontenResponse.getMessage());
-                    }
 
-                    //progressBar.setVisibility(View.GONE);
+                    if (kontenResponse.getKonten().getTerkumpul() < kontenResponse.getKonten().getTarget()) {
+                        Log.d(TAG, "Is user iya, terkumpul lebih besar");
+                        if(kontenResponse.getKonten().getPerpanjangan() == null){
+                            Log.d(TAG, "Is user iya, perpanjangan empty");
+                            perpanjangan.setEnabled(true);
+                            tv_ket_perpanjangan.setText(getResources().getString(R.string.bisa_perpanjang));
+                            layout_perpanjangan.setVisibility(View.VISIBLE);
+                        } else {
+                            Log.d(TAG, "Is user iya, perpanjangan not empty");
+                            tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
+                            if(kontenResponse.getKonten().getPerpanjangan().getStatus().equals("verifikasi")){
+                                Log.d(TAG, "Is user iya, perpanjangan not empty, status verifikasi");
+                                tv_ket_perpanjangan.setText(getResources().getString(R.string.verif_perpanjangan));
+                            } else if(kontenResponse.getKonten().getPerpanjangan().getStatus().equals("ditolak")){
+                                Log.d(TAG, "Is user iya, perpanjangan not empty, status ditolak");
+                                tv_ket_perpanjangan.setText(getResources().getString(R.string.ditolak_perpanjangan));
+                            }
+                        }
+
+                    } else {
+                        Log.d(TAG, "Is user iya, target terpenuhi");
+                        tv_ket_perpanjangan.setText(getResources().getString(R.string.tidak_bisa_perpanjang));
+                    }
                 } else {
-                    Log.w(TAG, "Body kosong");
-                    //Toast.makeText(getActivity(), "Is User tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Is user bukan");
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
-            public void onFailure(Call<KontenResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<KontenResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Request gagal");
                 //progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
@@ -187,8 +226,8 @@ public class DetailKontenFragment extends Fragment {
         kontenMessage = event.konten;
     }
 
-    @Override public void onPause() {
-        super.onPause();
+    @Override public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 }

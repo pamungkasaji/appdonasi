@@ -32,6 +32,9 @@ public class Konten {
     @SerializedName("nomorrekening")
     @Expose
     private String nomorrekening;
+    @SerializedName("bank")
+    @Expose
+    private String bank;
     @SerializedName("status")
     @Expose
     private String status;
@@ -115,6 +118,14 @@ public class Konten {
 
     public void setNomorrekening(String nomorrekening) {
         this.nomorrekening = nomorrekening;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 
     public String getStatus() {

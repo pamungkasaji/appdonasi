@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
@@ -103,7 +104,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
                 if (response.body() != null) {
                     KontenResponse kontenResponse = response.body();
-                    Log.i(TAG, "Muat ulang");
+                    Log.d(TAG, "Muat ulang");
                     kontenList = (ArrayList<Konten>) kontenResponse.getData();
                     adapter = new KontenAdapter(getActivity(), kontenList);
                     recyclerView.setAdapter(adapter);
@@ -118,8 +119,9 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal");
-                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
+                Log.e(TAG, "Request gagal dan muat lagi");
+                listKontenUser();
+                //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
     }
@@ -132,7 +134,8 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         if(clickedItem.getStatus().equals(VERIFIKASI)) {
             Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");
         } else {
-            EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
+            //EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
+            EventBus.getDefault().postSticky(new KontenMessage(clickedItem));
             startActivity(detailIntent);
         }
     }

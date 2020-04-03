@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
 
-    @SerializedName("success")
-    @Expose
-    private Boolean success;
     @SerializedName("message")
     @Expose
     private String message;
@@ -18,24 +15,12 @@ public class LoginResponse {
     @Expose
     private String token;
 
-    public Boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getToken() {

@@ -52,16 +52,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BuatKontenActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class BuatKontenActivity extends AppCompatActivity{
 
     //Declaring views
     private ImageView gambar;
-    private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextNoRek;
+    private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextNoRek, editTextBank;
     private static final String TAG = "BuatKontenActivity";
     private String filePath;
 
-    private String tlama_donasi;
-    private Spinner spinner;
+    private String tlama_donasi, tbank;
+    private Spinner spinner_hari, spinner_bank;
 
     private ProgressBar progressBar;
 
@@ -79,6 +79,8 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
         editTextTarget = findViewById(R.id.editTextTarget);
         editTextNoRek = findViewById(R.id.editTextNoRek);
+        editTextBank = findViewById(R.id.editTextBank);
+        editTextBank.setVisibility(View.GONE);
 
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
@@ -89,15 +91,20 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Ajukan Konten Penggalangan Dana");
+            getSupportActionBar().setTitle("Ajukan Penggalangan Dana");
         }
 
-        spinner = findViewById(R.id.spinner1);
+        spinner_hari = findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner_lama_donasi, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        spinner_hari.setAdapter(adapter);
+
+        spinner_bank = findViewById(R.id.spinner_bank);
+        ArrayAdapter<CharSequence> adapter_bank = ArrayAdapter.createFromResource(this,
+                R.array.spinner_bank, android.R.layout.simple_spinner_item);
+        adapter_bank.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_bank.setAdapter(adapter_bank);
 
         buttonChoose.setOnClickListener(v -> captureImage());
 
@@ -106,6 +113,35 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        spinner_hari.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tlama_donasi = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinner_bank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).toString().equals("Lainnya")) {
+                    editTextBank.setVisibility(View.VISIBLE);
+                } else {
+                    tbank = adapterView.getItemAtPosition(i).toString();
+                    editTextBank.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void uploadKonten() {
@@ -113,8 +149,27 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         String tjudul = editTextJudul.getEditText().getText().toString().trim();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
         String ttarget = editTextTarget.getEditText().getText().toString().trim();
-        //String tlamadonasi = editTextLamaDonasi.getEditText().getText().toString().trim();
         String tnorek = editTextNoRek.getEditText().getText().toString().trim();
+
+        if (editTextBank.getVisibility() == View.VISIBLE){
+            tbank = editTextBank.getEditText().getText().toString().trim();
+
+            if (tbank.isEmpty()) {
+                editTextBank.setError("Isi kolom nama bank");
+                editTextBank.requestFocus();
+                return;
+            }else {
+                editTextBank.setError(null);
+            }
+        } else {
+            if (tbank.equals("Pilih Nama Bank")) {
+                Toast.makeText(this, "Pilih nama bank", Toast.LENGTH_SHORT).show();
+                spinner_bank.requestFocus();
+                return;
+            }else {
+                ((TextView)spinner_bank.getSelectedView()).setError(null);
+            }
+        }
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
@@ -141,12 +196,11 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         }
 
         if (tlama_donasi.equals("Jumlah hari penggalangan dana")) {
-            //((TextView)spinner.getSelectedView()).setError("Pilih jumlah hari");
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
-            spinner.requestFocus();
+            spinner_hari.requestFocus();
             return;
         }else {
-            ((TextView)spinner.getSelectedView()).setError(null);
+            ((TextView)spinner_hari.getSelectedView()).setError(null);
         }
 
         if (tnorek.isEmpty()) {
@@ -174,23 +228,24 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
         RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
         RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
         RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlama_donasi);
+        RequestBody bank = RequestBody.create(MediaType.parse("multipart/form-data"), tbank);
         RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
 
-        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening);
+        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
-            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+            public void onResponse(@NonNull Call<DefaultResponse> call,@NonNull Response<DefaultResponse> response) {
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body()!= null) {
-                    Log.d(TAG, "respon sukses body not null")
+                    Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
-                    Helper.infoDialog(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(BuatKontenActivity.this, "Tunggu Verifikasi", defaultResponse.getMessage());
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null")
+                        Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
@@ -223,15 +278,5 @@ public class BuatKontenActivity extends AppCompatActivity implements AdapterView
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             gambar.setImageBitmap(selectedImage);
         }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        tlama_donasi = parent.getItemAtPosition(position).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }
