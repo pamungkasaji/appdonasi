@@ -54,11 +54,6 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
     private static final String EXTRA_IDKONTEN = "idkonten";
 
-    public ListGalangDanaFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

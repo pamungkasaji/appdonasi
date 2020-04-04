@@ -115,4 +115,7 @@
     <string name="isikan_data_identitas">Isikan data identitas pribadi untuk menunjang verifikasi registrasi</string>
     <string name="memberi_donasi">Memberi donasi</string>
     <string name="urutkan">Urutkan</string>
+    <string name="terbanyak">Terbanyak</string>
+    <string name="terbaru">Terbaru</string>
+    <string name="logout">Logout</string>
 </resources>

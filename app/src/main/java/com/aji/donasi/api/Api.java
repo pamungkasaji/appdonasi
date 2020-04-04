@@ -31,8 +31,8 @@ public interface Api {
     @GET("konten")
     Call<KontenResponse> getKonten();
 
-    @GET("konten/{id}")
-    Call<KontenResponse> getKontenDetail(@Path("id") int id);
+//    @GET("konten/{id}")
+//    Call<KontenResponse> getKontenDetail(@Path("id") int id);
 
     @GET("konten/{id}/donatur")
     Call<DonaturResponse> getDonatur(@Path("id") int id);
@@ -75,6 +75,17 @@ public interface Api {
             @Part MultipartBody.Part partimage,
             @Part("judul") RequestBody judul,
             @Part("deskripsi") RequestBody deskripsi
+    );
+
+    @Multipart
+    @POST("konten/{id}/perkembangan")
+    Call<DefaultResponse> createPerkembangan(
+            @Path("id") int id,
+            @Header("Authorization") String token,
+            @Part MultipartBody.Part partimage,
+            @Part("judul") RequestBody judul,
+            @Part("deskripsi") RequestBody deskripsi,
+            @Part("pengeluaran") RequestBody pengeluaran
     );
 
     @FormUrlEncoded

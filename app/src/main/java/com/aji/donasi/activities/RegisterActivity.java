@@ -52,7 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView imageKtp;
     private TextInputLayout editTextNamaLengkap, editTextAlamat, editTextNoktp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
     private ProgressBar progressBar;
-    private String filePath;
+    private String filePath = "";
+    private Button buttonChoose;
     private static final String TAG = "RegisterActivity";
 
     @Override
@@ -61,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         //Initializing views
-        Button buttonChoose = findViewById(R.id.buttonChoose);
+        buttonChoose = findViewById(R.id.buttonChoose);
         Button buttonRegis = findViewById(R.id.buttonRegis);
         imageKtp = findViewById(R.id.imageKtp);
 
@@ -172,6 +173,14 @@ public class RegisterActivity extends AppCompatActivity {
             editTextNoktp.setError(null);
         }
 
+        if(filePath.equals("")){
+            Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
+            buttonChoose.setError("Upload gambar");
+            return;
+        }else {
+            buttonChoose.setError(null);
+        }
+
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -235,5 +244,6 @@ public class RegisterActivity extends AppCompatActivity {
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             imageKtp.setImageBitmap(selectedImage);
         }
+        buttonChoose.setError(null);
     }
 }

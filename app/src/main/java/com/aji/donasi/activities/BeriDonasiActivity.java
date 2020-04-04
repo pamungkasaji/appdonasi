@@ -61,7 +61,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private TextInputLayout et_nama, et_jumlah, et_nohp;
     private CheckBox anonim;
     private String tis_anonim = "0";
-    private String filePath;
+    private String filePath = "";
+    private Button buttonChoose;
     private ProgressBar progressBar;
     private static final String TAG = "BeriDonasiActivity";
 
@@ -76,8 +77,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
 
         EventBus.getDefault().register(this);
 
-        //Initializing views
-        Button buttonChoose = findViewById(R.id.buttonChoose);
+        buttonChoose = findViewById(R.id.buttonChoose);
         Button buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
@@ -155,6 +155,14 @@ public class BeriDonasiActivity extends AppCompatActivity{
             et_nohp.setError(null);
         }
 
+        if(filePath.equals("")){
+            Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
+            buttonChoose.setError("Upload gambar");
+            return;
+        }else {
+            buttonChoose.setError(null);
+        }
+
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -220,6 +228,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             gambar.setImageBitmap(selectedImage);
         }
+        buttonChoose.setError(null);
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

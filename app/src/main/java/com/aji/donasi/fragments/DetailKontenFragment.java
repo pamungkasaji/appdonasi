@@ -96,6 +96,7 @@ public class DetailKontenFragment extends Fragment {
         layout_perpanjangan.setVisibility(View.GONE);
         layout_selesai.setVisibility(View.GONE);
         progressBar = view.findViewById(R.id.progBar);
+        progressBar.setVisibility(View.GONE);
 
         token = Session.getInstance(getActivity()).getToken();
 
@@ -107,12 +108,13 @@ public class DetailKontenFragment extends Fragment {
 
         id_konten = kontenMessage.getId();
 
-        displayDetail();
+        detailData();
+
         if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0)) {
+            progressBar.setVisibility(View.VISIBLE);
             initPerpanjangan();
             Log.d(TAG, "init perpanjangan");
         }
-        //progressBar.setVisibility(View.GONE);
 
         perpanjangan.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), PerpanjanganActivity.class);
@@ -120,53 +122,19 @@ public class DetailKontenFragment extends Fragment {
         });
     }
 
-    private void displayDetail() {
-        Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+    private void detailData() {
+        tv_judul.setText(kontenMessage.getJudul());
+        tv_deskripsi.setText(kontenMessage.getDeskripsi());
+        tv_lama.setText(String.valueOf(kontenMessage.getLamaDonasi()));
+        tv_penggalang.setText(kontenMessage.getUser().getNamalengkap());
+        tv_nohp.setText(kontenMessage.getUser().getNohp());
+        tv_target.setText(formatRupiah.format((double)kontenMessage.getTarget()));
+        tv_terkumpul.setText(formatRupiah.format((double)kontenMessage.getTerkumpul()));
 
-        Call<KontenResponse> call = api.getKontenDetail(id_konten);
-
-        call.enqueue(new Callback<KontenResponse>() {
-            @Override
-            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
-
-                if (response.body() != null) {
-                    KontenResponse kontenResponse = response.body();
-                    Log.d(TAG, "Muat ulang");
-                    tv_judul.setText(kontenResponse.getKonten().getJudul());
-                    tv_deskripsi.setText(kontenResponse.getKonten().getDeskripsi());
-                    tv_lama.setText(String.valueOf(kontenResponse.getKonten().getLamaDonasi()));
-                    tv_penggalang.setText(kontenResponse.getKonten().getUser().getNamalengkap());
-                    tv_nohp.setText(kontenResponse.getKonten().getUser().getNohp());
-                    tv_target.setText(formatRupiah.format((double)kontenResponse.getKonten().getTarget()));
-                    tv_terkumpul.setText(formatRupiah.format((double)kontenResponse.getKonten().getTerkumpul()));
-                    //tv_target.setText(String.valueOf(kontenResponse.getKonten().getTarget()));
-                    //tv_terkumpul.setText(String.valueOf(kontenResponse.getKonten().getTerkumpul()));
-
-                    if (kontenResponse.getKonten().getStatus().equals("selesai")){
-                        layout_selesai.setVisibility(View.VISIBLE);
-                    }
-
-                    //status_perpanjangan = kontenResponse.getKonten().getPerpanjangan().getStatus();
-                    //lama_donasi = kontenResponse.getKonten().getLamaDonasi();
-
-                    Log.d(TAG, "selesai muat");
-                } else {
-                    Log.w(TAG, "Body kosong");
-                    Toast.makeText(getActivity(), "Detail konten tidak dapat ditampilkan", Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<KontenResponse> call, Throwable t) {
-                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                Log.e(TAG, "Request gagal");
-                //progressBar.setVisibility(View.GONE);
-                displayDetail();
-                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (kontenMessage.getStatus().equals("selesai")){
+            layout_selesai.setVisibility(View.VISIBLE);
+        }
+        Log.d(TAG, "detail konten, message bus");
     }
 
     private void initPerpanjangan(){
@@ -213,7 +181,7 @@ public class DetailKontenFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<KontenResponse> call, @NonNull Throwable t) {
-                Log.e(TAG, "Request gagal");
+                Log.e(TAG, "Init perpanjangan, Request gagal");
                 //progressBar.setVisibility(View.GONE);
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();

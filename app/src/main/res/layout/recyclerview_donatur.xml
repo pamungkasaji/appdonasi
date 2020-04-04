@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_margin="4dp"
-    app:cardElevation="2dp"
+    app:cardElevation="3dp"
     app:cardBackgroundColor="@color/background_grey">
 
         <RelativeLayout
@@ -44,7 +44,7 @@
                     <TextView
                         android:id="@+id/tv_jumlah"
                         tool:text="Rp. 100.000"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textAppearance="@style/textstyle2"
                         android:textColor="@color/black"
                         android:layout_marginStart="10dp"
                         android:layout_width="wrap_content"
@@ -52,18 +52,15 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_createdat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tool:text="Nama"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tv_createdat"
-                android:textColor="@color/grey_dark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                tool:text="Tanggal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            </LinearLayout>
 
         </RelativeLayout>
 

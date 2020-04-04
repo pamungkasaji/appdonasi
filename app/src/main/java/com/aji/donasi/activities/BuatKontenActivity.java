@@ -58,10 +58,12 @@ public class BuatKontenActivity extends AppCompatActivity{
     private ImageView gambar;
     private TextInputLayout editTextJudul, editTextDeskripsi, editTextTarget, editTextNoRek, editTextBank;
     private static final String TAG = "BuatKontenActivity";
-    private String filePath;
+    private String filePath = "";
 
     private String tlama_donasi, tbank;
     private Spinner spinner_hari, spinner_bank;
+
+    private Button buttonChoose;
 
     private ProgressBar progressBar;
 
@@ -71,7 +73,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         setContentView(R.layout.activity_buatkonten);
 
         //Initializing views
-        Button buttonChoose = findViewById(R.id.buttonChoose);
+        buttonChoose = findViewById(R.id.buttonChoose);
         Button buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
@@ -151,26 +153,6 @@ public class BuatKontenActivity extends AppCompatActivity{
         String ttarget = editTextTarget.getEditText().getText().toString().trim();
         String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
-        if (editTextBank.getVisibility() == View.VISIBLE){
-            tbank = editTextBank.getEditText().getText().toString().trim();
-
-            if (tbank.isEmpty()) {
-                editTextBank.setError("Isi kolom nama bank");
-                editTextBank.requestFocus();
-                return;
-            }else {
-                editTextBank.setError(null);
-            }
-        } else {
-            if (tbank.equals("Pilih Nama Bank")) {
-                Toast.makeText(this, "Pilih nama bank", Toast.LENGTH_SHORT).show();
-                spinner_bank.requestFocus();
-                return;
-            }else {
-                ((TextView)spinner_bank.getSelectedView()).setError(null);
-            }
-        }
-
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
             editTextJudul.requestFocus();
@@ -197,7 +179,8 @@ public class BuatKontenActivity extends AppCompatActivity{
 
         if (tlama_donasi.equals("Jumlah hari penggalangan dana")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
-            spinner_hari.requestFocus();
+            ((TextView)spinner_hari.getSelectedView()).setError("Pilih hari");
+            //spinner_hari.requestFocus();
             return;
         }else {
             ((TextView)spinner_hari.getSelectedView()).setError(null);
@@ -209,6 +192,34 @@ public class BuatKontenActivity extends AppCompatActivity{
             return;
         }else {
             editTextNoRek.setError(null);
+        }
+
+        if (editTextBank.getVisibility() == View.VISIBLE){
+            tbank = editTextBank.getEditText().getText().toString().trim();
+
+            if (tbank.isEmpty()) {
+                editTextBank.setError("Isi kolom nama bank");
+                editTextBank.requestFocus();
+                return;
+            }else {
+                editTextBank.setError(null);
+            }
+        } else {
+            if (tbank.equals("Pilih Nama Bank")) {
+                Toast.makeText(this, "Pilih nama bank", Toast.LENGTH_SHORT).show();
+                ((TextView)spinner_bank.getSelectedView()).setError("Pilih bank");
+                return;
+            }else {
+                ((TextView)spinner_bank.getSelectedView()).setError(null);
+            }
+        }
+
+        if(filePath.equals("")){
+            Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
+            buttonChoose.setError("Upload gambar");
+            return;
+        }else {
+            buttonChoose.setError(null);
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -278,5 +289,6 @@ public class BuatKontenActivity extends AppCompatActivity{
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             gambar.setImageBitmap(selectedImage);
         }
+        buttonChoose.setError(null);
     }
 }

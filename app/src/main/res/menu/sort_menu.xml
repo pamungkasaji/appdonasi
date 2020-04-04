@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/terbanyak"
-        android:title="Donasi Terbanyak" />
+        android:title="@string/terbanyak" />
 
     <item
         android:id="@+id/terbaru"
-        android:title="Terbaru" />
+        android:title="@string/terbaru" />
 
 </menu>

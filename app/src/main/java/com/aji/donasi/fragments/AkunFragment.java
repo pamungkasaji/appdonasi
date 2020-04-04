@@ -40,33 +40,24 @@ public class AkunFragment extends Fragment {
         button_logout = view.findViewById(R.id.button_logout);
 
         TextView username = view.findViewById(R.id.username);
+        TextView nama_lengkap = view.findViewById(R.id.nama_lengkap);
         belumauth = view.findViewById(R.id.belumauth);
 
         username.setText(Session.getInstance(getActivity()).getUser().getUsername());
+        nama_lengkap.setText(Session.getInstance(getActivity()).getUser().getNamalengkap());
 
         initAuth();
 
-        button_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+        button_login.setOnClickListener(v -> {
+            login();
         });
 
-        button_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                startActivity(intent);
-            }
+        button_register.setOnClickListener(v -> {
+            register();
         });
 
-        button_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
+        button_logout.setOnClickListener(v -> {
+            logout();
         });
     }
 
@@ -82,6 +73,16 @@ public class AkunFragment extends Fragment {
             button_logout.setVisibility(View.GONE);
             belumauth.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void login(){
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void register(){
+        Intent intent = new Intent(getActivity(), RegisterActivity.class);
+        startActivity(intent);
     }
 
     private void logout() {

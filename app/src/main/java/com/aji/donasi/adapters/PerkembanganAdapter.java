@@ -58,8 +58,10 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
         Perkembangan perkembangan = perkembanganList.get(position);
 
         holder.tv_judul.setText(perkembangan.getJudul());
-        holder.tv_createdat.setText(perkembangan.getCreatedAt());
         holder.tv_deskripsi.setText(perkembangan.getDeskripsi());
+
+        String createdAt = Helper.tanggal(perkembangan.getCreatedAt());
+        holder.tv_createdat.setText(createdAt);
 
         String imagePath= Helper.IMAGE_URL_PERKEMBANGAN +perkembanganList.get(position).getGambar();
 

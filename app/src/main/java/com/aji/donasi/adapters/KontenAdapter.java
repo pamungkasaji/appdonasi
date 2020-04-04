@@ -24,7 +24,6 @@ import java.util.Locale;
 public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenViewHolder> {
 
     private Context mCtx;
-    //private List<Konten> kontenList;
     private ArrayList<Konten> kontenList;
 
     private OnItemClickListener mListener;
@@ -41,11 +40,6 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         this.mCtx = mCtx;
         this.kontenList = kontenList;
     }
-
-//    public KontenAdapter(Context mCtx, List<Konten> kontenList) {
-//        this.mCtx = mCtx;
-//        this.kontenList = kontenList;
-//    }
 
     @NonNull
     @Override
@@ -69,8 +63,13 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         holder.tvTerkumpul.setText(formatRupiah.format((double)konten.getTerkumpul()));
 
         if (Helper.SELESAI.equals(konten.getStatus())) {
-            holder.teksLama.setVisibility(View.GONE);
             holder.tvLama.setText(Helper.SELESAI);
+            holder.teksLama.setVisibility(View.GONE);
+        } else if (Helper.VERIFIKASI.equals(konten.getStatus())){
+            holder.tvLama.setText(Helper.TUNGGU);
+            holder.teksLama.setText(Helper.VERIFIKASI);
+            holder.tvTerkumpul.setVisibility(View.GONE);
+            holder.teksTerkumpul.setVisibility(View.GONE);
         }
 
         String imagePath= Helper.IMAGE_URL_KONTEN +kontenList.get(position).getGambar();
@@ -78,6 +77,7 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         Glide.with(mCtx)
                 .load(imagePath)
                 .placeholder(R.drawable.loading)
+                .dontAnimate()
                 .into(holder.gambarkonten);
     }
 
@@ -88,11 +88,11 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
 
     class KontenViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvJudul, tvTerkumpul, tvLama, teksLama;
+        TextView tvJudul, tvTerkumpul, tvLama, teksLama, teksTerkumpul;
         ImageView gambarkonten;
         ProgressBar progressBar;
 
-        public KontenViewHolder(View itemView) {
+        private KontenViewHolder(View itemView) {
             super(itemView);
 
             gambarkonten = itemView.findViewById(R.id.gambarkonten);
@@ -100,6 +100,7 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
             tvLama = itemView.findViewById(R.id.tvLama);
             teksLama = itemView.findViewById(R.id.teksLama);
             tvTerkumpul = itemView.findViewById(R.id.tvTerkumpul);
+            teksTerkumpul = itemView.findViewById(R.id.teksTerkumpul);
             progressBar = itemView.findViewById(R.id.progressBar);
 
             itemView.setOnClickListener(new View.OnClickListener() {

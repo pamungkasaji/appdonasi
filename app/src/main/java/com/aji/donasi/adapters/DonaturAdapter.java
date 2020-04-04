@@ -3,11 +3,14 @@ package com.aji.donasi.adapters;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.ParseException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Donatur;
 
@@ -16,6 +19,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturViewHolder> {
@@ -48,7 +52,8 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
         holder.tv_jumlah.setText(formatRupiah.format((double)donatur.getJumlah()));
 
         //tanggal
-
+        String createdAt = Helper.tanggal(donatur.getCreatedAt());
+        holder.tv_createdat.setText(createdAt);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
 
             tv_nama = itemView.findViewById(R.id.tvNama);
             tv_jumlah = itemView.findViewById(R.id.tv_jumlah);
-            //tv_createdat = itemView.findViewById(R.id.tv_createdat);
+            tv_createdat = itemView.findViewById(R.id.tv_createdat);
 
         }
     }

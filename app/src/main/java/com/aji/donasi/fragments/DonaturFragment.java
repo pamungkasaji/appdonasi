@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -52,6 +53,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
     private ProgressBar progressBar;
     private TextView jumlahDonatur;
     private ImageButton sortMenu;
+    private TextView sort;
 
     //EventBus
     private int id_konten;
@@ -75,7 +77,8 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         progressBar = view.findViewById(R.id.progBar);
         jumlahDonatur = view.findViewById(R.id.jumlahDonatur);
-        sortMenu = view.findViewById(R.id.sortMenu);
+//        sortMenu = view.findViewById(R.id.sortMenu);
+        sort = view.findViewById(R.id.sort);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -84,14 +87,20 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         displayData();
 
-        sortMenu.setOnClickListener(v -> {
+//        sortMenu.setOnClickListener(v -> {
+//            PopupMenu popup = new PopupMenu(getActivity(), v);
+//            popup.setOnMenuItemClickListener(this);
+//            popup.inflate(R.menu.sort_menu);
+//            popup.show();
+//        });
+
+        sort.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(getActivity(), v);
             popup.setOnMenuItemClickListener(this);
             popup.inflate(R.menu.sort_menu);
             popup.show();
         });
     }
-
 
     private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -101,7 +110,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
-            public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
+            public void onResponse(@NonNull Call<DonaturResponse> call,@NonNull Response<DonaturResponse> response) {
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
@@ -119,7 +128,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
             }
 
             @Override
-            public void onFailure(Call<DonaturResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<DonaturResponse> call,@NonNull Throwable t) {
                 Log.e(TAG, "Request gagal dan muat lagi");
 //              progressBar.setVisibility(View.GONE);
                 displayData();
@@ -143,9 +152,11 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
         switch (item.getItemId()) {
             case R.id.terbanyak:
                 sortTerbanyak();
+                sort.setText(getResources().getString(R.string.terbanyak));
                 return true;
             case R.id.terbaru:
                 sortTerbaru();
+                sort.setText(getResources().getString(R.string.terbaru));
                 return true;
             default:
                 return false;
