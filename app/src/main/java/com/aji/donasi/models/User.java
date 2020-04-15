@@ -29,9 +29,9 @@ public class User {
     @SerializedName("fotoktp")
     @Expose
     private String fotoktp;
-    @SerializedName("is_verif")
+    @SerializedName("status")
     @Expose
-    private Integer isVerif;
+    private String status;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -106,12 +106,12 @@ public class User {
         this.fotoktp = fotoktp;
     }
 
-    public Integer getIsVerif() {
-        return isVerif;
+    public String getStatus() {
+        return status;
     }
 
-    public void setIsVerif(Integer isVerif) {
-        this.isVerif = isVerif;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCreatedAt() {

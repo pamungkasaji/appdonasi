@@ -14,23 +14,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.activities.BeriDonasiActivity;
-import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.activities.PerpanjanganActivity;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
-import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.DonaturResponse;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
-import com.aji.donasi.models.PerkembanganResponse;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,26 +37,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
-
 public class DetailKontenFragment extends Fragment {
 
     private TextView tv_judul, tv_deskripsi, tv_target,  tv_perpanjangan, tv_terkumpul, tv_lama, tv_ket_perpanjangan, tv_penggalang, tv_nohp;
     private ProgressBar progressBar;
+    private ProgressBar progressDonasi;
     private LinearLayout layout_perpanjangan, layout_selesai;
 
-    //private int lama_donasi;
-    //private String status_perpanjangan = "";
     private Button perpanjangan;
     private String token;
 
     //Eventbus
     private int id_konten;
     private Konten kontenMessage;
-
-    //currency
-    private Locale localeID;
-    private NumberFormat formatRupiah;
 
     private static final String TAG = "DetailKontenFragment";
 
@@ -93,6 +79,8 @@ public class DetailKontenFragment extends Fragment {
         tv_perpanjangan = view.findViewById(R.id.tv_perpanjangan);
         layout_perpanjangan = view.findViewById(R.id.layout_perpanjangan);
         layout_selesai = view.findViewById(R.id.layout_selesai);
+        progressDonasi = view.findViewById(R.id.progressDonasi);
+
         layout_perpanjangan.setVisibility(View.GONE);
         layout_selesai.setVisibility(View.GONE);
         progressBar = view.findViewById(R.id.progBar);
@@ -103,23 +91,28 @@ public class DetailKontenFragment extends Fragment {
         perpanjangan = view.findViewById(R.id.perpanjangan);
         perpanjangan.setEnabled(false);
 
-        localeID = new Locale("in", "ID");
-        formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-
         id_konten = kontenMessage.getId();
 
+        //detailData();
+
+        perpanjangan.setOnClickListener((View v) -> {
+            Intent intent = new Intent(getActivity(), PerpanjanganActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //progressBar.setVisibility(View.VISIBLE);
         detailData();
+        Log.d(TAG, "Fragment on resume, detailData();");
 
         if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0)) {
             progressBar.setVisibility(View.VISIBLE);
             initPerpanjangan();
             Log.d(TAG, "init perpanjangan");
         }
-
-        perpanjangan.setOnClickListener((View v) -> {
-            Intent intent = new Intent(getActivity(), PerpanjanganActivity.class);
-            startActivity(intent);
-        });
     }
 
     private void detailData() {
@@ -128,20 +121,24 @@ public class DetailKontenFragment extends Fragment {
         tv_lama.setText(String.valueOf(kontenMessage.getLamaDonasi()));
         tv_penggalang.setText(kontenMessage.getUser().getNamalengkap());
         tv_nohp.setText(kontenMessage.getUser().getNohp());
-        tv_target.setText(formatRupiah.format((double)kontenMessage.getTarget()));
-        tv_terkumpul.setText(formatRupiah.format((double)kontenMessage.getTerkumpul()));
+
+        tv_target.setText(Helper.mataUang(kontenMessage.getTarget()));
+        tv_terkumpul.setText(Helper.mataUang(kontenMessage.getTerkumpul()));
+
+        double progress = ((double)kontenMessage.getTerkumpul()/(double)kontenMessage.getTarget())*100;
+        progressDonasi.setProgress((int)progress);
 
         if (kontenMessage.getStatus().equals("selesai")){
             layout_selesai.setVisibility(View.VISIBLE);
         }
-        Log.d(TAG, "detail konten, message bus");
+        progressBar.setVisibility(View.GONE);
     }
 
     private void initPerpanjangan(){
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        Call<KontenResponse> call = api.isUser(id_konten, token);
+        Call<KontenResponse> call = api.showUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

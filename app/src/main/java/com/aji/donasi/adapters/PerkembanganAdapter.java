@@ -15,7 +15,9 @@ import com.aji.donasi.models.Perkembangan;
 import com.bumptech.glide.Glide;
 import com.github.vipulasri.timelineview.TimelineView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapter.PerkembanganViewHolder> {
 
@@ -60,6 +62,15 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
         holder.tv_judul.setText(perkembangan.getJudul());
         holder.tv_deskripsi.setText(perkembangan.getDeskripsi());
 
+        //pengeluaran
+        if (perkembangan.getPengeluaran() != null){
+            holder.tv_pengeluaran.setVisibility(View.VISIBLE);
+            holder.rincian.setVisibility(View.VISIBLE);
+            holder.info_pengeluaran.setVisibility(View.VISIBLE);
+
+            holder.tv_pengeluaran.setText(Helper.mataUang(perkembangan.getPengeluaran()));
+        }
+
         String createdAt = Helper.tanggal(perkembangan.getCreatedAt());
         holder.tv_createdat.setText(createdAt);
 
@@ -67,7 +78,6 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
         Glide.with(mCtx)
                 .load(imagePath)
-                .placeholder(R.drawable.loading)
                 .into(holder.gambar);
     }
 
@@ -78,16 +88,13 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
     class PerkembanganViewHolder extends RecyclerView.ViewHolder {
 
-        public TimelineView mTimelineView;
-
-
-        TextView tv_judul, tv_createdat, tv_deskripsi;
+        TextView tv_judul, tv_createdat, tv_deskripsi, tv_pengeluaran, rincian, info_pengeluaran;
         ImageView gambar;
 
-        public PerkembanganViewHolder(View itemView, int viewType) {
+        private PerkembanganViewHolder(View itemView, int viewType) {
             super(itemView);
 
-            mTimelineView = (TimelineView) itemView.findViewById(R.id.timeline);
+            TimelineView mTimelineView = itemView.findViewById(R.id.timeline);
             mTimelineView.initLine(viewType);
 
             gambar = itemView.findViewById(R.id.gambar);
@@ -96,17 +103,10 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
             tv_createdat = itemView.findViewById(R.id.tv_createdat);
             tv_deskripsi = itemView.findViewById(R.id.tv_deskripsi);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mListener != null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            mListener.onItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
+            tv_pengeluaran = itemView.findViewById(R.id.tv_pengeluaran);
+            rincian = itemView.findViewById(R.id.rincian);
+            info_pengeluaran = itemView.findViewById(R.id.info_pengeluaran);
+
         }
     }
 }

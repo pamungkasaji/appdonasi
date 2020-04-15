@@ -1,39 +1,27 @@
 package com.aji.donasi.activities;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
-import com.aji.donasi.MessageEvent;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.Perpanjangan;
+import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
@@ -41,12 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,12 +38,15 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
 
     //Declaring views
     private TextInputLayout editTextAlasan;
-    private int id_konten;
     private ProgressBar progressBar;
 
     //spinner
     private String hari;
     private Spinner spinner;
+
+    //EventBus
+    private int id_konten;
+    private Konten kontenMessage;
 
     private static final String TAG = "PerpanjanganActivity";
 
@@ -77,6 +62,8 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         editTextAlasan = findViewById(R.id.editTextAlasan);
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
+
+        id_konten = kontenMessage.getId();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -166,8 +153,8 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
     }
 
     @Override public void onPause() {

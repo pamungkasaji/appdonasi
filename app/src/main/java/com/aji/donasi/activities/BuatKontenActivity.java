@@ -93,7 +93,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Ajukan Penggalangan Dana");
+            getSupportActionBar().setTitle("Buat Konten Donasi");
         }
 
         spinner_hari = findViewById(R.id.spinner1);

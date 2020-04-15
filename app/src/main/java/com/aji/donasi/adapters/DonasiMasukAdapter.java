@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.models.Donatur;
 
@@ -49,10 +50,7 @@ public class DonasiMasukAdapter extends RecyclerView.Adapter<DonasiMasukAdapter.
         holder.tv_nama.setText(donatur.getNama());
         holder.tv_judul.setText(donatur.getJudul());
 
-        Locale localeID = new Locale("in", "ID");
-        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        holder.tv_jumlah.setText(formatRupiah.format((double)donatur.getJumlah()));
-
+        holder.tv_jumlah.setText(Helper.mataUang(donatur.getJumlah()));
     }
 
     @Override

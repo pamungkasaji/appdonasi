@@ -27,6 +27,15 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
+                <TextView
+                    android:text="@string/isikan_informasi_konten"
+                    android:textAppearance="@style/textstyle3"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editTextJudul"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -75,11 +84,21 @@
 
                 <Spinner
                     android:id="@+id/spinner1"
-                    android:layout_width="wrap_content"
+                    android:background="@drawable/border"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:padding="10dp"
                     app:errorEnabled="true" />
+
+                <TextView
+                    android:text="@string/tujuan_transfer"
+                    android:textAppearance="@style/textstyle3"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editTextNoRek"
@@ -98,7 +117,8 @@
 
                 <Spinner
                     android:id="@+id/spinner_bank"
-                    android:layout_width="wrap_content"
+                    android:background="@drawable/border"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:padding="10dp"
@@ -121,9 +141,10 @@
 
                 <ImageView
                     android:id="@+id/gambar"
-                    android:src="@drawable/placeholder"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
+                    android:src="@drawable/ic_image_black_70dp"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/gambar"/>
 

@@ -134,9 +134,11 @@
 
                 <ImageView
                     android:id="@+id/gambar"
-                    android:src="@drawable/placeholder"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
+                    android:src="@drawable/ic_image_black_70dp"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/gambar"/>
 
                 <Button

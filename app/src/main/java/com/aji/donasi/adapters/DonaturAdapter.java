@@ -47,9 +47,7 @@ public class DonaturAdapter extends RecyclerView.Adapter<DonaturAdapter.DonaturV
         holder.tv_nama.setText(donatur.getNama());
 
         //jumlah
-        Locale localeID = new Locale("in", "ID");
-        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        holder.tv_jumlah.setText(formatRupiah.format((double)donatur.getJumlah()));
+        holder.tv_jumlah.setText(Helper.mataUang(donatur.getJumlah()));
 
         //tanggal
         String createdAt = Helper.tanggal(donatur.getCreatedAt());

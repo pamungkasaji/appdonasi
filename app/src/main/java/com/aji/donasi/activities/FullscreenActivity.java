@@ -25,6 +25,9 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,10 +86,11 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     private void initData(Donatur donatur){
-        judul.setText(donatur.getJudul());
-        nama.setText(donatur.getNama());
-        nohp.setText(donatur.getNohp());
-        jumlah.setText(String.valueOf(donatur.getJumlah()));
+        judul.setText(getResources().getString(R.string.judul_full, donatur.getJudul()));
+        nama.setText(getResources().getString(R.string.nama_full, donatur.getNama()));
+        nohp.setText(getResources().getString(R.string.nohp_full, donatur.getNohp()));
+
+        jumlah.setText(getResources().getString(R.string.jumlah_full, Helper.mataUang(donatur.getJumlah())));
         if (donatur.getIsAnonim() == 0) {
             is_anonim.setVisibility(View.GONE);
         }

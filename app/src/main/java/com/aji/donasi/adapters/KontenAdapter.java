@@ -57,10 +57,10 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         //holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
         holder.progressBar.setProgress(konten.getTerkumpul() / konten.getTarget() * 100 );
 
-        //Terkumpul
-        Locale localeID = new Locale("in", "ID");
-        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        holder.tvTerkumpul.setText(formatRupiah.format((double)konten.getTerkumpul()));
+        holder.tvTerkumpul.setText(Helper.mataUang(konten.getTerkumpul()));
+
+        double progress = ((double)konten.getTerkumpul()/(double)konten.getTarget())*100;
+        holder.progressBar.setProgress((int)progress);
 
         if (Helper.SELESAI.equals(konten.getStatus())) {
             holder.tvLama.setText(Helper.SELESAI);

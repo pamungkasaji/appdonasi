@@ -12,19 +12,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
-import com.aji.donasi.activities.DetailKontenActivity;
-import com.aji.donasi.activities.LoginActivity;
 import com.aji.donasi.adapters.DonaturAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
@@ -85,7 +80,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         id_konten = kontenMessage.getId();
 
-        displayData();
+        //displayData();
 
 //        sortMenu.setOnClickListener(v -> {
 //            PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -102,6 +97,14 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        progressBar.setVisibility(View.VISIBLE);
+        displayData();
+        Log.d(TAG, "Fragment on resume, displayData();");
+    }
+
     private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
@@ -114,7 +117,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
-                    Log.d(TAG, "Muat ulang");
+                    Log.d(TAG, "Muat data");
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     jumlahDonatur.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonaturAdapter(getActivity(), donaturList);
@@ -131,7 +134,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
             public void onFailure(@NonNull Call<DonaturResponse> call,@NonNull Throwable t) {
                 Log.e(TAG, "Request gagal dan muat lagi");
 //              progressBar.setVisibility(View.GONE);
-                displayData();
+                //displayData();
                 //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
             }
         });

@@ -1,37 +1,30 @@
 package com.aji.donasi.activities;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
-import com.aji.donasi.MessageEvent;
+import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
@@ -40,6 +33,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -54,11 +49,16 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
     //Declaring views
     private ImageView gambar;
-    private TextInputLayout editTextJudul, editTextDeskripsi;
-    private int id_konten;
+    private TextInputLayout editTextJudul, editTextDeskripsi, editTextPengeluaran;
+    private TextView keterangan;
     private static final String TAG = "TambahPerkembangan";
-    private String filePath;
+    private String filePath = "";
     private ProgressBar progressBar;
+    private Call<DefaultResponse> call;
+
+    //EventBus
+    private int id_konten;
+    private Konten kontenMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,12 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         gambar = findViewById(R.id.gambar);
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
+        editTextPengeluaran = findViewById(R.id.editTextPengeluaran);
+        keterangan = findViewById(R.id.keterangan);
         progressBar = findViewById(R.id.progBar);
         progressBar.setVisibility(View.GONE);
+
+        id_konten = kontenMessage.getId();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,52 +94,115 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         });
 
         buttonUpload.setOnClickListener((View v) -> {
-            uploadMultipart();
+            if(validasi()){
+                uploadPerkembangan();
+            }
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_info:
+                if (checked)
+                    keterangan.setText(getResources().getString(R.string.menambahkan_informasii));
+                    editTextJudul.setHint("Judul");
+                    editTextDeskripsi.setHint("Deskripsi");
+                    editTextJudul.setVisibility(View.VISIBLE);
+                    editTextPengeluaran.setVisibility(View.GONE);
+                    break;
+            case R.id.radio_pengeluaran:
+                if (checked)
+                    keterangan.setText(getResources().getString(R.string.menambahkan_pengeluaran));
+                    editTextDeskripsi.setHint("Rencana penggunaan dana");
+                    editTextJudul.setVisibility(View.GONE);
+                    editTextPengeluaran.setVisibility(View.VISIBLE);
+                    break;
+        }
     }
 
     /*
      * This is the method responsible for image upload
      * We need the full image path and the name for the image in this method
      * */
-    public void uploadMultipart() {
-        //getting name for the image
+
+    private boolean validasi(){
+        if(editTextPengeluaran.getVisibility() == View.GONE){
+            if (editTextJudul.getEditText().getText().toString().isEmpty()) {
+                editTextJudul.setError("Isi kolom judul");
+                return false;
+            } else {
+                editTextJudul.setError(null);
+            }
+            if (editTextDeskripsi.getEditText().getText().toString().isEmpty()) {
+                editTextDeskripsi.setError("Isi kolom deskripsi");
+                return false;
+            }else {
+                editTextDeskripsi.setError(null);
+            }
+            return true;
+        }
+        else {
+            if (editTextPengeluaran.getEditText().getText().toString().isEmpty()) {
+                editTextPengeluaran.setError("Isi kolom pengeluaran");
+                return false;
+            }else {
+                editTextPengeluaran.setError(null);
+            }
+
+            if (editTextDeskripsi.getEditText().getText().toString().isEmpty()) {
+                editTextDeskripsi.setError("Isi kolom deskripsi");
+                return false;
+            }else {
+                editTextDeskripsi.setError(null);
+            }
+
+            return true;
+        }
+    }
+
+    public void uploadPerkembangan() {
+
         String tjudul = editTextJudul.getEditText().getText().toString();
+        String tpengeluaran = editTextPengeluaran.getEditText().getText().toString();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
-        if (tjudul.isEmpty()) {
-            editTextJudul.setError("Isi kolom judul");
-            editTextJudul.requestFocus();
-            return;
-        }else {
-            editTextJudul.setError(null);
-        }
-
-        if (tdeskripsi.isEmpty()) {
-            editTextDeskripsi.setError("Isi kolom deskripsi");
-            editTextDeskripsi.requestFocus();
-            return;
-        }else {
-            editTextJudul.setError(null);
-        }
-
         progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
         String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
+
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody fileReqBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("gambar", file.getName(), fileReqBody);
 
-        RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
-        RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
+//        RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
+//        RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
 
-        Call<DefaultResponse> call = api.createPerkembangan(id_konten, token, pic, judul, deskripsi);
+        Map<String, RequestBody> params = new HashMap<>();
+
+        if(editTextPengeluaran.getVisibility() == View.GONE){
+            params.put("judul", RequestBody.create(MediaType.parse("multipart/form-data"), tjudul));
+            params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
+        } else {
+            params.put("pengeluaran", RequestBody.create(MediaType.parse("multipart/form-data"), tpengeluaran));
+            params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
+        }
+
+        Call<DefaultResponse> call = api.createPerkembanganImage(id_konten, token, pic, params);
+
+        if(filePath.equals("")){
+            call = api.createPerkembangan(id_konten, token, params);
+        }
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
@@ -149,6 +216,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
                 else {
                     if (response.errorBody() != null) {
                         Log.d(TAG, "respon sukses errorBody not null");
+                        Log.e(TAG, response.errorBody().toString());
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", defaultResponse.getMessage());
@@ -163,16 +231,6 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
                 Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        id_konten = event.id_konten;
-    }
-
-    @Override public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     protected void captureImage(){
@@ -191,5 +249,16 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
             gambar.setImageBitmap(selectedImage);
         }
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(KontenMessage event) {
+        kontenMessage = event.konten;
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 }

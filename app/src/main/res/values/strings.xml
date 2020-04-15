@@ -8,6 +8,8 @@
     <string name="cari">Cari</string>
     <string name="kata_kunci">Kata Kunci</string>
 
+    <string name="data_pengeluaran">Pengeluaran Dana : </string>
+
     <string name="info_penggalang">Penggalang Dana</string>
     <string name="hari_lagi">Hari Lagi</string>
     <string name="teks_target">Target :</string>
@@ -118,4 +120,16 @@
     <string name="terbanyak">Terbanyak</string>
     <string name="terbaru">Terbaru</string>
     <string name="logout">Logout</string>
+    <string name="pengeluaran">Pengeluaran</string>
+    <string name="pengeluaran_dana">Pengeluaran Dana : </string>
+    <string name="rincian_pengeluaran">Rincian pengeluaran : </string>
+    <string name="tujuan_transfer">Tujuan transfer donasi dari donatur</string>
+    <string name="isikan_informasi_konten">Isikan informasi konten donasi yang ingin diajukan</string>
+    <string name="menambahkan_informasii">Menambahkan informasi terbaru terkait perkembangan donasi</string>
+    <string name="menambahkan_pengeluaran">Penggunaan dana yang terkumpul dari donatur</string>
+
+    <string name="judul_full">Judul : %1$s </string>
+    <string name="nama_full">Nama Donatur : %1$s </string>
+    <string name="jumlah_full">Jumlah Donasi : %1$s </string>
+    <string name="nohp_full">No HP donatur : %1$s </string>
 </resources>

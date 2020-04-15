@@ -14,6 +14,9 @@ public class Perkembangan {
     @SerializedName("judul")
     @Expose
     private String judul;
+    @SerializedName("pengeluaran")
+    @Expose
+    private Integer pengeluaran;
     @SerializedName("gambar")
     @Expose
     private String gambar;
@@ -46,6 +49,14 @@ public class Perkembangan {
 
     public void setJudul(String judul) {
         this.judul = judul;
+    }
+
+    public Integer getPengeluaran() {
+        return pengeluaran;
+    }
+
+    public void setPengeluaran(Integer pengeluaran) {
+        this.pengeluaran = pengeluaran;
     }
 
     public String getGambar() {

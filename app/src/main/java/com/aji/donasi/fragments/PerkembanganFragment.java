@@ -16,17 +16,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
-import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
@@ -84,11 +80,11 @@ public class PerkembanganFragment extends Fragment {
 
         id_konten = kontenMessage.getId();
 
+        //displayData();
+
         if(Session.getInstance(getActivity()).isLoggedIn()) {
             initTambah();
         }
-
-        displayData();
 
         tambah.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), TambahPerkembanganActivity.class);
@@ -96,7 +92,16 @@ public class PerkembanganFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        displayData();
+        Log.d(TAG, "Fragment on resume, displayData()");
+    }
+
     private void displayData() {
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -109,6 +114,10 @@ public class PerkembanganFragment extends Fragment {
                 if (response.body() != null) {
                     PerkembanganResponse perkembanganResponse = response.body();
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
+                    if (perkembanganList.isEmpty()){
+                        Toast.makeText(getActivity(), "Belum ada perkembangan dari penggalang dana", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Belum ada perkembangan dari penggalang dana");
+                    }
                     adapter = new PerkembanganAdapter(getActivity(), perkembanganList);
                     recyclerView.setAdapter(adapter);
                     Log.d(TAG, "Muat ulang");
@@ -123,17 +132,18 @@ public class PerkembanganFragment extends Fragment {
             public void onFailure(Call<PerkembanganResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal dan muat lagi");
                 //progressBar.setVisibility(View.GONE);
-                displayData();
                 //Toast.makeText(getActivity(), R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void initTambah(){
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        Call<KontenResponse> call = api.isUser(id_konten, token);
+        Call<KontenResponse> call = api.showUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

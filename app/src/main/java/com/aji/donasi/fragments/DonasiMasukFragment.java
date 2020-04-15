@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
+import com.aji.donasi.activities.BuatKontenActivity;
 import com.aji.donasi.activities.FullscreenActivity;
 import com.aji.donasi.adapters.DonasiMasukAdapter;
 import com.aji.donasi.api.Api;
@@ -42,12 +45,18 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
     private ProgressBar progressBar;
 
-    private static final String TAG = "DonasiMasukFragment";
+    private static final String TAG = "BuatFragemnt: DonasiMasukFragment";
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_donasimasuk, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_donasimasuk, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerDonasiMasuk);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -57,10 +66,26 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
         donaturList = new ArrayList<>();
 
-        listDonaturUser();
-
-        return view;
+        //listDonaturUser();
     }
+
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        View view = inflater.inflate(R.layout.fragment_donasimasuk, container, false);
+//
+//        recyclerView = view.findViewById(R.id.recyclerDonasiMasuk);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//
+//        progressBar = view.findViewById(R.id.progBar);
+//        jumlahDonasiMasuk = view.findViewById(R.id.jumlahDonasiMasuk);
+//
+//        donaturList = new ArrayList<>();
+//
+//        listDonaturUser();
+//
+//        return view;
+//    }
 
     @Override
     public void onResume(){
@@ -83,19 +108,20 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
                     Log.d(TAG, "Muat ulang listDonaturUser()");
-                    if (donaturResponse.getData().isEmpty()){
-                        //Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
+                    donaturList = (ArrayList<Donatur>) donaturResponse.getData();
+                    if (donaturList.isEmpty()){
+                        Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Belum ada donasi masuk");
                     }
-                    donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     jumlahDonasiMasuk.setText(String.valueOf(donaturResponse.getData().size()));
                     adapter = new DonasiMasukAdapter(getActivity(), donaturList);
                     recyclerView.setAdapter(adapter);
-                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.e(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Body kosong", Toast.LENGTH_SHORT).show();
+
                 }
+                progressBar.setVisibility(View.GONE);
                 adapter.setOnItemClickListener(DonasiMasukFragment.this);
             }
 

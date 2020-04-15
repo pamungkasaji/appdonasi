@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.BuatKontenActivity;
@@ -38,7 +37,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.aji.donasi.Helper.VERIFIKASI;
 
 public class ListGalangDanaFragment extends Fragment implements KontenAdapter.OnItemClickListener{
@@ -48,7 +46,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
     //private List<Konten> kontenList;
     private ArrayList<Konten> kontenList;
 
-    private static final String TAG = "ListGalangDanaFragment";
+    private static final String TAG = "BuatFragemnt: ListGalangDanaFragment";
 
     ProgressBar progressBar;
 
@@ -114,8 +112,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal dan muat lagi");
-                listKontenUser();
+                Log.e(TAG, "Request gagal");
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });

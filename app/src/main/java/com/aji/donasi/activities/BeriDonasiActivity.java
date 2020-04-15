@@ -1,41 +1,29 @@
 package com.aji.donasi.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
-import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
-import com.aji.donasi.models.LoginResponse;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
@@ -44,7 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.IOException;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -98,7 +85,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Beri Donasi");
-            getSupportActionBar().setSubtitle(kontenMessage.getJudul());
         }
 
         id_konten = kontenMessage.getId();
@@ -175,10 +161,10 @@ public class BeriDonasiActivity extends AppCompatActivity{
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("bukti", file.getName(), fileReqBody);
 
-        RequestBody nama = RequestBody.create(MediaType.parse("multipart/form-data"), tnama);
-        RequestBody jumlah = RequestBody.create(MediaType.parse("multipart/form-data"), tjumlah);
-        RequestBody nohp = RequestBody.create(MediaType.parse("multipart/form-data"), tnohp);
-        RequestBody is_anonim = RequestBody.create(MediaType.parse("ultipart/form-data"), tis_anonim);
+        RequestBody nama = RequestBody.create(tnama, MediaType.parse("multipart/form-data"));
+        RequestBody jumlah = RequestBody.create(tjumlah, MediaType.parse("multipart/form-data"));
+        RequestBody nohp = RequestBody.create(tnohp, MediaType.parse("multipart/form-data"));
+        RequestBody is_anonim = RequestBody.create(tis_anonim, MediaType.parse("ultipart/form-data"));
 
         Call<DefaultResponse> call = api.sendDonation(id_konten, pic, nama, jumlah, nohp, is_anonim);
 

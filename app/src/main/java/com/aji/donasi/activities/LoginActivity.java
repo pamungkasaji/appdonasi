@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     if (response.errorBody() != null) {
-                        Log.d(TAG, "respon sukses errorBody not null");
+                        Log.d(TAG, "respon sukses error, Body not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(LoginActivity.this, "Kesalahan", defaultResponse.getMessage());

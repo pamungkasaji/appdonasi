@@ -18,11 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
-import com.aji.donasi.MessageEvent;
 import com.aji.donasi.R;
-import com.aji.donasi.activities.BeriDonasiActivity;
 import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.adapters.KontenAdapter;
 import com.aji.donasi.api.Api;
@@ -33,7 +30,6 @@ import com.aji.donasi.models.KontenResponse;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,7 +154,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal dan muat lagi");
                 //progressBar.setVisibility(View.GONE);
-                displayData();
+                //displayData();
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
