@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="10dp"
-        android:text="Buat Konten" />
+        android:text="Buat Donasi" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerKontenUser"

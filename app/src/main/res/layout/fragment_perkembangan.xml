@@ -14,16 +14,21 @@
         android:padding="7dp">
 
         <TextView
-            android:id="@+id/textview"
+            android:id="@+id/sort_perkembangan"
+            android:text="@string/semua"
+            android:textAppearance="@style/textstyle3"
+            android:padding="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/border"
+            android:layout_alignParentEnd="true"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/perkembangan"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/tambah"
-            android:layout_below="@+id/textview"
+            android:layout_below="@+id/sort_perkembangan"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/tambah_perkembangan" />

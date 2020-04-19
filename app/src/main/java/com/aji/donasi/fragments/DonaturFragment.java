@@ -47,7 +47,6 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
     private ArrayList<Donatur> donaturList;
     private ProgressBar progressBar;
     private TextView jumlahDonatur;
-    private ImageButton sortMenu;
     private TextView sort;
 
     //EventBus
@@ -72,22 +71,12 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
         progressBar = view.findViewById(R.id.progBar);
         jumlahDonatur = view.findViewById(R.id.jumlahDonatur);
-//        sortMenu = view.findViewById(R.id.sortMenu);
         sort = view.findViewById(R.id.sort);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         id_konten = kontenMessage.getId();
-
-        //displayData();
-
-//        sortMenu.setOnClickListener(v -> {
-//            PopupMenu popup = new PopupMenu(getActivity(), v);
-//            popup.setOnMenuItemClickListener(this);
-//            popup.inflate(R.menu.sort_menu);
-//            popup.show();
-//        });
 
         sort.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(getActivity(), v);

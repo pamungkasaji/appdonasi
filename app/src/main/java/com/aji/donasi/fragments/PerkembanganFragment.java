@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aji.donasi.KontenMessage;
@@ -23,6 +26,7 @@ import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
@@ -33,13 +37,17 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PerkembanganFragment extends Fragment {
+public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuItemClickListener{
 
     private RecyclerView recyclerView;
     private PerkembanganAdapter adapter;
@@ -47,6 +55,7 @@ public class PerkembanganFragment extends Fragment {
     private ProgressBar progressBar;
     private Button tambah;
     private String token;
+    private TextView sort_perkembangan;
 
     //Eventbus
     private int id_konten;
@@ -72,6 +81,7 @@ public class PerkembanganFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        sort_perkembangan = view.findViewById(R.id.sort_perkembangan);
 
         token = Session.getInstance(getActivity()).getToken();
 
@@ -89,6 +99,13 @@ public class PerkembanganFragment extends Fragment {
         tambah.setOnClickListener((View v) -> {
             Intent intent = new Intent(getActivity(), TambahPerkembanganActivity.class);
             startActivity(intent);
+        });
+
+        sort_perkembangan.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(getActivity(), v);
+            popup.setOnMenuItemClickListener(this);
+            popup.inflate(R.menu.sort_perkembangan);
+            popup.show();
         });
     }
 
@@ -176,5 +193,62 @@ public class PerkembanganFragment extends Fragment {
     @Override public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.semua:
+                displayData();
+                sort_perkembangan.setText(getResources().getString(R.string.semua));
+                return true;
+            case R.id.pengeluaran:
+                filterPengeluaran();
+                sort_perkembangan.setText(getResources().getString(R.string.pengeluaran));
+                return true;
+            case R.id.terbaru:
+                filterInfo();
+                sort_perkembangan.setText(getResources().getString(R.string.terbaru));
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void filterPengeluaran(){
+        ArrayList<Perkembangan> pengeluaranList = new ArrayList<>() ;
+
+        for (int i = 0 ; i<perkembanganList.size();i++){
+            pengeluaranList.add(perkembanganList.get(i)) ;
+        }
+
+        Iterator<Perkembangan> perkembanganIterator = pengeluaranList.iterator();
+        while (perkembanganIterator.hasNext()) {
+            Perkembangan p = perkembanganIterator.next();
+            if (p.getPengeluaran() == null) {
+                perkembanganIterator.remove();
+            }
+        }
+
+        adapter = new PerkembanganAdapter(getActivity(), pengeluaranList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void filterInfo(){
+        ArrayList<Perkembangan> infoList = new ArrayList<>() ;
+
+        for (int i = 0 ; i<perkembanganList.size();i++){
+            infoList.add(perkembanganList.get(i)) ;
+        }
+
+        Iterator<Perkembangan> perkembanganIterator = infoList.iterator();
+        while (perkembanganIterator.hasNext()) {
+            Perkembangan p = perkembanganIterator.next();
+            if (p.getPengeluaran() != null) {
+                perkembanganIterator.remove();
+            }
+        }
+        adapter = new PerkembanganAdapter(getActivity(), infoList);
+        recyclerView.setAdapter(adapter);
     }
 }

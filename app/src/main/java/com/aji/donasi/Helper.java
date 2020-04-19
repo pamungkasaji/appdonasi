@@ -64,6 +64,7 @@ public class Helper {
                 .setIcon(R.drawable.ic_done_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton("Ok", v -> {})
                 .show();
     }
@@ -75,6 +76,7 @@ public class Helper {
                 .setIcon(R.drawable.ic_done_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton("Ok", v -> {activity.finish();})
                 .show();
     }
@@ -86,6 +88,7 @@ public class Helper {
                 .setIcon(R.drawable.ic_error_outline_white_24dp)
                 .setTitle(title)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton("Ok", v -> {})
                 .show();
     }
