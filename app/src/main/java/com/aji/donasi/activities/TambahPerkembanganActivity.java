@@ -93,9 +93,9 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         });
 
         buttonUpload.setOnClickListener((View v) -> {
-            buttonUpload.setEnabled(false);
-            Helper.showProgress(progressBar, TambahPerkembanganActivity.this);
             if(validasi()){
+                buttonUpload.setEnabled(false);
+                Helper.showProgress(progressBar, TambahPerkembanganActivity.this);
                 uploadPerkembangan();
             }
         });

@@ -110,9 +110,11 @@ public class BuatKontenActivity extends AppCompatActivity{
         buttonChoose.setOnClickListener(v -> captureImage());
 
         buttonUpload.setOnClickListener((View v) -> {
-            buttonUpload.setEnabled(false);
-            Helper.showProgress(progressBar, BuatKontenActivity.this);
-            uploadKonten();
+            if(validasi()){
+                buttonUpload.setEnabled(false);
+                Helper.showProgress(progressBar, BuatKontenActivity.this);
+                uploadKonten();
+            }
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -147,8 +149,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         });
     }
 
-    private void uploadKonten() {
-
+    private boolean validasi(){
         String tjudul = editTextJudul.getEditText().getText().toString().trim();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
         String ttarget = editTextTarget.getEditText().getText().toString().trim();
@@ -156,24 +157,21 @@ public class BuatKontenActivity extends AppCompatActivity{
 
         if (tjudul.isEmpty()) {
             editTextJudul.setError("Isi kolom judul");
-            editTextJudul.requestFocus();
-            return;
+            return false;
         }else {
             editTextJudul.setError(null);
         }
 
         if (tdeskripsi.isEmpty()) {
             editTextDeskripsi.setError("Isi kolom deskripsi");
-            editTextDeskripsi.requestFocus();
-            return;
+            return false;
         }else {
             editTextDeskripsi.setError(null);
         }
 
         if (ttarget.isEmpty()) {
             editTextTarget.setError("Isi kolom target");
-            editTextTarget.requestFocus();
-            return;
+            return false;
         }else {
             editTextTarget.setError(null);
         }
@@ -181,16 +179,21 @@ public class BuatKontenActivity extends AppCompatActivity{
         if (tlama_donasi.equals("Jumlah hari penggalangan dana")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
             ((TextView)spinner_hari.getSelectedView()).setError("Pilih hari");
-            //spinner_hari.requestFocus();
-            return;
+            return false;
         }else {
             ((TextView)spinner_hari.getSelectedView()).setError(null);
         }
 
         if (tnorek.isEmpty()) {
             editTextNoRek.setError("Isi kolom norek");
-            editTextNoRek.requestFocus();
-            return;
+            return false;
+        }else {
+            editTextNoRek.setError(null);
+        }
+
+        if (tnorek.length() > 22) {
+            editTextNoRek.setError("Nomor rekening terlalu panjang");
+            return false;
         }else {
             editTextNoRek.setError(null);
         }
@@ -200,8 +203,7 @@ public class BuatKontenActivity extends AppCompatActivity{
 
             if (tbank.isEmpty()) {
                 editTextBank.setError("Isi kolom nama bank");
-                editTextBank.requestFocus();
-                return;
+                return false;
             }else {
                 editTextBank.setError(null);
             }
@@ -209,7 +211,7 @@ public class BuatKontenActivity extends AppCompatActivity{
             if (tbank.equals("Pilih Nama Bank")) {
                 Toast.makeText(this, "Pilih nama bank", Toast.LENGTH_SHORT).show();
                 ((TextView)spinner_bank.getSelectedView()).setError("Pilih bank");
-                return;
+                return false;
             }else {
                 ((TextView)spinner_bank.getSelectedView()).setError(null);
             }
@@ -218,10 +220,20 @@ public class BuatKontenActivity extends AppCompatActivity{
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
             buttonChoose.setError("Upload gambar");
-            return;
+            return false;
         }else {
             buttonChoose.setError(null);
         }
+
+        return true;
+    }
+
+    private void uploadKonten() {
+
+        String tjudul = editTextJudul.getEditText().getText().toString().trim();
+        String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
+        String ttarget = editTextTarget.getEditText().getText().toString().trim();
+        String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

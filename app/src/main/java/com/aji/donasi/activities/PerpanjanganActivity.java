@@ -81,22 +81,23 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         spinner.setOnItemSelectedListener(this);
 
         submit.setOnClickListener((View v) -> {
-            submit.setEnabled(false);
-            Helper.showProgress(progressBar, PerpanjanganActivity.this);
-            submitPerpanjangan();
+            if(validasi()){
+                submit.setEnabled(false);
+                Helper.showProgress(progressBar, PerpanjanganActivity.this);
+                submitPerpanjangan();
+            }
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    public void submitPerpanjangan() {
-
+    private boolean validasi(){
         String alasan = editTextAlasan.getEditText().getText().toString().trim();
 
         if (hari.equals("Jumlah hari perpanjangan")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
             spinner.requestFocus();
-            return;
+            return false;
         }else {
             ((TextView)spinner.getSelectedView()).setError(null);
         }
@@ -104,10 +105,17 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         if (alasan.isEmpty()) {
             editTextAlasan.setError("Isi kolom alasan");
             editTextAlasan.requestFocus();
-            return;
+            return false;
         }else {
             editTextAlasan.setError(null);
         }
+
+        return true;
+    }
+
+    public void submitPerpanjangan() {
+
+        String alasan = editTextAlasan.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

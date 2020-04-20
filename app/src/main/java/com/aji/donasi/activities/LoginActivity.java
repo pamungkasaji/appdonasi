@@ -57,9 +57,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         login.setOnClickListener(( View v) -> {
-            login.setEnabled(false);
-            Helper.showProgress(progressBar, LoginActivity.this);
-            userLogin();
+            if(validasi()){
+                login.setEnabled(false);
+                Helper.showProgress(progressBar, LoginActivity.this);
+                userLogin();
+            }
         });
 
         register.setOnClickListener((View v) -> {
@@ -70,14 +72,14 @@ public class LoginActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    private void userLogin() {
+    private boolean validasi(){
         String username = et_username.getEditText().getText().toString();
         String password = et_password.getEditText().getText().toString();
 
         if (username.isEmpty()) {
             et_username.setError("Isi kolom username");
             et_username.requestFocus();
-            return;
+            return false;
         }else {
             et_username.setError(null);
         }
@@ -85,10 +87,17 @@ public class LoginActivity extends AppCompatActivity {
         if (password.isEmpty()) {
             et_password.setError("Isi kolom password");
             et_password.requestFocus();
-            return;
+            return false;
         }else {
             et_password.setError(null);
         }
+
+        return true;
+    }
+
+    private void userLogin() {
+        String username = et_username.getEditText().getText().toString();
+        String password = et_password.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

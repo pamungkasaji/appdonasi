@@ -99,9 +99,11 @@ public class BeriDonasiActivity extends AppCompatActivity{
         });
 
         buttonUpload.setOnClickListener((View v) -> {
-            Helper.showProgress(progressBar, BeriDonasiActivity.this);
-            buttonUpload.setEnabled(false);
-            beriDonasi();
+            if(validasi()){
+                buttonUpload.setEnabled(false);
+                Helper.showProgress(progressBar, BeriDonasiActivity.this);
+                beriDonasi();
+            }
         });
 
         anonim.setOnClickListener((View v) -> {
@@ -113,43 +115,55 @@ public class BeriDonasiActivity extends AppCompatActivity{
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    public void beriDonasi() {
-        //getting name for the image
+    private boolean validasi() {
         String tnama = et_nama.getEditText().getText().toString();
         String tjumlah = et_jumlah.getEditText().getText().toString();
         String tnohp = et_nohp.getEditText().getText().toString();
 
         if (tnama.isEmpty()) {
             et_nama.setError("Isi nama lengkap");
-            et_nama.requestFocus();
-            return;
+            return false;
         } else {
             et_nama.setError(null);
         }
 
         if (tjumlah.isEmpty()) {
             et_jumlah.setError("Isi jumlah donasi");
-            et_jumlah.requestFocus();
-            return;
+            return false;
         } else {
             et_jumlah.setError(null);
         }
 
         if (tnohp.isEmpty()) {
             et_nohp.setError("Isi kontak yang bisa dihubungi");
-            et_nohp.requestFocus();
-            return;
+            return false;
         } else {
+            et_nohp.setError(null);
+        }
+
+        if (tnohp.length() > 15) {
+            et_nohp.setError("No Hp terlalu panjang");
+            return false;
+        }else {
             et_nohp.setError(null);
         }
 
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
             buttonChoose.setError("Upload gambar");
-            return;
+            return false;
         }else {
             buttonChoose.setError(null);
         }
+
+        return true;
+    }
+
+    public void beriDonasi() {
+
+        String tnama = et_nama.getEditText().getText().toString();
+        String tjumlah = et_jumlah.getEditText().getText().toString();
+        String tnohp = et_nohp.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

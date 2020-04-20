@@ -80,16 +80,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         buttonRegis.setOnClickListener((View v) -> {
-            buttonRegis.setEnabled(false);
-            Helper.showProgress(progressBar, RegisterActivity.this);
-            uploadRegistrasi();
+            if(validasi()){
+                buttonRegis.setEnabled(false);
+                Helper.showProgress(progressBar, RegisterActivity.this);
+                uploadRegistrasi();
+            }
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    public void uploadRegistrasi() {
-        //getting name for the image
+    private boolean validasi(){
         String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
         String talamat = editTextAlamat.getEditText().getText().toString().trim();
         String tnohp = editTextNoHp.getEditText().getText().toString().trim();
@@ -99,84 +100,115 @@ public class RegisterActivity extends AppCompatActivity {
         String tconfirmpass = editTextConfirmPassword.getEditText().getText().toString().trim();
 
         if (tnamalengkap.isEmpty()) {
-            editTextNamaLengkap.setError("Isi kolom nama lengkap");
-            editTextNamaLengkap.requestFocus();
-            return;
+            editTextNamaLengkap.setError("Isi field nama lengkap");
+            return false;
         }else {
             editTextNamaLengkap.setError(null);
         }
 
         if (talamat.isEmpty()) {
-            editTextAlamat.setError("Isi kolom alamat");
-            editTextAlamat.requestFocus();
-            return;
+            editTextAlamat.setError("Isi field alamat");
+            return false;
         }else {
             editTextAlamat.setError(null);
         }
 
         if (tnohp.isEmpty()) {
-            editTextNoHp.setError("Isi kolom No HP");
-            editTextNoHp.requestFocus();
-            return;
+            editTextNoHp.setError("Isi field No HP");
+            return false;
         }else {
             editTextNoHp.setError(null);
         }
 
+        if (tnohp.length() > 15) {
+            editTextNoHp.setError("No Hp terlalu panjang");
+            return false;
+        }else {
+            editTextNoHp.setError(null);
+        }
+
+        if (tnomorktp.isEmpty()) {
+            editTextNoktp.setError("Isi kolom No KTP");
+            return false;
+        }else {
+            editTextNoktp.setError(null);
+        }
+
+        if (tnomorktp.length() < 16) {
+            editTextNoktp.setError("Nomor KTP harus tepat 16 digit");
+            return false;
+        }else {
+            editTextNoktp.setError(null);
+        }
+
+        if (tnomorktp.length() > 16) {
+            editTextNoktp.setError("Nomor KTP harus tepat 16 digit");
+            return false;
+        }else {
+            editTextNoktp.setError(null);
+        }
+
         if (tusername.isEmpty()) {
-            editTextUsername.setError("Isi kolom username");
-            editTextUsername.requestFocus();
-            return;
+            editTextUsername.setError("Isi field username");
+            return false;
+        }else {
+            editTextUsername.setError(null);
+        }
+
+        if (tusername.length() > 15) {
+            editTextUsername.setError("Jumlah karakter maksimal 15");
+            return false;
         }else {
             editTextUsername.setError(null);
         }
 
         if (tpassword.isEmpty()) {
-            editTextPassword.setError("Isi kolom password");
-            editTextPassword.requestFocus();
-            return;
+            editTextPassword.setError("Isi field password");
+            return false;
+        }else {
+            editTextPassword.setError(null);
+        }
+
+        if (tpassword.length() < 6) {
+            editTextPassword.setError("Password minimal 6 karakter");
+            return false;
         }else {
             editTextPassword.setError(null);
         }
 
         if (tconfirmpass.isEmpty()) {
-            editTextConfirmPassword.setError("Isi kolom password lagi");
-            editTextConfirmPassword.requestFocus();
-            return;
+            editTextConfirmPassword.setError("Isi field password lagi");
+            return false;
         }else {
             editTextConfirmPassword.setError(null);
-        }
-
-        if (tpassword.length() < 6) {
-            editTextPassword.setError("Password harus lebih dari 5 karakter");
-            editTextPassword.requestFocus();
-            return;
-        }else {
-            editTextPassword.setError(null);
         }
 
         if (!tpassword.equals(tconfirmpass)) {
             editTextConfirmPassword.setError("Password harus sama");
-            editTextConfirmPassword.requestFocus();
-            return;
+            return false;
         }else {
             editTextConfirmPassword.setError(null);
-        }
-
-        if (tnomorktp.isEmpty()) {
-            editTextNoktp.setError("Isi kolom No KTP");
-            editTextNoktp.requestFocus();
-            return;
-        }else {
-            editTextNoktp.setError(null);
         }
 
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
             buttonChoose.setError("Upload gambar");
-            return;
+            return false;
         }else {
             buttonChoose.setError(null);
         }
+
+        return true;
+    }
+
+    public void uploadRegistrasi() {
+
+        String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
+        String talamat = editTextAlamat.getEditText().getText().toString().trim();
+        String tnohp = editTextNoHp.getEditText().getText().toString().trim();
+        String tnomorktp = editTextNoktp.getEditText().getText().toString().trim();
+        String tusername = editTextUsername.getEditText().getText().toString().trim();
+        String tpassword = editTextPassword.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
