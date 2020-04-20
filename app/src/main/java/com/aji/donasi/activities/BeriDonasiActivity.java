@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -76,7 +77,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
         TextView bank = findViewById(R.id.bank);
 
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,6 +99,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
         });
 
         buttonUpload.setOnClickListener((View v) -> {
+            Helper.showProgress(progressBar, BeriDonasiActivity.this);
+            buttonUpload.setEnabled(false);
             beriDonasi();
         });
 
@@ -149,8 +151,6 @@ public class BeriDonasiActivity extends AppCompatActivity{
             buttonChoose.setError(null);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -171,7 +171,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, BeriDonasiActivity.this);
 
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
@@ -192,7 +192,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, BeriDonasiActivity.this);
                 Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Pemberian donasia gagal");
             }
         });

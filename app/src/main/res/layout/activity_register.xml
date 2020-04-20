@@ -7,6 +7,7 @@
 
     <ProgressBar
         android:id="@+id/progBar"
+        android:visibility="gone"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -87,6 +88,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText

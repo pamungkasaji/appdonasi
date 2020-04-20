@@ -61,7 +61,6 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         //editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
         editTextAlasan = findViewById(R.id.editTextAlasan);
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         id_konten = kontenMessage.getId();
 
@@ -82,6 +81,8 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         spinner.setOnItemSelectedListener(this);
 
         submit.setOnClickListener((View v) -> {
+            submit.setEnabled(false);
+            Helper.showProgress(progressBar, PerpanjanganActivity.this);
             submitPerpanjangan();
         });
 
@@ -108,7 +109,6 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             editTextAlasan.setError(null);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
         String token = Session.getInstance(PerpanjanganActivity.this).getToken();
@@ -117,7 +117,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
@@ -136,7 +136,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                 Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", "Periksa koneksi anda");
             }
         });

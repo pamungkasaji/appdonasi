@@ -76,7 +76,6 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         editTextPengeluaran = findViewById(R.id.editTextPengeluaran);
         keterangan = findViewById(R.id.keterangan);
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         id_konten = kontenMessage.getId();
 
@@ -94,6 +93,8 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         });
 
         buttonUpload.setOnClickListener((View v) -> {
+            buttonUpload.setEnabled(false);
+            Helper.showProgress(progressBar, TambahPerkembanganActivity.this);
             if(validasi()){
                 uploadPerkembangan();
             }
@@ -172,8 +173,6 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         String tpengeluaran = editTextPengeluaran.getEditText().getText().toString();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
-        progressBar.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
         String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
@@ -184,9 +183,6 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         RequestBody fileReqBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("gambar", file.getName(), fileReqBody);
-
-//        RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
-//        RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
 
         Map<String, RequestBody> params = new HashMap<>();
 
@@ -207,7 +203,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(@NonNull Call<DefaultResponse> call, @NonNull Response<DefaultResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, TambahPerkembanganActivity.this);
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
@@ -227,7 +223,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<DefaultResponse> call,@NonNull Throwable t) {
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, TambahPerkembanganActivity.this);
                 Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });

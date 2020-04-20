@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.user_login);
         Button register = findViewById(R.id.user_register);
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         login.setOnClickListener(( View v) -> {
+            login.setEnabled(false);
+            Helper.showProgress(progressBar, LoginActivity.this);
             userLogin();
         });
 
@@ -89,8 +90,6 @@ public class LoginActivity extends AppCompatActivity {
             et_password.setError(null);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -99,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, LoginActivity.this);
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
                     LoginResponse loginResponse = response.body();
@@ -123,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, LoginActivity.this);
                 Helper.warningDialog(LoginActivity.this, "Kesalahan", "Periksa koneksi internet anda");
             }
         });

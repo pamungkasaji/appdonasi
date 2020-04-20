@@ -85,7 +85,6 @@ public class BuatKontenActivity extends AppCompatActivity{
         editTextBank.setVisibility(View.GONE);
 
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,6 +110,8 @@ public class BuatKontenActivity extends AppCompatActivity{
         buttonChoose.setOnClickListener(v -> captureImage());
 
         buttonUpload.setOnClickListener((View v) -> {
+            buttonUpload.setEnabled(false);
+            Helper.showProgress(progressBar, BuatKontenActivity.this);
             uploadKonten();
         });
 
@@ -222,8 +223,6 @@ public class BuatKontenActivity extends AppCompatActivity{
             buttonChoose.setError(null);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -247,7 +246,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(@NonNull Call<DefaultResponse> call,@NonNull Response<DefaultResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, BuatKontenActivity.this);
 
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
@@ -267,7 +266,7 @@ public class BuatKontenActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, BuatKontenActivity.this);
                 Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }
         });

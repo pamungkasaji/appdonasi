@@ -60,7 +60,6 @@ public class FullscreenActivity extends AppCompatActivity {
         gambarbukti = findViewById(R.id.bukti);
 
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         Gson gson = new Gson();
         Donatur donatur = gson.fromJson(getIntent().getStringExtra("donaturObject"), Donatur.class);
@@ -69,6 +68,7 @@ public class FullscreenActivity extends AppCompatActivity {
         id_konten = donatur.getIdKonten();
 
         buttonterima.setOnClickListener((View v) -> {
+            Helper.showProgress(progressBar, FullscreenActivity.this);
             terimaDonatur();
         });
 
@@ -110,6 +110,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Helper.showProgress(progressBar, FullscreenActivity.this);
                 tolakDonatur();
             }
         });
@@ -129,20 +130,17 @@ public class FullscreenActivity extends AppCompatActivity {
         Api api = retrofit.create(Api.class);
         Call<DefaultResponse> call = api.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
 
-        progressBar.setVisibility(View.VISIBLE);
-
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                Helper.hideProgress(progressBar, FullscreenActivity.this);
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
                     Log.d(TAG, "Diterima");
                     Helper.infoDialogFinish(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
-                    progressBar.setVisibility(View.GONE);
                 } else {
                     Log.w(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -151,7 +149,7 @@ public class FullscreenActivity extends AppCompatActivity {
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, FullscreenActivity.this);
                 Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
@@ -163,20 +161,17 @@ public class FullscreenActivity extends AppCompatActivity {
         Api api = retrofit.create(Api.class);
         Call<DefaultResponse> call = api.disapproveDonasi(id_konten, id, token);
 
-        progressBar.setVisibility(View.VISIBLE);
-
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                Helper.hideProgress(progressBar, FullscreenActivity.this);
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
                     Log.d(TAG, "Ditolak");
-                    progressBar.setVisibility(View.GONE);
                     Helper.infoDialogFinish(FullscreenActivity.this, "Ditolak", defaultResponse.getMessage());
                 } else {
-                    Log.w(TAG, "Body kosong");
-                    progressBar.setVisibility(View.GONE);
+                    Log.e(TAG, "Body kosong");
                     Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -185,7 +180,7 @@ public class FullscreenActivity extends AppCompatActivity {
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, FullscreenActivity.this);
                 Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });

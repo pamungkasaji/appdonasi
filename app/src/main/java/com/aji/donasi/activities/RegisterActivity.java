@@ -1,40 +1,30 @@
 package com.aji.donasi.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.IOException;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -44,8 +34,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import androidx.core.content.ContextCompat;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
 
         progressBar = findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,13 +80,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         buttonRegis.setOnClickListener((View v) -> {
-            uploadMultipart();
+            buttonRegis.setEnabled(false);
+            Helper.showProgress(progressBar, RegisterActivity.this);
+            uploadRegistrasi();
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    public void uploadMultipart() {
+    public void uploadRegistrasi() {
         //getting name for the image
         String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
         String talamat = editTextAlamat.getEditText().getText().toString().trim();
@@ -157,6 +146,14 @@ public class RegisterActivity extends AppCompatActivity {
             editTextConfirmPassword.setError(null);
         }
 
+        if (tpassword.length() < 6) {
+            editTextPassword.setError("Password harus lebih dari 5 karakter");
+            editTextPassword.requestFocus();
+            return;
+        }else {
+            editTextPassword.setError(null);
+        }
+
         if (!tpassword.equals(tconfirmpass)) {
             editTextConfirmPassword.setError("Password harus sama");
             editTextConfirmPassword.requestFocus();
@@ -181,8 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
             buttonChoose.setError(null);
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
         //Create a file object using file path
@@ -204,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                Helper.hideProgress(progressBar, RegisterActivity.this);
                 if (response.isSuccessful() && response.body()!= null) {
                     Log.d(TAG, "respon sukses body not null");
                     DefaultResponse defaultResponse = response.body();
@@ -222,7 +217,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "request gagal");
+                Helper.hideProgress(progressBar, RegisterActivity.this);
                 Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Registrasi gagal");
             }
         });

@@ -83,6 +83,14 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        progressBar.setVisibility(View.VISIBLE);
+        listKontenUser();
+        Log.d(TAG, "Fragment on resume, listKontenUser();");
+    }
+
     private void listKontenUser() {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);

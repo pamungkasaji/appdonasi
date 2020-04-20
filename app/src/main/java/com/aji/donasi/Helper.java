@@ -1,8 +1,11 @@
 package com.aji.donasi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
@@ -49,6 +52,17 @@ public class Helper {
         }
         return outputDate;
 
+    }
+
+    public static void showProgress(final ProgressBar pb, final Activity activity){
+        pb.setVisibility(View.VISIBLE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public static void hideProgress(final ProgressBar pb, final Activity activity){
+        pb.setVisibility(View.VISIBLE);
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     public static String mataUang(int input){
