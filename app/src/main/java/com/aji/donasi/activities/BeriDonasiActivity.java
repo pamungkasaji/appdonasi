@@ -116,47 +116,24 @@ public class BeriDonasiActivity extends AppCompatActivity{
     }
 
     private boolean validasi() {
-        String tnama = et_nama.getEditText().getText().toString();
-        String tjumlah = et_jumlah.getEditText().getText().toString();
-        String tnohp = et_nohp.getEditText().getText().toString();
 
-        if (tnama.isEmpty()) {
-            et_nama.setError("Isi nama lengkap");
-            return false;
-        } else {
-            et_nama.setError(null);
-        }
+        boolean check = true;
 
-        if (tjumlah.isEmpty()) {
-            et_jumlah.setError("Isi jumlah donasi");
-            return false;
-        } else {
-            et_jumlah.setError(null);
-        }
+        if (!Helper.notEmpty(et_nama, "Nama")) check = false;
+        if (!Helper.notEmpty(et_jumlah, "Jumlah")) check = false;
+        if (!Helper.notEmpty(et_nohp, "No HP")) check = false;
 
-        if (tnohp.isEmpty()) {
-            et_nohp.setError("Isi kontak yang bisa dihubungi");
-            return false;
-        } else {
-            et_nohp.setError(null);
-        }
-
-        if (tnohp.length() > 15) {
-            et_nohp.setError("No Hp terlalu panjang");
-            return false;
-        }else {
-            et_nohp.setError(null);
-        }
+        if (!Helper.validasiKarakter(et_nohp, 6, 16, "No HP")) check = false;
 
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
             buttonChoose.setError("Upload gambar");
-            return false;
+            check = false;
         }else {
             buttonChoose.setError(null);
         }
 
-        return true;
+        return check;
     }
 
     public void beriDonasi() {

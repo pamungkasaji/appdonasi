@@ -112,59 +112,34 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             case R.id.radio_info:
                 if (checked)
                     keterangan.setText(getResources().getString(R.string.menambahkan_informasii));
-                    editTextJudul.setHint("Judul");
-                    editTextDeskripsi.setHint("Deskripsi");
-                    editTextJudul.setVisibility(View.VISIBLE);
-                    editTextPengeluaran.setVisibility(View.GONE);
-                    break;
+                editTextJudul.setHint("Judul");
+                editTextDeskripsi.setHint("Deskripsi");
+                editTextJudul.setVisibility(View.VISIBLE);
+                editTextPengeluaran.setVisibility(View.GONE);
+                break;
             case R.id.radio_pengeluaran:
                 if (checked)
                     keterangan.setText(getResources().getString(R.string.menambahkan_pengeluaran));
-                    editTextDeskripsi.setHint("Rencana penggunaan dana");
-                    editTextJudul.setVisibility(View.GONE);
-                    editTextPengeluaran.setVisibility(View.VISIBLE);
-                    break;
+                editTextDeskripsi.setHint("Rencana penggunaan dana");
+                editTextJudul.setVisibility(View.GONE);
+                editTextPengeluaran.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
-    /*
-     * This is the method responsible for image upload
-     * We need the full image path and the name for the image in this method
-     * */
-
     private boolean validasi(){
-        if(editTextPengeluaran.getVisibility() == View.GONE){
-            if (editTextJudul.getEditText().getText().toString().isEmpty()) {
-                editTextJudul.setError("Isi kolom judul");
-                return false;
-            } else {
-                editTextJudul.setError(null);
-            }
-            if (editTextDeskripsi.getEditText().getText().toString().isEmpty()) {
-                editTextDeskripsi.setError("Isi kolom deskripsi");
-                return false;
-            }else {
-                editTextDeskripsi.setError(null);
-            }
-            return true;
-        }
-        else {
-            if (editTextPengeluaran.getEditText().getText().toString().isEmpty()) {
-                editTextPengeluaran.setError("Isi kolom pengeluaran");
-                return false;
-            }else {
-                editTextPengeluaran.setError(null);
-            }
 
-            if (editTextDeskripsi.getEditText().getText().toString().isEmpty()) {
-                editTextDeskripsi.setError("Isi kolom deskripsi");
-                return false;
-            }else {
-                editTextDeskripsi.setError(null);
-            }
+        boolean check = true;
 
-            return true;
+        if(editTextPengeluaran.getVisibility() == View.GONE) {
+            if (!Helper.notEmpty(editTextJudul, "Judul")) check = false;
+            if (!Helper.notEmpty(editTextDeskripsi, "Deskripsi")) check = false;
+        } else {
+            if (!Helper.notEmpty(editTextPengeluaran, "Pengeluaran")) check = false;
+            if (!Helper.notEmpty(editTextDeskripsi, "Rencana Penggunaan Dana")) check = false;
         }
+
+        return check;
     }
 
     public void uploadPerkembangan() {

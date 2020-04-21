@@ -73,26 +73,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validasi(){
-        String username = et_username.getEditText().getText().toString();
-        String password = et_password.getEditText().getText().toString();
 
-        if (username.isEmpty()) {
-            et_username.setError("Isi kolom username");
-            et_username.requestFocus();
-            return false;
-        }else {
-            et_username.setError(null);
-        }
+        boolean check = true;
 
-        if (password.isEmpty()) {
-            et_password.setError("Isi kolom password");
-            et_password.requestFocus();
-            return false;
-        }else {
-            et_password.setError(null);
-        }
+        if (!Helper.notEmpty(et_username, "Username")) check = false;
+        if (!Helper.notEmpty(et_password, "Password")) check = false;
 
-        return true;
+        return check;
     }
 
     private void userLogin() {

@@ -35,28 +35,12 @@ public class Perkembangan {
         this.id = id;
     }
 
-    public Integer getIdKonten() {
-        return idKonten;
-    }
-
-    public void setIdKonten(Integer idKonten) {
-        this.idKonten = idKonten;
-    }
-
     public String getJudul() {
         return judul;
     }
 
-    public void setJudul(String judul) {
-        this.judul = judul;
-    }
-
     public Integer getPengeluaran() {
         return pengeluaran;
-    }
-
-    public void setPengeluaran(Integer pengeluaran) {
-        this.pengeluaran = pengeluaran;
     }
 
     public String getGambar() {
@@ -71,15 +55,8 @@ public class Perkembangan {
         return deskripsi;
     }
 
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
-    }
-
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 }

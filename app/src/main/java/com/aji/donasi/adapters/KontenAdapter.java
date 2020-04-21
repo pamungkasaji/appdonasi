@@ -54,7 +54,6 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
 
         holder.tvJudul.setText(konten.getJudul());
         holder.tvLama.setText(String.valueOf(konten.getLamaDonasi()));
-        //holder.tvTerkumpul.setText(String.valueOf(konten.getTerkumpul()));
         holder.progressBar.setProgress(konten.getTerkumpul() / konten.getTarget() * 100 );
 
         holder.tvTerkumpul.setText(Helper.mataUang(konten.getTerkumpul()));
@@ -68,6 +67,11 @@ public class KontenAdapter extends RecyclerView.Adapter<KontenAdapter.KontenView
         } else if (Helper.VERIFIKASI.equals(konten.getStatus())){
             holder.tvLama.setText(Helper.TUNGGU);
             holder.teksLama.setText(Helper.VERIFIKASI);
+            holder.tvTerkumpul.setVisibility(View.GONE);
+            holder.teksTerkumpul.setVisibility(View.GONE);
+        } else if (Helper.DITOLAK.equals(konten.getStatus())){
+            holder.tvLama.setText(Helper.VERIFIKASI);
+            holder.teksLama.setText(Helper.DITOLAK);
             holder.tvTerkumpul.setVisibility(View.GONE);
             holder.teksTerkumpul.setVisibility(View.GONE);
         }

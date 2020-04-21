@@ -32,44 +32,20 @@ public class Perpanjangan {
         this.id = id;
     }
 
-    public Integer getIdKonten() {
-        return idKonten;
-    }
-
-    public void setIdKonten(Integer idKonten) {
-        this.idKonten = idKonten;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Integer getJumlahHari() {
         return jumlahHari;
     }
 
-    public void setJumlahHari(Integer jumlahHari) {
-        this.jumlahHari = jumlahHari;
-    }
-
     public String getAlasan() {
         return alasan;
     }
 
-    public void setAlasan(String alasan) {
-        this.alasan = alasan;
-    }
-
     public String getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

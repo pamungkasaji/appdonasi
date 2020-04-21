@@ -73,8 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Registrasi");
         }
 
-        //final PermissionManager permissionManager = new PermissionManager();
-
         buttonChoose.setOnClickListener((View v) -> {
             captureImage();
         });
@@ -88,117 +86,55 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
     }
 
     private boolean validasi(){
-        String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
-        String talamat = editTextAlamat.getEditText().getText().toString().trim();
-        String tnohp = editTextNoHp.getEditText().getText().toString().trim();
-        String tnomorktp = editTextNoktp.getEditText().getText().toString().trim();
-        String tusername = editTextUsername.getEditText().getText().toString().trim();
+
+        boolean check = true;
+
+        if (!Helper.notEmpty(editTextNamaLengkap, "nama lengkap")) check = false;
+        if (!Helper.notEmpty(editTextAlamat, "alamat")) check = false;
+        if (!Helper.notEmpty(editTextNoHp,"No HP")) check = false;
+        if (!Helper.notEmpty(editTextNoktp,"No KTP")) check = false;
+        if (!Helper.notEmpty(editTextUsername,"Username")) check = false;
+        if (!Helper.notEmpty(editTextPassword,"Password")) check = false;
+        if (!Helper.notEmpty(editTextConfirmPassword,"Konfirmasi Password")) check = false;
+
+        if (!Helper.minKarakter(editTextPassword, 6, "Password")) check = false;
+
+        if (!Helper.validasiKarakter(editTextNoHp, 6, 16, "No HP")) check = false;
+        if (!Helper.validasiKarakter(editTextUsername, 6, 22, "Username")) check = false;
+
         String tpassword = editTextPassword.getEditText().getText().toString().trim();
+        String noktp = editTextNoktp.getEditText().getText().toString().trim();
         String tconfirmpass = editTextConfirmPassword.getEditText().getText().toString().trim();
 
-        if (tnamalengkap.isEmpty()) {
-            editTextNamaLengkap.setError("Isi field nama lengkap");
-            return false;
-        }else {
-            editTextNamaLengkap.setError(null);
-        }
-
-        if (talamat.isEmpty()) {
-            editTextAlamat.setError("Isi field alamat");
-            return false;
-        }else {
-            editTextAlamat.setError(null);
-        }
-
-        if (tnohp.isEmpty()) {
-            editTextNoHp.setError("Isi field No HP");
-            return false;
-        }else {
-            editTextNoHp.setError(null);
-        }
-
-        if (tnohp.length() > 15) {
-            editTextNoHp.setError("No Hp terlalu panjang");
-            return false;
-        }else {
-            editTextNoHp.setError(null);
-        }
-
-        if (tnomorktp.isEmpty()) {
-            editTextNoktp.setError("Isi kolom No KTP");
-            return false;
+        if (noktp.length() != 16) {
+            editTextNoktp.setError("No KTP harus tepat 16 digit");
+            check = false;
         }else {
             editTextNoktp.setError(null);
         }
 
-        if (tnomorktp.length() < 16) {
-            editTextNoktp.setError("Nomor KTP harus tepat 16 digit");
-            return false;
-        }else {
-            editTextNoktp.setError(null);
-        }
-
-        if (tnomorktp.length() > 16) {
-            editTextNoktp.setError("Nomor KTP harus tepat 16 digit");
-            return false;
-        }else {
-            editTextNoktp.setError(null);
-        }
-
-        if (tusername.isEmpty()) {
-            editTextUsername.setError("Isi field username");
-            return false;
-        }else {
-            editTextUsername.setError(null);
-        }
-
-        if (tusername.length() > 15) {
-            editTextUsername.setError("Jumlah karakter maksimal 15");
-            return false;
-        }else {
-            editTextUsername.setError(null);
-        }
-
-        if (tpassword.isEmpty()) {
-            editTextPassword.setError("Isi field password");
-            return false;
-        }else {
-            editTextPassword.setError(null);
-        }
-
-        if (tpassword.length() < 6) {
-            editTextPassword.setError("Password minimal 6 karakter");
-            return false;
-        }else {
-            editTextPassword.setError(null);
-        }
-
-        if (tconfirmpass.isEmpty()) {
-            editTextConfirmPassword.setError("Isi field password lagi");
-            return false;
-        }else {
-            editTextConfirmPassword.setError(null);
-        }
-
-        if (!tpassword.equals(tconfirmpass)) {
-            editTextConfirmPassword.setError("Password harus sama");
-            return false;
-        }else {
-            editTextConfirmPassword.setError(null);
+        if (!tconfirmpass.isEmpty()){
+            if (!tconfirmpass.equals(tpassword)) {
+                editTextConfirmPassword.setError("Password harus sama");
+                check = false;
+            }else {
+                editTextConfirmPassword.setError(null);
+            }
         }
 
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
-            buttonChoose.setError("Upload gambar");
-            return false;
+            buttonChoose.setError("Upload foto KTP");
+            check = false;
         }else {
             buttonChoose.setError(null);
         }
 
-        return true;
+        return check;
     }
 
     public void uploadRegistrasi() {

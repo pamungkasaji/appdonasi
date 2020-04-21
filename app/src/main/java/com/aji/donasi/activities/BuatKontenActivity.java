@@ -150,52 +150,22 @@ public class BuatKontenActivity extends AppCompatActivity{
     }
 
     private boolean validasi(){
-        String tjudul = editTextJudul.getEditText().getText().toString().trim();
-        String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();
-        String ttarget = editTextTarget.getEditText().getText().toString().trim();
-        String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
-        if (tjudul.isEmpty()) {
-            editTextJudul.setError("Isi kolom judul");
-            return false;
-        }else {
-            editTextJudul.setError(null);
-        }
+        boolean check = true;
 
-        if (tdeskripsi.isEmpty()) {
-            editTextDeskripsi.setError("Isi kolom deskripsi");
-            return false;
-        }else {
-            editTextDeskripsi.setError(null);
-        }
+        if (!Helper.notEmpty(editTextJudul, "Judul")) check = false;
+        if (!Helper.notEmpty(editTextDeskripsi, "Deskripsi")) check = false;
+        if (!Helper.notEmpty(editTextTarget, "Target")) check = false;
+        if (!Helper.notEmpty(editTextNoRek, "Nomor Rekening")) check = false;
 
-        if (ttarget.isEmpty()) {
-            editTextTarget.setError("Isi kolom target");
-            return false;
-        }else {
-            editTextTarget.setError(null);
-        }
+        if (!Helper.validasiKarakter(editTextNoRek, 7, 24, "No HP")) check = false;
 
         if (tlama_donasi.equals("Jumlah hari penggalangan dana")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
             ((TextView)spinner_hari.getSelectedView()).setError("Pilih hari");
-            return false;
+            check = false;
         }else {
             ((TextView)spinner_hari.getSelectedView()).setError(null);
-        }
-
-        if (tnorek.isEmpty()) {
-            editTextNoRek.setError("Isi kolom norek");
-            return false;
-        }else {
-            editTextNoRek.setError(null);
-        }
-
-        if (tnorek.length() > 22) {
-            editTextNoRek.setError("Nomor rekening terlalu panjang");
-            return false;
-        }else {
-            editTextNoRek.setError(null);
         }
 
         if (editTextBank.getVisibility() == View.VISIBLE){
@@ -203,7 +173,7 @@ public class BuatKontenActivity extends AppCompatActivity{
 
             if (tbank.isEmpty()) {
                 editTextBank.setError("Isi kolom nama bank");
-                return false;
+                check = false;
             }else {
                 editTextBank.setError(null);
             }
@@ -211,7 +181,7 @@ public class BuatKontenActivity extends AppCompatActivity{
             if (tbank.equals("Pilih Nama Bank")) {
                 Toast.makeText(this, "Pilih nama bank", Toast.LENGTH_SHORT).show();
                 ((TextView)spinner_bank.getSelectedView()).setError("Pilih bank");
-                return false;
+                check = false;
             }else {
                 ((TextView)spinner_bank.getSelectedView()).setError(null);
             }
@@ -220,12 +190,12 @@ public class BuatKontenActivity extends AppCompatActivity{
         if(filePath.equals("")){
             Toast.makeText(this, "Upload gambar", Toast.LENGTH_SHORT).show();
             buttonChoose.setError("Upload gambar");
-            return false;
+            check = false;
         }else {
             buttonChoose.setError(null);
         }
 
-        return true;
+        return check;
     }
 
     private void uploadKonten() {

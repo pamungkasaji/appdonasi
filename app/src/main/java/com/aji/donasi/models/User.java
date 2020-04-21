@@ -54,71 +54,36 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getUsertype() {
         return usertype;
-    }
-
-    public void setUsertype(String usertype) {
-        this.usertype = usertype;
     }
 
     public String getNamalengkap() {
         return namalengkap;
     }
 
-    public void setNamalengkap(String namalengkap) {
-        this.namalengkap = namalengkap;
-    }
-
     public String getAlamat() {
         return alamat;
-    }
-
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
     }
 
     public String getNomorktp() {
         return nomorktp;
     }
 
-    public void setNomorktp(String nomorktp) {
-        this.nomorktp = nomorktp;
-    }
-
     public String getNohp() {
         return nohp;
-    }
-
-    public void setNohp(String nohp) {
-        this.nohp = nohp;
     }
 
     public String getFotoktp() {
         return fotoktp;
     }
 
-    public void setFotoktp(String fotoktp) {
-        this.fotoktp = fotoktp;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 }

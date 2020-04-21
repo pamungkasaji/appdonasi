@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.KontenResponse;
+import com.google.android.material.textfield.TextInputLayout;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.NumberFormat;
@@ -33,6 +34,7 @@ public class Helper {
     public static final String VERIFIKASI = "verifikasi";
     public static final String SELESAI = "selesai";
     public static final String TUNGGU = "tunggu";
+    public static final String DITOLAK = "ditolak";
     public static final int TERIMA_DONASI = 1;
 
 
@@ -52,6 +54,81 @@ public class Helper {
         }
         return outputDate;
 
+    }
+
+    public static boolean notEmpty(TextInputLayout til, String field) {
+
+        String text = til.getEditText().getText().toString().trim();
+
+        // length 0 means there is no text
+        if (text.length() == 0) {
+            til.setError("isi " + field);
+            return false;
+        } else {
+            til.setError(null);
+        }
+
+        return true;
+    }
+
+    public static boolean validasiKarakter(TextInputLayout til, int min, int maks, String field) {
+
+        String text = til.getEditText().getText().toString().trim();
+
+        if(!text.isEmpty()){
+            if (text.length() < min) {
+                til.setError(field + " minimal " + min + " karakter " );
+                return false;
+            } else if (text.length() > maks){
+                til.setError(field + " maksimal " + maks + " karakter ");
+                return false;
+            }
+
+            til.setError(null);
+
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean minKarakter(TextInputLayout til, int min, String field) {
+
+        String text = til.getEditText().getText().toString().trim();
+
+        if(!text.isEmpty()){
+            if (text.length() < min) {
+                til.setError(field + " minimal " + min + " karakter " );
+                return false;
+            }
+
+            til.setError(null);
+
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean maksKarakter(TextInputLayout til, int maks, String field) {
+
+        String text = til.getEditText().getText().toString().trim();
+
+        if(!text.isEmpty()){
+            if (text.length() > maks) {
+                til.setError(field + " maksimal " + maks + " karakter " );
+                return false;
+            }
+
+            til.setError(null);
+
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     public static void showProgress(final ProgressBar pb, final Activity activity){

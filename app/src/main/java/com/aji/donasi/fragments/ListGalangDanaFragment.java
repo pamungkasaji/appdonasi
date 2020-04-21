@@ -37,6 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.aji.donasi.Helper.DITOLAK;
 import static com.aji.donasi.Helper.VERIFIKASI;
 
 public class ListGalangDanaFragment extends Fragment implements KontenAdapter.OnItemClickListener{
@@ -133,8 +134,10 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
         if(clickedItem.getStatus().equals(VERIFIKASI)) {
             Helper.warningDialog(getActivity(), "Pemberitahuan", "Tunggu verifikasi admin");
-        } else {
-            //EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));
+        } else if (clickedItem.getStatus().equals(DITOLAK)){
+            Helper.warningDialog(getActivity(), "Pemberitahuan", "Verifikasi anda ditolak");
+        }
+        else {
             EventBus.getDefault().postSticky(new KontenMessage(clickedItem));
             startActivity(detailIntent);
         }

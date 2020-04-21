@@ -56,108 +56,52 @@ public class Konten {
         this.id = id;
     }
 
-    public Integer getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
-    }
-
     public String getJudul() {
         return judul;
-    }
-
-    public void setJudul(String judul) {
-        this.judul = judul;
     }
 
     public String getDeskripsi() {
         return deskripsi;
     }
 
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
-    }
-
     public String getGambar() {
         return gambar;
-    }
-
-    public void setGambar(String gambar) {
-        this.gambar = gambar;
     }
 
     public Integer getTarget() {
         return target;
     }
 
-    public void setTarget(Integer target) {
-        this.target = target;
-    }
-
     public Integer getTerkumpul() {
         return terkumpul;
-    }
-
-    public void setTerkumpul(Integer terkumpul) {
-        this.terkumpul = terkumpul;
     }
 
     public Integer getLamaDonasi() {
         return lamaDonasi;
     }
 
-    public void setLamaDonasi(Integer lamaDonasi) {
-        this.lamaDonasi = lamaDonasi;
-    }
-
     public String getNomorrekening() {
         return nomorrekening;
-    }
-
-    public void setNomorrekening(String nomorrekening) {
-        this.nomorrekening = nomorrekening;
     }
 
     public String getBank() {
         return bank;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Perpanjangan getPerpanjangan() {
         return perpanjangan;
-    }
-
-    public void setPerpanjangan(Perpanjangan perpanjangan) {
-        this.perpanjangan = perpanjangan;
     }
 
 }

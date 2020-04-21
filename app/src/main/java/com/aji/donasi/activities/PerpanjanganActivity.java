@@ -92,7 +92,10 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
     }
 
     private boolean validasi(){
-        String alasan = editTextAlasan.getEditText().getText().toString().trim();
+
+        boolean check = true;
+
+        if (!Helper.notEmpty(editTextAlasan, "Alasan")) check = false;
 
         if (hari.equals("Jumlah hari perpanjangan")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
@@ -102,15 +105,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             ((TextView)spinner.getSelectedView()).setError(null);
         }
 
-        if (alasan.isEmpty()) {
-            editTextAlasan.setError("Isi kolom alasan");
-            editTextAlasan.requestFocus();
-            return false;
-        }else {
-            editTextAlasan.setError(null);
-        }
-
-        return true;
+        return check;
     }
 
     public void submitPerpanjangan() {
