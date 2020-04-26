@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.aji.donasi.Helper;
+import com.aji.donasi.IsUserMessage;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
@@ -47,6 +48,7 @@ public class DetailKontenFragment extends Fragment {
     //Eventbus
     private int id_konten;
     private Konten kontenMessage;
+    private boolean is_user;
 
     private static final String TAG = "DetailKontenFragment";
 
@@ -105,9 +107,10 @@ public class DetailKontenFragment extends Fragment {
         detailData();
         Log.d(TAG, "Fragment on resume, detailData();");
 
-        if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0)) {
+        if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0) && is_user ) {
             progressBar.setVisibility(View.VISIBLE);
-            initPerpanjangan();
+            //initPerpanjangan();
+            initPerpanj();
             Log.d(TAG, "init perpanjangan");
         }
     }
@@ -129,6 +132,34 @@ public class DetailKontenFragment extends Fragment {
             layout_selesai.setVisibility(View.VISIBLE);
         }
         progressBar.setVisibility(View.GONE);
+    }
+
+    private void initPerpanj(){
+
+        if (kontenMessage.getTerkumpul() < kontenMessage.getTarget()) {
+            Log.d(TAG, "Is user iya, terkumpul lebih kecil");
+            layout_perpanjangan.setVisibility(View.VISIBLE);
+            if(kontenMessage.getPerpanjangan() == null){
+                Log.d(TAG, "Is user iya, perpanjangan empty");
+                perpanjangan.setEnabled(true);
+                tv_ket_perpanjangan.setText(getResources().getString(R.string.bisa_perpanjang));
+            } else {
+                Log.d(TAG, "Is user iya, perpanjangan not empty");
+                tv_perpanjangan.setText(kontenMessage.getPerpanjangan().getStatus());
+                if(kontenMessage.getPerpanjangan().getStatus().equals("verifikasi")){
+                    Log.d(TAG, "Is user iya, perpanjangan not empty, status verifikasi");
+                    tv_ket_perpanjangan.setText(getResources().getString(R.string.verif_perpanjangan));
+                    //perpanjangan.setEnabled(false);
+                } else if(kontenMessage.getPerpanjangan().getStatus().equals("ditolak")){
+                    Log.d(TAG, "Is user iya, perpanjangan not empty, status ditolak");
+                    tv_ket_perpanjangan.setText(getResources().getString(R.string.ditolak_perpanjangan));
+                }
+            }
+
+        } else {
+            Log.d(TAG, "Is user iya, target terpenuhi");
+            tv_ket_perpanjangan.setText(getResources().getString(R.string.tidak_bisa_perpanjang));
+        }
     }
 
     private void initPerpanjangan(){
@@ -187,6 +218,11 @@ public class DetailKontenFragment extends Fragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KontenMessage event) {
         kontenMessage = event.konten;
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(IsUserMessage event) {
+        is_user = event.isUser;
     }
 
     @Override public void onDestroy() {

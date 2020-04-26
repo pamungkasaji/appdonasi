@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aji.donasi.IsUserMessage;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
@@ -56,6 +57,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
     //Eventbus
     private int id_konten;
     private Konten kontenMessage;
+    private boolean is_user;
 
     private static final String TAG = "PerkembanganFragment";
 
@@ -88,8 +90,13 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
 
         //displayData();
 
-        if(Session.getInstance(getActivity()).isLoggedIn()) {
-            initTambah();
+//        if(Session.getInstance(getActivity()).isLoggedIn()) {
+//            initTambah();
+//        }
+
+        if(is_user){
+            tambah.setVisibility(View.VISIBLE);
+            Log.d(TAG, "Is user iya");
         }
 
         tambah.setOnClickListener((View v) -> {
@@ -127,7 +134,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
                 if (response.body() != null) {
                     PerkembanganResponse perkembanganResponse = response.body();
                     perkembanganList = (ArrayList<Perkembangan>) perkembanganResponse.getData();
-                    if (perkembanganList.isEmpty()){
+                    if (perkembanganList.isEmpty() && !is_user){
                         Toast.makeText(getActivity(), "Belum ada perkembangan dari penggalang dana", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Belum ada perkembangan dari penggalang dana");
                     }
@@ -184,6 +191,11 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KontenMessage event) {
         kontenMessage = event.konten;
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(IsUserMessage event) {
+        is_user = event.isUser;
     }
 
     @Override public void onDestroy() {

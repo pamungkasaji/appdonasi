@@ -8,6 +8,7 @@ import com.aji.donasi.KontenMessage;
 import com.aji.donasi.Session;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.IsUserMessage;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.bumptech.glide.Glide;
@@ -111,10 +112,11 @@ public class DetailKontenActivity extends AppCompatActivity {
 
         beriDonasi.setEnabled(kontenMessage.getStatus().equals("aktif"));
 
-//        if(Session.getInstance(DetailKontenActivity.this).isLoggedIn()) {
-//            token = Session.getInstance(DetailKontenActivity.this).getToken();
-//            isUser();
-//        }
+        if(Session.getInstance(DetailKontenActivity.this).isLoggedIn()) {
+            beriDonasi.setVisibility(View.GONE);
+            token = Session.getInstance(DetailKontenActivity.this).getToken();
+            isUser();
+        }
     }
 
     private void isUser(){
@@ -128,9 +130,11 @@ public class DetailKontenActivity extends AppCompatActivity {
             public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
 
                 if (response.isSuccessful() && response.body() != null) {
-
+                    EventBus.getDefault().postSticky(new IsUserMessage(true));
                     Log.d(TAG, "Is user iya");
                 } else {
+                    beriDonasi.setVisibility(View.VISIBLE);
+                    EventBus.getDefault().postSticky(new IsUserMessage(false));
                     Log.d(TAG, "bukan user");
                 }
             }
