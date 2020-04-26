@@ -26,7 +26,6 @@ import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
 import com.aji.donasi.api.Api;
 import com.aji.donasi.api.NetworkClient;
-import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
@@ -37,10 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -160,7 +156,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        Call<KontenResponse> call = api.showUser(id_konten, token);
+        Call<KontenResponse> call = api.isUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

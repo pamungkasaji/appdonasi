@@ -131,7 +131,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
-                        Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", defaultResponse.getMessage());
+                        Helper.warningDialogFinish(PerpanjanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
             }

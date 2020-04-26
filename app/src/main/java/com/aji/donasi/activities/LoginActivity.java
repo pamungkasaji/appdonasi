@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout et_username, et_password;
     private ProgressBar progressBar;
     private static final String TAG = "LoginActivity";
+    private Button login;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
-        Button login = findViewById(R.id.user_login);
+        login = findViewById(R.id.user_login);
         Button register = findViewById(R.id.user_register);
         progressBar = findViewById(R.id.progBar);
 
@@ -111,6 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
                         Helper.warningDialog(LoginActivity.this, "Kesalahan", defaultResponse.getMessage());
+                        login.setEnabled(true);
+                        Helper.hideProgress(progressBar, LoginActivity.this);
                     }
                 }
             }

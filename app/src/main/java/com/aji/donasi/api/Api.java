@@ -55,7 +55,7 @@ public interface Api {
     );
 
     @GET("user/me/konten/{id}")
-    Call<KontenResponse> showUser(
+    Call<KontenResponse> isUser(
             @Path("id") int id,
             @Header("Authorization") String token
     );
@@ -138,17 +138,6 @@ public interface Api {
             @Header("Authorization") String token,
             @PartMap() Map<String, RequestBody> partMap
     );
-
-//    @Multipart
-//    @POST("konten/{id}/perkembangan")
-//    Call<DefaultResponse> createPenggunaanDana(
-//            @Path("id") int id,
-//            @Header("Authorization") String token,
-//            @Part MultipartBody.Part partimage,
-//            @Part("judul") RequestBody judul,
-//            @Part("deskripsi") RequestBody deskripsi,
-//            @Part("pengeluaran") RequestBody pengeluaran
-//    );
 
     @FormUrlEncoded
     @POST("konten/{id}/perpanjangan")

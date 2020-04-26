@@ -29,9 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -138,7 +135,7 @@ public class DetailKontenFragment extends Fragment {
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
-        Call<KontenResponse> call = api.showUser(id_konten, token);
+        Call<KontenResponse> call = api.isUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
@@ -148,18 +145,19 @@ public class DetailKontenFragment extends Fragment {
                     KontenResponse kontenResponse = response.body();
 
                     if (kontenResponse.getKonten().getTerkumpul() < kontenResponse.getKonten().getTarget()) {
-                        Log.d(TAG, "Is user iya, terkumpul lebih besar");
+                        Log.d(TAG, "Is user iya, terkumpul lebih kecil");
+                        layout_perpanjangan.setVisibility(View.VISIBLE);
                         if(kontenResponse.getKonten().getPerpanjangan() == null){
                             Log.d(TAG, "Is user iya, perpanjangan empty");
                             perpanjangan.setEnabled(true);
                             tv_ket_perpanjangan.setText(getResources().getString(R.string.bisa_perpanjang));
-                            layout_perpanjangan.setVisibility(View.VISIBLE);
                         } else {
                             Log.d(TAG, "Is user iya, perpanjangan not empty");
                             tv_perpanjangan.setText(kontenResponse.getKonten().getPerpanjangan().getStatus());
                             if(kontenResponse.getKonten().getPerpanjangan().getStatus().equals("verifikasi")){
                                 Log.d(TAG, "Is user iya, perpanjangan not empty, status verifikasi");
                                 tv_ket_perpanjangan.setText(getResources().getString(R.string.verif_perpanjangan));
+                                //perpanjangan.setEnabled(false);
                             } else if(kontenResponse.getKonten().getPerpanjangan().getStatus().equals("ditolak")){
                                 Log.d(TAG, "Is user iya, perpanjangan not empty, status ditolak");
                                 tv_ket_perpanjangan.setText(getResources().getString(R.string.ditolak_perpanjangan));

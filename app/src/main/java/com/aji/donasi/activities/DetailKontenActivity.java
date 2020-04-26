@@ -5,7 +5,11 @@ import android.os.Bundle;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
+import com.aji.donasi.Session;
+import com.aji.donasi.api.Api;
+import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
+import com.aji.donasi.models.KontenResponse;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -16,6 +20,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,13 +38,20 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 import static android.graphics.Color.WHITE;
 
 public class DetailKontenActivity extends AppCompatActivity {
 
     private Button beriDonasi;
     private ImageView gambar;
-    //private Konten konten;
+    private String token;
+
+    private static final String TAG = "DetailKontenActivity";
 
     //EventBus
     //private String gambarkonten;
@@ -99,6 +111,35 @@ public class DetailKontenActivity extends AppCompatActivity {
 
         beriDonasi.setEnabled(kontenMessage.getStatus().equals("aktif"));
 
+//        if(Session.getInstance(DetailKontenActivity.this).isLoggedIn()) {
+//            token = Session.getInstance(DetailKontenActivity.this).getToken();
+//            isUser();
+//        }
+    }
+
+    private void isUser(){
+        Retrofit retrofit = NetworkClient.getApiClient();
+        Api api = retrofit.create(Api.class);
+
+        Call<KontenResponse> call = api.isUser(kontenMessage.getId(), token);
+
+        call.enqueue(new Callback<KontenResponse>() {
+            @Override
+            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    Log.d(TAG, "Is user iya");
+                } else {
+                    Log.d(TAG, "bukan user");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KontenResponse> call, Throwable t) {
+                Log.e(TAG, "Request gagal");
+            }
+        });
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

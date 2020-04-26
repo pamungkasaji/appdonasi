@@ -138,7 +138,7 @@ public class Helper {
     }
 
     public static void hideProgress(final ProgressBar pb, final Activity activity){
-        pb.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.GONE);
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
@@ -181,6 +181,18 @@ public class Helper {
                 .setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("Ok", v -> {})
+                .show();
+    }
+
+    public static void warningDialogFinish(final FragmentActivity activity, String title,
+                                     String message) {
+        new LovelyStandardDialog(activity, LovelyStandardDialog.ButtonLayout.HORIZONTAL)
+                .setTopColorRes(R.color.colorAccent)
+                .setIcon(R.drawable.ic_error_outline_white_24dp)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Ok", v -> {activity.finish();})
                 .show();
     }
 }
