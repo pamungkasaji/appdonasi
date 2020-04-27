@@ -82,8 +82,8 @@ public class DetailKontenFragment extends Fragment {
 
         layout_perpanjangan.setVisibility(View.GONE);
         layout_selesai.setVisibility(View.GONE);
-        progressBar = view.findViewById(R.id.progBar);
-        progressBar.setVisibility(View.GONE);
+//        progressBar = view.findViewById(R.id.progBar);
+//        progressBar.setVisibility(View.GONE);
 
         token = Session.getInstance(getActivity()).getToken();
 
@@ -107,10 +107,10 @@ public class DetailKontenFragment extends Fragment {
         detailData();
         Log.d(TAG, "Fragment on resume, detailData();");
 
-        if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0) && is_user ) {
-            progressBar.setVisibility(View.VISIBLE);
-            //initPerpanjangan();
-            initPerpanj();
+        if (Session.getInstance(getActivity()).isLoggedIn() && kontenMessage.getLamaDonasi().equals(0) ) {
+            //progressBar.setVisibility(View.VISIBLE);
+            initPerpanjangan();
+            //initPerpanj();
             Log.d(TAG, "init perpanjangan");
         }
     }
@@ -128,10 +128,9 @@ public class DetailKontenFragment extends Fragment {
         double progress = ((double)kontenMessage.getTerkumpul()/(double)kontenMessage.getTarget())*100;
         progressDonasi.setProgress((int)progress);
 
-        if (kontenMessage.getStatus().equals("selesai")){
+        if (kontenMessage.getStatus().equals("selesai") && !is_user){
             layout_selesai.setVisibility(View.VISIBLE);
         }
-        progressBar.setVisibility(View.GONE);
     }
 
     private void initPerpanj(){
@@ -160,6 +159,7 @@ public class DetailKontenFragment extends Fragment {
             Log.d(TAG, "Is user iya, target terpenuhi");
             tv_ket_perpanjangan.setText(getResources().getString(R.string.tidak_bisa_perpanjang));
         }
+        //progressBar.setVisibility(View.GONE);
     }
 
     private void initPerpanjangan(){
@@ -173,6 +173,7 @@ public class DetailKontenFragment extends Fragment {
             public void onResponse(@NonNull Call<KontenResponse> call,@NonNull Response<KontenResponse> response) {
 
                 if (response.isSuccessful() && response.body() != null) {
+                    layout_selesai.setVisibility(View.GONE);
                     KontenResponse kontenResponse = response.body();
 
                     if (kontenResponse.getKonten().getTerkumpul() < kontenResponse.getKonten().getTarget()) {
@@ -202,7 +203,7 @@ public class DetailKontenFragment extends Fragment {
                 } else {
                     Log.d(TAG, "Is user bukan");
                 }
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
             }
 
             @Override

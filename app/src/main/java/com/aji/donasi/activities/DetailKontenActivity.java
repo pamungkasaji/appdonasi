@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.aji.donasi.R;
@@ -51,6 +53,7 @@ public class DetailKontenActivity extends AppCompatActivity {
     private Button beriDonasi;
     private ImageView gambar;
     private String token;
+    private ProgressBar progressBar;
 
     private static final String TAG = "DetailKontenActivity";
 
@@ -74,6 +77,8 @@ public class DetailKontenActivity extends AppCompatActivity {
         //Mengatur tab ke dalam toolbar
         tabs = findViewById(R.id.tab_layout);
         tabs.setupWithViewPager(viewPager);
+
+        progressBar = findViewById(R.id.progBar);
 
         gambar = findViewById(R.id.gambar);
         beriDonasi = findViewById(R.id.beriDonasi);
@@ -120,6 +125,8 @@ public class DetailKontenActivity extends AppCompatActivity {
     }
 
     private void isUser(){
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = NetworkClient.getApiClient();
         Api api = retrofit.create(Api.class);
 
@@ -137,11 +144,13 @@ public class DetailKontenActivity extends AppCompatActivity {
                     EventBus.getDefault().postSticky(new IsUserMessage(false));
                     Log.d(TAG, "bukan user");
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
