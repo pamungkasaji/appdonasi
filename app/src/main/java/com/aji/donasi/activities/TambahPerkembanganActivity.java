@@ -21,7 +21,7 @@ import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
@@ -149,7 +149,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
         String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
 
         //Create a file object using file path
@@ -169,10 +169,10 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
         }
 
-        Call<DefaultResponse> call = api.createPerkembanganImage(id_konten, token, pic, params);
+        Call<DefaultResponse> call = clientApi.createPerkembanganImage(id_konten, token, pic, params);
 
         if(filePath.equals("")){
-            call = api.createPerkembangan(id_konten, token, params);
+            call = clientApi.createPerkembangan(id_konten, token, params);
         }
 
         call.enqueue(new Callback<DefaultResponse>() {

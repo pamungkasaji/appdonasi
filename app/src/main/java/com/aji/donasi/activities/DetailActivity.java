@@ -6,9 +6,10 @@ import android.os.Bundle;
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.IsUserMessage;
+import com.aji.donasi.fragments.DetailFragment;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.bumptech.glide.Glide;
@@ -30,7 +31,6 @@ import android.widget.ProgressBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.aji.donasi.R;
-import com.aji.donasi.fragments.DetailKontenFragment;
 import com.aji.donasi.fragments.DonaturFragment;
 import com.aji.donasi.fragments.PerkembanganFragment;
 
@@ -48,14 +48,14 @@ import retrofit2.Retrofit;
 
 import static android.graphics.Color.WHITE;
 
-public class DetailKontenActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     private Button beriDonasi;
     private ImageView gambar;
     private String token;
     private ProgressBar progressBar;
 
-    private static final String TAG = "DetailKontenActivity";
+    private static final String TAG = "DetailActivity";
 
     //EventBus
     //private String gambarkonten;
@@ -117,9 +117,9 @@ public class DetailKontenActivity extends AppCompatActivity {
 
         beriDonasi.setEnabled(kontenMessage.getStatus().equals("aktif"));
 
-        if(Session.getInstance(DetailKontenActivity.this).isLoggedIn()) {
+        if(Session.getInstance(DetailActivity.this).isLoggedIn()) {
             beriDonasi.setVisibility(View.GONE);
-            token = Session.getInstance(DetailKontenActivity.this).getToken();
+            token = Session.getInstance(DetailActivity.this).getToken();
             isUser();
         }
     }
@@ -128,9 +128,9 @@ public class DetailKontenActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<KontenResponse> call = api.isUser(kontenMessage.getId(), token);
+        Call<KontenResponse> call = clientApi.isUser(kontenMessage.getId(), token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
@@ -167,7 +167,7 @@ public class DetailKontenActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new DetailKontenFragment(), "Detail");
+        adapter.addFragment(new DetailFragment(), "Detail");
         adapter.addFragment(new DonaturFragment(), "Donatur");
         adapter.addFragment(new PerkembanganFragment(), "Perkembangan");
         viewPager.setAdapter(adapter);

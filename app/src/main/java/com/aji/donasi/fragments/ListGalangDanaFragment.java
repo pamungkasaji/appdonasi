@@ -21,9 +21,9 @@ import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.BuatKontenActivity;
-import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.activities.DetailActivity;
 import com.aji.donasi.adapters.KontenAdapter;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -94,11 +94,11 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
     private void listKontenUser() {
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
         String token = Session.getInstance(getActivity()).getToken();
 
-        Call<KontenResponse> call = api.getKontenUser(token);
+        Call<KontenResponse> call = clientApi.getKontenUser(token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
@@ -129,7 +129,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
     @Override
     public void onItemClick(int position) {
-        Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
+        Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
         Konten clickedItem = kontenList.get(position);
 
         if(clickedItem.getStatus().equals(VERIFIKASI)) {

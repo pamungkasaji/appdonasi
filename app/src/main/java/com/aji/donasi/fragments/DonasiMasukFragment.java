@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.activities.BuatKontenActivity;
-import com.aji.donasi.activities.FullscreenActivity;
+import com.aji.donasi.activities.ValidasiActivity;
 import com.aji.donasi.adapters.DonasiMasukAdapter;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
@@ -99,8 +97,8 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
         String token = Session.getInstance(getActivity()).getToken();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
-        Call<DonaturResponse> call = api.getDonaturUser(token);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
+        Call<DonaturResponse> call = clientApi.getDonaturUser(token);
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {
@@ -136,7 +134,7 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
     @Override
     public void onItemClick(int position) {
-        Intent detailIntent = new Intent(getActivity(), FullscreenActivity.class);
+        Intent detailIntent = new Intent(getActivity(), ValidasiActivity.class);
 
         Gson gson = new Gson();
         String donatur = gson.toJson(donaturList.get(position));

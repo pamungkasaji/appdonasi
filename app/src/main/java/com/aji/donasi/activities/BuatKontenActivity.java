@@ -1,47 +1,36 @@
 package com.aji.donasi.activities;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.IOException;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -206,7 +195,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
         String token = Session.getInstance(BuatKontenActivity.this).getToken();
         //Create a file object using file path
@@ -223,7 +212,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         RequestBody bank = RequestBody.create(MediaType.parse("multipart/form-data"), tbank);
         RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
 
-        Call<DefaultResponse> call = api.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
+        Call<DefaultResponse> call = clientApi.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

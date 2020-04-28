@@ -21,7 +21,7 @@ import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.PerpanjanganActivity;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -35,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class DetailKontenFragment extends Fragment {
+public class DetailFragment extends Fragment {
 
     private TextView tv_judul, tv_deskripsi, tv_target,  tv_perpanjangan, tv_terkumpul, tv_lama, tv_ket_perpanjangan, tv_penggalang, tv_nohp;
     private ProgressBar progressBar;
@@ -50,7 +50,7 @@ public class DetailKontenFragment extends Fragment {
     private Konten kontenMessage;
     private boolean is_user;
 
-    private static final String TAG = "DetailKontenFragment";
+    private static final String TAG = "DetailFragment";
 
     @Nullable
     @Override
@@ -133,40 +133,40 @@ public class DetailKontenFragment extends Fragment {
         }
     }
 
-    private void initPerpanj(){
-
-        if (kontenMessage.getTerkumpul() < kontenMessage.getTarget()) {
-            Log.d(TAG, "Is user iya, terkumpul lebih kecil");
-            layout_perpanjangan.setVisibility(View.VISIBLE);
-            if(kontenMessage.getPerpanjangan() == null){
-                Log.d(TAG, "Is user iya, perpanjangan empty");
-                perpanjangan.setEnabled(true);
-                tv_ket_perpanjangan.setText(getResources().getString(R.string.bisa_perpanjang));
-            } else {
-                Log.d(TAG, "Is user iya, perpanjangan not empty");
-                tv_perpanjangan.setText(kontenMessage.getPerpanjangan().getStatus());
-                if(kontenMessage.getPerpanjangan().getStatus().equals("verifikasi")){
-                    Log.d(TAG, "Is user iya, perpanjangan not empty, status verifikasi");
-                    tv_ket_perpanjangan.setText(getResources().getString(R.string.verif_perpanjangan));
-                    //perpanjangan.setEnabled(false);
-                } else if(kontenMessage.getPerpanjangan().getStatus().equals("ditolak")){
-                    Log.d(TAG, "Is user iya, perpanjangan not empty, status ditolak");
-                    tv_ket_perpanjangan.setText(getResources().getString(R.string.ditolak_perpanjangan));
-                }
-            }
-
-        } else {
-            Log.d(TAG, "Is user iya, target terpenuhi");
-            tv_ket_perpanjangan.setText(getResources().getString(R.string.tidak_bisa_perpanjang));
-        }
-        //progressBar.setVisibility(View.GONE);
-    }
+//    private void initPerpanj(){
+//
+//        if (kontenMessage.getTerkumpul() < kontenMessage.getTarget()) {
+//            Log.d(TAG, "Is user iya, terkumpul lebih kecil");
+//            layout_perpanjangan.setVisibility(View.VISIBLE);
+//            if(kontenMessage.getPerpanjangan() == null){
+//                Log.d(TAG, "Is user iya, perpanjangan empty");
+//                perpanjangan.setEnabled(true);
+//                tv_ket_perpanjangan.setText(getResources().getString(R.string.bisa_perpanjang));
+//            } else {
+//                Log.d(TAG, "Is user iya, perpanjangan not empty");
+//                tv_perpanjangan.setText(kontenMessage.getPerpanjangan().getStatus());
+//                if(kontenMessage.getPerpanjangan().getStatus().equals("verifikasi")){
+//                    Log.d(TAG, "Is user iya, perpanjangan not empty, status verifikasi");
+//                    tv_ket_perpanjangan.setText(getResources().getString(R.string.verif_perpanjangan));
+//                    //perpanjangan.setEnabled(false);
+//                } else if(kontenMessage.getPerpanjangan().getStatus().equals("ditolak")){
+//                    Log.d(TAG, "Is user iya, perpanjangan not empty, status ditolak");
+//                    tv_ket_perpanjangan.setText(getResources().getString(R.string.ditolak_perpanjangan));
+//                }
+//            }
+//
+//        } else {
+//            Log.d(TAG, "Is user iya, target terpenuhi");
+//            tv_ket_perpanjangan.setText(getResources().getString(R.string.tidak_bisa_perpanjang));
+//        }
+//        //progressBar.setVisibility(View.GONE);
+//    }
 
     private void initPerpanjangan(){
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<KontenResponse> call = api.isUser(id_konten, token);
+        Call<KontenResponse> call = clientApi.isUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

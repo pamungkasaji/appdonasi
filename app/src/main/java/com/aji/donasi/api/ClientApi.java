@@ -28,7 +28,7 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface Api {
+public interface ClientApi {
 
     @GET("konten")
     Call<KontenResponse> getKonten();

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,18 +17,12 @@ import androidx.fragment.app.Fragment;
 
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.activities.DetailKontenActivity;
 import com.aji.donasi.activities.LoginActivity;
 import com.aji.donasi.activities.MainActivity;
 import com.aji.donasi.activities.RegisterActivity;
-import com.aji.donasi.adapters.KontenAdapter;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
-import com.aji.donasi.models.Konten;
-import com.aji.donasi.models.KontenResponse;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,11 +111,11 @@ public class AkunFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
         String token = Session.getInstance(getActivity()).getToken();
 
-        Call<DefaultResponse> call = api.userLogout(token);
+        Call<DefaultResponse> call = clientApi.userLogout(token);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

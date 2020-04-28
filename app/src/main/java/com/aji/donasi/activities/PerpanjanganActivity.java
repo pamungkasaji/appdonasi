@@ -18,7 +18,7 @@ import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
@@ -113,9 +113,9 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         String alasan = editTextAlasan.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
         String token = Session.getInstance(PerpanjanganActivity.this).getToken();
-        Call<DefaultResponse> call = api.perpanjangan(id_konten, token, hari, alasan);
+        Call<DefaultResponse> call = clientApi.perpanjangan(id_konten, token, hari, alasan);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

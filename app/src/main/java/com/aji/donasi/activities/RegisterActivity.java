@@ -18,7 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.google.android.material.textfield.TextInputLayout;
@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
         String tpassword = editTextPassword.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
         RequestBody namalengkap = RequestBody.create(MediaType.parse("multipart/form-data"), tnamalengkap);
         RequestBody nomorktp = RequestBody.create(MediaType.parse("multipart/form-data"), tnomorktp);
         //
-        Call<DefaultResponse> call = api.createUser(pic, username, password, nohp, namalengkap, nomorktp, alamat);
+        Call<DefaultResponse> call = clientApi.createUser(pic, username, password, nohp, namalengkap, nomorktp, alamat);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

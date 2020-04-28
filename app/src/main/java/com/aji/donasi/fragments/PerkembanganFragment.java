@@ -25,7 +25,7 @@ import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -123,9 +123,9 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<PerkembanganResponse> call = api.getPerkembangan(id_konten);
+        Call<PerkembanganResponse> call = clientApi.getPerkembangan(id_konten);
 
         call.enqueue(new Callback<PerkembanganResponse>() {
             @Override
@@ -161,9 +161,9 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<KontenResponse> call = api.isUser(id_konten, token);
+        Call<KontenResponse> call = clientApi.isUser(id_konten, token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

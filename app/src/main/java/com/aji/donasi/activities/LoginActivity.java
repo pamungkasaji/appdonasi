@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +14,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.LoginResponse;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = et_password.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<LoginResponse> call = api.userLogin(username, password);
+        Call<LoginResponse> call = clientApi.userLogin(username, password);
 
         call.enqueue(new Callback<LoginResponse>() {
             @Override

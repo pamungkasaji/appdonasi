@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.aji.donasi.activities.FullscreenActivity">
+    tools:context="com.aji.donasi.activities.ValidasiActivity">
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/bukti"

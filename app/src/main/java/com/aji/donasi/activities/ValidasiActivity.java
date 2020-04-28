@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Donatur;
@@ -25,22 +25,19 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FullscreenActivity extends AppCompatActivity {
+public class ValidasiActivity extends AppCompatActivity {
 
     private TextView judul, nama,jumlah, nohp, is_anonim;
     private int id, id_konten;
     private PhotoView gambarbukti;
     private ProgressBar progressBar;
 
-    private static final String TAG = "FullscreenActivity";
+    private static final String TAG = "ValidasiActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +65,7 @@ public class FullscreenActivity extends AppCompatActivity {
         id_konten = donatur.getIdKonten();
 
         buttonterima.setOnClickListener((View v) -> {
-            Helper.showProgress(progressBar, FullscreenActivity.this);
+            Helper.showProgress(progressBar, ValidasiActivity.this);
             terimaDonatur();
         });
 
@@ -96,7 +93,7 @@ public class FullscreenActivity extends AppCompatActivity {
         }
 
         String bukti= Helper.IMAGE_URL_DONATUR+donatur.getBukti();;
-        Glide.with(FullscreenActivity.this)
+        Glide.with(ValidasiActivity.this)
                 .load(bukti)
                 .placeholder(R.drawable.placeholder_full)
                 .into(gambarbukti);
@@ -110,7 +107,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Helper.showProgress(progressBar, FullscreenActivity.this);
+                Helper.showProgress(progressBar, ValidasiActivity.this);
                 tolakDonatur();
             }
         });
@@ -125,23 +122,23 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     private void terimaDonatur() {
-        String token = Session.getInstance(FullscreenActivity.this).getToken();
+        String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
-        Call<DefaultResponse> call = api.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
+        Call<DefaultResponse> call = clientApi.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                Helper.hideProgress(progressBar, FullscreenActivity.this);
+                Helper.hideProgress(progressBar, ValidasiActivity.this);
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
                     Log.d(TAG, "Diterima");
-                    Helper.infoDialogFinish(FullscreenActivity.this,"Berhasil",defaultResponse.getMessage());
+                    Helper.infoDialogFinish(ValidasiActivity.this,"Berhasil",defaultResponse.getMessage());
                 } else {
                     Log.w(TAG, "Body kosong");
-                    Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValidasiActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -149,30 +146,30 @@ public class FullscreenActivity extends AppCompatActivity {
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                Helper.hideProgress(progressBar, FullscreenActivity.this);
-                Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
+                Helper.hideProgress(progressBar, ValidasiActivity.this);
+                Toast.makeText(ValidasiActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void tolakDonatur() {
-        String token = Session.getInstance(FullscreenActivity.this).getToken();
+        String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
-        Call<DefaultResponse> call = api.disapproveDonasi(id_konten, id, token);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
+        Call<DefaultResponse> call = clientApi.disapproveDonasi(id_konten, id, token);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                Helper.hideProgress(progressBar, FullscreenActivity.this);
+                Helper.hideProgress(progressBar, ValidasiActivity.this);
 
                 if (response.body() != null) {
                     DefaultResponse defaultResponse = response.body();
                     Log.d(TAG, "Ditolak");
-                    Helper.infoDialogFinish(FullscreenActivity.this, "Ditolak", defaultResponse.getMessage());
+                    Helper.infoDialogFinish(ValidasiActivity.this, "Ditolak", defaultResponse.getMessage());
                 } else {
                     Log.e(TAG, "Body kosong");
-                    Toast.makeText(FullscreenActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValidasiActivity.this, "Penerimaan donasi tidak dapat diakukan", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -180,8 +177,8 @@ public class FullscreenActivity extends AppCompatActivity {
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
                 Log.e(TAG, "Request gagal");
-                Helper.hideProgress(progressBar, FullscreenActivity.this);
-                Toast.makeText(FullscreenActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
+                Helper.hideProgress(progressBar, ValidasiActivity.this);
+                Toast.makeText(ValidasiActivity.this, R.string.periksa_koneksi, Toast.LENGTH_SHORT).show();
             }
         });
     }

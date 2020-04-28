@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
-import com.aji.donasi.activities.DetailKontenActivity;
+import com.aji.donasi.activities.DetailActivity;
 import com.aji.donasi.adapters.KontenAdapter;
-import com.aji.donasi.api.Api;
+import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -84,11 +84,11 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
             keterangan.setText(String.format("Hasil pencarian \"%s\"", kata));
 
             Retrofit retrofit = NetworkClient.getApiClient();
-            Api api = retrofit.create(Api.class);
+            ClientApi clientApi = retrofit.create(ClientApi.class);
 
             progressBar.setVisibility(View.VISIBLE);
 
-            Call<KontenResponse> call = api.searchKonten(keyword);
+            Call<KontenResponse> call = clientApi.searchKonten(keyword);
             call.enqueue(new Callback<KontenResponse>() {
                 @Override
                 public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
@@ -128,9 +128,9 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
     private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
-        Api api = retrofit.create(Api.class);
+        ClientApi clientApi = retrofit.create(ClientApi.class);
 
-        Call<KontenResponse> call = api.getKonten();
+        Call<KontenResponse> call = clientApi.getKonten();
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override
@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
     @Override
     public void onItemClick(int position) {
-        Intent detailIntent = new Intent(getActivity(), DetailKontenActivity.class);
+        Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
         Konten clickedItem = kontenList.get(position);
 
         //EventBus.getDefault().postSticky(new MessageEvent(clickedItem.getId(), clickedItem.getNomorrekening(), clickedItem.getGambar()));

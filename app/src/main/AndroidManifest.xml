@@ -24,13 +24,13 @@
             </intent-filter>
         </activity>
         <activity android:name="com.aji.donasi.activities.BuatKontenActivity" />
-        <activity android:name="com.aji.donasi.activities.DetailKontenActivity" />
+        <activity android:name="com.aji.donasi.activities.DetailActivity" />
         <activity android:name="com.aji.donasi.activities.LoginActivity" />
         <activity android:name="com.aji.donasi.activities.RegisterActivity" />
         <activity android:name="com.aji.donasi.activities.BeriDonasiActivity" />
         <activity android:name="com.aji.donasi.activities.TambahPerkembanganActivity" />
         <activity android:name="com.aji.donasi.activities.PerpanjanganActivity" />
-        <activity android:name="com.aji.donasi.activities.FullscreenActivity" />
+        <activity android:name="com.aji.donasi.activities.ValidasiActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
