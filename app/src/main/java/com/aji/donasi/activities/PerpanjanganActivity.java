@@ -39,6 +39,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
     //Declaring views
     private TextInputLayout editTextAlasan;
     private ProgressBar progressBar;
+    private Button submit;
 
     //spinner
     private String hari;
@@ -57,7 +58,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
 
         EventBus.getDefault().register(this);
 
-        Button submit = findViewById(R.id.submit);
+        submit = findViewById(R.id.submit);
         //editTextJumlahHari = findViewById(R.id.editTextJumlahHari);
         editTextAlasan = findViewById(R.id.editTextAlasan);
         progressBar = findViewById(R.id.progBar);
@@ -131,6 +132,8 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
+                        submit.setEnabled(false);
+                        Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                         Helper.warningDialogFinish(PerpanjanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
@@ -139,6 +142,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                submit.setEnabled(false);
                 Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                 Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", "Periksa koneksi anda");
             }

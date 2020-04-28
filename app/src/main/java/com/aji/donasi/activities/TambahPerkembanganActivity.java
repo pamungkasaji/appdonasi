@@ -55,6 +55,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
     private String filePath = "";
     private ProgressBar progressBar;
     private Call<DefaultResponse> call;
+    private Button buttonChoose, buttonUpload,
 
     //EventBus
     private int id_konten;
@@ -68,8 +69,8 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
 
         //Initializing views
-        Button buttonChoose = findViewById(R.id.buttonChoose);
-        Button buttonUpload = findViewById(R.id.buttonUpload);
+        buttonChoose = findViewById(R.id.buttonChoose);
+        buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
@@ -190,6 +191,8 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
                         Log.e(TAG, response.errorBody().toString());
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
+                        buttonUpload.setEnabled(true);
+                        Helper.hideProgress(progressBar, TambahPerkembanganActivity.this);
                         Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
@@ -198,6 +201,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<DefaultResponse> call,@NonNull Throwable t) {
                 Log.e(TAG, "Request gagal");
+                buttonUpload.setEnabled(true);
                 Helper.hideProgress(progressBar, TambahPerkembanganActivity.this);
                 Helper.warningDialog(TambahPerkembanganActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }

@@ -107,9 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "respon sukses error, Body not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
-                        Helper.warningDialog(LoginActivity.this, "Kesalahan", defaultResponse.getMessage());
                         login.setEnabled(true);
                         Helper.hideProgress(progressBar, LoginActivity.this);
+                        Helper.warningDialog(LoginActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
             }
@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                login.setEnabled(true);
                 Helper.hideProgress(progressBar, LoginActivity.this);
                 Helper.warningDialog(LoginActivity.this, "Kesalahan", "Periksa koneksi internet anda");
             }

@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout editTextNamaLengkap, editTextAlamat, editTextNoktp, editTextNoHp, editTextUsername, editTextPassword, editTextConfirmPassword;
     private ProgressBar progressBar;
     private String filePath = "";
-    private Button buttonChoose;
+    private Button buttonChoose, buttonRegis;
     private static final String TAG = "RegisterActivity";
 
     @Override
@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Initializing views
         buttonChoose = findViewById(R.id.buttonChoose);
-        Button buttonRegis = findViewById(R.id.buttonRegis);
+        buttonRegis = findViewById(R.id.buttonRegis);
         imageKtp = findViewById(R.id.imageKtp);
 
         editTextNamaLengkap = findViewById(R.id.editTextNamaLengkap);
@@ -178,6 +178,8 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
+                        buttonRegis.setEnabled(true);
+                        Helper.hideProgress(progressBar, RegisterActivity.this);
                         Helper.warningDialog(RegisterActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
@@ -186,6 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "request gagal");
+                buttonRegis.setEnabled(true);
                 Helper.hideProgress(progressBar, RegisterActivity.this);
                 Helper.warningDialog(RegisterActivity.this, "Kesalahan", "Registrasi gagal");
             }

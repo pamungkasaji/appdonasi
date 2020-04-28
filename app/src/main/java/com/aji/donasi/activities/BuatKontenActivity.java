@@ -52,7 +52,7 @@ public class BuatKontenActivity extends AppCompatActivity{
     private String tlama_donasi, tbank;
     private Spinner spinner_hari, spinner_bank;
 
-    private Button buttonChoose;
+    private Button buttonChoose, buttonUpload;
 
     private ProgressBar progressBar;
 
@@ -63,7 +63,7 @@ public class BuatKontenActivity extends AppCompatActivity{
 
         //Initializing views
         buttonChoose = findViewById(R.id.buttonChoose);
-        Button buttonUpload = findViewById(R.id.buttonUpload);
+        buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
         editTextJudul = findViewById(R.id.editTextJudul);
@@ -229,6 +229,8 @@ public class BuatKontenActivity extends AppCompatActivity{
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
+                        buttonUpload.setEnabled(true);
+                        Helper.hideProgress(progressBar, BuatKontenActivity.this);
                         Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
@@ -237,6 +239,7 @@ public class BuatKontenActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                buttonUpload.setEnabled(true);
                 Helper.hideProgress(progressBar, BuatKontenActivity.this);
                 Helper.warningDialog(BuatKontenActivity.this, "Kesalahan", "Pengajuan penggalangan dana gagal");
             }

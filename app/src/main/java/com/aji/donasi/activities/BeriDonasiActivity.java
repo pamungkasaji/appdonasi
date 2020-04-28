@@ -49,7 +49,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
     private CheckBox anonim;
     private String tis_anonim = "0";
     private String filePath = "";
-    private Button buttonChoose;
+    private Button buttonChoose, buttonUpload;
     private ProgressBar progressBar;
     private static final String TAG = "BeriDonasiActivity";
 
@@ -65,7 +65,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         EventBus.getDefault().register(this);
 
         buttonChoose = findViewById(R.id.buttonChoose);
-        Button buttonUpload = findViewById(R.id.buttonUpload);
+        buttonUpload = findViewById(R.id.buttonUpload);
         gambar = findViewById(R.id.gambar);
 
         et_nama = findViewById(R.id.et_nama);
@@ -174,6 +174,8 @@ public class BeriDonasiActivity extends AppCompatActivity{
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
+                        buttonUpload.setEnabled(true);
+                        Helper.hideProgress(progressBar, BeriDonasiActivity.this);
                         Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
                 }
@@ -182,9 +184,11 @@ public class BeriDonasiActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
+                buttonUpload.setEnabled(true);
                 Helper.hideProgress(progressBar, BeriDonasiActivity.this);
                 Helper.warningDialog(BeriDonasiActivity.this, "Kesalahan", "Pemberian donasia gagal");
             }
+
         });
     }
 
