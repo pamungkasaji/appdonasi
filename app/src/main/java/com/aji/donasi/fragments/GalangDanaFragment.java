@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BuatFragment extends Fragment {
+public class GalangDanaFragment extends Fragment {
 
     private ViewPager viewPager;
     private TabLayout tabs;

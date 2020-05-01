@@ -55,7 +55,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
     private String filePath = "";
     private ProgressBar progressBar;
     private Call<DefaultResponse> call;
-    private Button buttonChoose, buttonUpload,
+    private Button buttonChoose, buttonUpload;
 
     //EventBus
     private int id_konten;
@@ -112,18 +112,18 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radio_info:
                 if (checked)
-                    keterangan.setText(getResources().getString(R.string.menambahkan_informasii));
-                editTextJudul.setHint("Judul");
-                editTextDeskripsi.setHint("Deskripsi");
-                editTextJudul.setVisibility(View.VISIBLE);
-                editTextPengeluaran.setVisibility(View.GONE);
+                    keterangan.setText(getResources().getString(R.string.menambahkan_berita));
+                    editTextJudul.setHint("Judul");
+                    editTextDeskripsi.setHint("Deskripsi");
+                    editTextJudul.setVisibility(View.VISIBLE);
+                    editTextPengeluaran.setVisibility(View.GONE);
                 break;
             case R.id.radio_pengeluaran:
                 if (checked)
                     keterangan.setText(getResources().getString(R.string.menambahkan_pengeluaran));
-                editTextDeskripsi.setHint("Rencana penggunaan dana");
-                editTextJudul.setVisibility(View.GONE);
-                editTextPengeluaran.setVisibility(View.VISIBLE);
+                    editTextDeskripsi.setHint("Rencana penggunaan dana");
+                    editTextJudul.setVisibility(View.GONE);
+                    editTextPengeluaran.setVisibility(View.VISIBLE);
                 break;
         }
     }

@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.aji.donasi.R;
 import com.aji.donasi.fragments.AkunFragment;
-import com.aji.donasi.fragments.BuatFragment;
+import com.aji.donasi.fragments.GalangDanaFragment;
 import com.aji.donasi.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_favorites:
-                            selectedFragment = new BuatFragment();
+                            selectedFragment = new GalangDanaFragment();
                             break;
                         case R.id.nav_search:
                             selectedFragment = new AkunFragment();

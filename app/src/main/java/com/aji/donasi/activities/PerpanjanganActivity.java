@@ -132,7 +132,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
                         Log.d(TAG, "respon sukses errorBody not null");
                         Gson gson = new Gson();
                         DefaultResponse defaultResponse = gson.fromJson(response.errorBody().charStream(), DefaultResponse.class);
-                        submit.setEnabled(false);
+                        submit.setEnabled(true);
                         Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                         Helper.warningDialogFinish(PerpanjanganActivity.this, "Kesalahan", defaultResponse.getMessage());
                     }
@@ -142,7 +142,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
-                submit.setEnabled(false);
+                submit.setEnabled(true);
                 Helper.hideProgress(progressBar, PerpanjanganActivity.this);
                 Helper.warningDialog(PerpanjanganActivity.this, "Kesalahan", "Periksa koneksi anda");
             }

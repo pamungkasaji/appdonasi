@@ -9,11 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="10dp"
-        android:text="Buat Donasi" />
+        android:text="@string/galang_dana_sekarang" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerKontenUser"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_below="@+id/buat"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

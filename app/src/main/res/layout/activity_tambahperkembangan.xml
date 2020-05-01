@@ -37,20 +37,20 @@
                 <RadioButton android:id="@+id/radio_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Informasi Baru"
+                    android:text="Berita Baru"
                     android:checked="true"
                     android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/radio_pengeluaran"
                     android:layout_marginStart="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pengeluaran Dana"
+                    android:text="Penggunaan Dana"
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
             <TextView
                 android:id="@+id/keterangan"
-                android:text="@string/menambahkan_informasii"
+                android:text="@string/menambahkan_berita"
                 android:textAppearance="@style/textstyle3"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
@@ -86,7 +86,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/pengeluaran"
+                    android:hint="@string/jumlah_pengeluaran"
                     android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>

@@ -56,7 +56,7 @@
 
     <string name="jumlah_donasi_masuk">Jumlah Donasi Masuk :</string>
     <string name="jumlah_donatur">Jumlah Donatur :</string>
-    <string name="ket_denasi_masuk">Daftar donasi masuk yang belum divalidasi</string>
+    <string name="ket_denasi_masuk">Daftar donasi masuk yang belum divalidasi. Pilih salah satu untuk menerima atau menolak validasi</string>
     <string name="is_anonim">(Anonim)</string>
 
     <string name="konfirmasi">Konfirmasi</string>
@@ -126,8 +126,8 @@
     <string name="pengeluaran_dana">Pengeluaran Dana : </string>
     <string name="rincian_pengeluaran">Rincian pengeluaran : </string>
     <string name="tujuan_transfer">Tujuan transfer donasi dari donatur</string>
-    <string name="isikan_informasi_konten">Isikan informasi konten donasi yang ingin diajukan</string>
-    <string name="menambahkan_informasii">Menambahkan informasi terbaru terkait perkembangan donasi</string>
+    <string name="isikan_informasi_konten">Isikan informasi konten penggalangan dana yang ingin diajukan</string>
+    <string name="menambahkan_berita">Menambahkan berita terbaru terkait penggalangan dana</string>
     <string name="menambahkan_pengeluaran">Penggunaan dana yang terkumpul dari donatur</string>
 
     <string name="judul_full">Judul : %1$s </string>
@@ -136,4 +136,6 @@
     <string name="nohp_full">No HP donatur : %1$s </string>
     <string name="info_baru">Info Baru</string>
     <string name="semua">Semua</string>
+    <string name="galang_dana_sekarang">Galang Dana Sekarang</string>
+    <string name="jumlah_pengeluaran">Jumlah pengeluaran</string>
 </resources>
