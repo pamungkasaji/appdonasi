@@ -20,7 +20,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.activities.LoginActivity;
 import com.aji.donasi.activities.MainActivity;
 import com.aji.donasi.activities.RegisterActivity;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.AuthClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 
@@ -111,11 +111,11 @@ public class AkunFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        AuthClient authClient = retrofit.create(AuthClient.class);
 
         String token = Session.getInstance(getActivity()).getToken();
 
-        Call<DefaultResponse> call = clientApi.userLogout(token);
+        Call<DefaultResponse> call = authClient.userLogout(token);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

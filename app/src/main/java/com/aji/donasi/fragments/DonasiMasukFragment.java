@@ -21,7 +21,7 @@ import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.ValidasiActivity;
 import com.aji.donasi.adapters.DonasiMasukAdapter;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.DonaturClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
@@ -64,26 +64,7 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
         donaturList = new ArrayList<>();
 
-        //listDonaturUser();
     }
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_donasimasuk, container, false);
-//
-//        recyclerView = view.findViewById(R.id.recyclerDonasiMasuk);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//
-//        progressBar = view.findViewById(R.id.progBar);
-//        jumlahDonasiMasuk = view.findViewById(R.id.jumlahDonasiMasuk);
-//
-//        donaturList = new ArrayList<>();
-//
-//        listDonaturUser();
-//
-//        return view;
-//    }
 
     @Override
     public void onResume(){
@@ -97,8 +78,8 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
         String token = Session.getInstance(getActivity()).getToken();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
-        Call<DonaturResponse> call = clientApi.getDonaturUser(token);
+        DonaturClient donaturClient = retrofit.create(DonaturClient.class);
+        Call<DonaturResponse> call = donaturClient.getDonaturUser(token);
         call.enqueue(new Callback<DonaturResponse>() {
             @Override
             public void onResponse(Call<DonaturResponse> call, Response<DonaturResponse> response) {

@@ -21,8 +21,8 @@ import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.api.PerkembanganClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
@@ -150,7 +150,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        PerkembanganClient perkembanganClient = retrofit.create(PerkembanganClient.class);
         String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
 
         //Create a file object using file path
@@ -170,10 +170,10 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
         }
 
-        Call<DefaultResponse> call = clientApi.createPerkembanganImage(id_konten, token, pic, params);
+        Call<DefaultResponse> call = perkembanganClient.createPerkembanganImage(id_konten, token, pic, params);
 
         if(filePath.equals("")){
-            call = clientApi.createPerkembangan(id_konten, token, params);
+            call = perkembanganClient.createPerkembangan(id_konten, token, params);
         }
 
         call.enqueue(new Callback<DefaultResponse>() {

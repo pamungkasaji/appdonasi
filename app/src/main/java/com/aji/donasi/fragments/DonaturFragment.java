@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.adapters.DonaturAdapter;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.DonaturClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Donatur;
 import com.aji.donasi.models.DonaturResponse;
@@ -95,9 +95,9 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
 
     private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        DonaturClient donaturClient = retrofit.create(DonaturClient.class);
 
-        Call<DonaturResponse> call = clientApi.getDonatur(id_konten);
+        Call<DonaturResponse> call = donaturClient.getDonatur(id_konten);
 
         call.enqueue(new Callback<DonaturResponse>() {
             @Override

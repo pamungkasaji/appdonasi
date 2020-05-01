@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.IsUserMessage;
 import com.aji.donasi.fragments.DetailFragment;
@@ -128,9 +128,9 @@ public class DetailActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        KontenClient kontenClient = retrofit.create(KontenClient.class);
 
-        Call<KontenResponse> call = clientApi.isUser(kontenMessage.getId(), token);
+        Call<KontenResponse> call = kontenClient.isUser(kontenMessage.getId(), token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

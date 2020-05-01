@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.DonaturClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
@@ -142,7 +142,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         String tnohp = et_nohp.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        DonaturClient donaturClient = retrofit.create(DonaturClient.class);
 
         //Create a file object using file path
         File file = new File(filePath);
@@ -156,7 +156,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         RequestBody nohp = RequestBody.create(tnohp, MediaType.parse("multipart/form-data"));
         RequestBody is_anonim = RequestBody.create(tis_anonim, MediaType.parse("ultipart/form-data"));
 
-        Call<DefaultResponse> call = clientApi.sendDonation(id_konten, pic, nama, jumlah, nohp, is_anonim);
+        Call<DefaultResponse> call = donaturClient.sendDonation(id_konten, pic, nama, jumlah, nohp, is_anonim);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

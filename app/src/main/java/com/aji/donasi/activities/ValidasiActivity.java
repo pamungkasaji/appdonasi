@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.DonaturClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Donatur;
@@ -124,8 +124,8 @@ public class ValidasiActivity extends AppCompatActivity {
     private void terimaDonatur() {
         String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
-        Call<DefaultResponse> call = clientApi.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
+        DonaturClient donaturClient = retrofit.create(DonaturClient.class);
+        Call<DefaultResponse> call = donaturClient.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
@@ -155,8 +155,8 @@ public class ValidasiActivity extends AppCompatActivity {
     private void tolakDonatur() {
         String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
-        Call<DefaultResponse> call = clientApi.disapproveDonasi(id_konten, id, token);
+        DonaturClient donaturClient = retrofit.create(DonaturClient.class);
+        Call<DefaultResponse> call = donaturClient.disapproveDonasi(id_konten, id, token);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

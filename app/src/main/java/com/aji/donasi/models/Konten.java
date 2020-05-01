@@ -44,7 +44,7 @@ public class Konten {
     @SerializedName("user")
     @Expose
     private User user;
-    @SerializedName("perpanjangan")
+    @SerializedName("sendPerpanjangan")
     @Expose
     private Perpanjangan perpanjangan;
 

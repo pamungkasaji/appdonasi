@@ -23,7 +23,7 @@ import com.aji.donasi.Session;
 import com.aji.donasi.activities.BuatKontenActivity;
 import com.aji.donasi.activities.DetailActivity;
 import com.aji.donasi.adapters.KontenAdapter;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -94,11 +94,11 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
     private void listKontenUser() {
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        KontenClient kontenClient = retrofit.create(KontenClient.class);
 
         String token = Session.getInstance(getActivity()).getToken();
 
-        Call<KontenResponse> call = clientApi.getKontenUser(token);
+        Call<KontenResponse> call = kontenClient.getKontenUser(token);
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

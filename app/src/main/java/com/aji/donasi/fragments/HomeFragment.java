@@ -22,7 +22,7 @@ import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.activities.DetailActivity;
 import com.aji.donasi.adapters.KontenAdapter;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
@@ -84,11 +84,11 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
             keterangan.setText(String.format("Hasil pencarian \"%s\"", kata));
 
             Retrofit retrofit = NetworkClient.getApiClient();
-            ClientApi clientApi = retrofit.create(ClientApi.class);
+            KontenClient kontenClient = retrofit.create(KontenClient.class);
 
             progressBar.setVisibility(View.VISIBLE);
 
-            Call<KontenResponse> call = clientApi.searchKonten(keyword);
+            Call<KontenResponse> call = kontenClient.searchKonten(keyword);
             call.enqueue(new Callback<KontenResponse>() {
                 @Override
                 public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
@@ -128,9 +128,9 @@ public class HomeFragment extends Fragment implements KontenAdapter.OnItemClickL
 
     private void displayData() {
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        KontenClient kontenClient = retrofit.create(KontenClient.class);
 
-        Call<KontenResponse> call = clientApi.getKonten();
+        Call<KontenResponse> call = kontenClient.getKonten();
 
         call.enqueue(new Callback<KontenResponse>() {
             @Override

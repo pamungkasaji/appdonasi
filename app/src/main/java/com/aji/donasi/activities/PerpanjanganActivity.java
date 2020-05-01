@@ -18,8 +18,8 @@ import com.aji.donasi.Helper;
 import com.aji.donasi.KontenMessage;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
 import com.aji.donasi.api.NetworkClient;
+import com.aji.donasi.api.PerpanjanganClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
@@ -98,7 +98,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
 
         if (!Helper.notEmpty(editTextAlasan, "Alasan")) check = false;
 
-        if (hari.equals("Jumlah hari perpanjangan")) {
+        if (hari.equals("Jumlah hari sendPerpanjangan")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
             spinner.requestFocus();
             return false;
@@ -114,9 +114,9 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         String alasan = editTextAlasan.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        PerpanjanganClient perpanjanganClient = retrofit.create(PerpanjanganClient.class);
         String token = Session.getInstance(PerpanjanganActivity.this).getToken();
-        Call<DefaultResponse> call = clientApi.perpanjangan(id_konten, token, hari, alasan);
+        Call<DefaultResponse> call = perpanjanganClient.sendPerpanjangan(id_konten, token, hari, alasan);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

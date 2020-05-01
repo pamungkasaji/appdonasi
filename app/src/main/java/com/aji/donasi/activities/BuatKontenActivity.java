@@ -24,7 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.google.android.material.textfield.TextInputLayout;
@@ -195,7 +195,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         String tnorek = editTextNoRek.getEditText().getText().toString().trim();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        KontenClient kontenClient = retrofit.create(KontenClient.class);
 
         String token = Session.getInstance(BuatKontenActivity.this).getToken();
         //Create a file object using file path
@@ -212,7 +212,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         RequestBody bank = RequestBody.create(MediaType.parse("multipart/form-data"), tbank);
         RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
 
-        Call<DefaultResponse> call = clientApi.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
+        Call<DefaultResponse> call = kontenClient.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

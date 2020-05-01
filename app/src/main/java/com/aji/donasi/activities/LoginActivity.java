@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.aji.donasi.Helper;
 import com.aji.donasi.R;
 import com.aji.donasi.Session;
-import com.aji.donasi.api.ClientApi;
+import com.aji.donasi.api.AuthClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.LoginResponse;
@@ -84,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = et_password.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
-        ClientApi clientApi = retrofit.create(ClientApi.class);
+        AuthClient authClient = retrofit.create(AuthClient.class);
 
-        Call<LoginResponse> call = clientApi.userLogin(username, password);
+        Call<LoginResponse> call = authClient.userLogin(username, password);
 
         call.enqueue(new Callback<LoginResponse>() {
             @Override
