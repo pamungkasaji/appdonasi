@@ -97,7 +97,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
             if(validasi()){
                 buttonUpload.setEnabled(false);
                 Helper.showProgress(progressBar, TambahPerkembanganActivity.this);
-                uploadPerkembangan();
+                postPerkembangan();
             }
         });
 
@@ -143,7 +143,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         return check;
     }
 
-    public void uploadPerkembangan() {
+    public void postPerkembangan() {
 
         String tjudul = editTextJudul.getEditText().getText().toString();
         String tpengeluaran = editTextPengeluaran.getEditText().getText().toString();

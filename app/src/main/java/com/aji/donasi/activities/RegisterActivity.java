@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
             if(validasi()){
                 buttonRegis.setEnabled(false);
                 Helper.showProgress(progressBar, RegisterActivity.this);
-                uploadRegistrasi();
+                postRegistrasi();
             }
         });
 
@@ -137,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
         return check;
     }
 
-    public void uploadRegistrasi() {
+    public void postRegistrasi() {
 
         String tnamalengkap = editTextNamaLengkap.getEditText().getText().toString().trim();
         String talamat = editTextAlamat.getEditText().getText().toString().trim();

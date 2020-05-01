@@ -73,7 +73,7 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
 
         kontenList = new ArrayList<>();
 
-        listKontenUser();
+        getKontenUser();
 
         buttonBuat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +88,11 @@ public class ListGalangDanaFragment extends Fragment implements KontenAdapter.On
     public void onResume(){
         super.onResume();
         progressBar.setVisibility(View.VISIBLE);
-        listKontenUser();
-        Log.d(TAG, "Fragment on resume, listKontenUser();");
+        getKontenUser();
+        Log.d(TAG, "Fragment on resume, getKontenUser();");
     }
 
-    private void listKontenUser() {
+    private void getKontenUser() {
         Retrofit retrofit = NetworkClient.getApiClient();
         KontenClient kontenClient = retrofit.create(KontenClient.class);
 

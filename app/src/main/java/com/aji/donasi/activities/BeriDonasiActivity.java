@@ -101,7 +101,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
             if(validasi()){
                 buttonUpload.setEnabled(false);
                 Helper.showProgress(progressBar, BeriDonasiActivity.this);
-                beriDonasi();
+                postDonasi();
             }
         });
 
@@ -135,7 +135,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         return check;
     }
 
-    public void beriDonasi() {
+    public void postDonasi() {
 
         String tnama = et_nama.getEditText().getText().toString();
         String tjumlah = et_jumlah.getEditText().getText().toString();

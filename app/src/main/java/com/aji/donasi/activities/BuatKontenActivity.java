@@ -102,7 +102,7 @@ public class BuatKontenActivity extends AppCompatActivity{
             if(validasi()){
                 buttonUpload.setEnabled(false);
                 Helper.showProgress(progressBar, BuatKontenActivity.this);
-                uploadKonten();
+                postKonten();
             }
         });
 
@@ -187,7 +187,7 @@ public class BuatKontenActivity extends AppCompatActivity{
         return check;
     }
 
-    private void uploadKonten() {
+    private void postKonten() {
 
         String tjudul = editTextJudul.getEditText().getText().toString().trim();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString().trim();

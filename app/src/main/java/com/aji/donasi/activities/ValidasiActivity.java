@@ -66,7 +66,7 @@ public class ValidasiActivity extends AppCompatActivity {
 
         buttonterima.setOnClickListener((View v) -> {
             Helper.showProgress(progressBar, ValidasiActivity.this);
-            terimaDonatur();
+            approve();
         });
 
         buttontolak.setOnClickListener((View v) -> {
@@ -108,7 +108,7 @@ public class ValidasiActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Helper.showProgress(progressBar, ValidasiActivity.this);
-                tolakDonatur();
+                dissaprove();
             }
         });
         builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -121,7 +121,7 @@ public class ValidasiActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void terimaDonatur() {
+    private void approve() {
         String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
         DonaturClient donaturClient = retrofit.create(DonaturClient.class);
@@ -152,7 +152,7 @@ public class ValidasiActivity extends AppCompatActivity {
         });
     }
 
-    private void tolakDonatur() {
+    private void dissaprove() {
         String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
         DonaturClient donaturClient = retrofit.create(DonaturClient.class);

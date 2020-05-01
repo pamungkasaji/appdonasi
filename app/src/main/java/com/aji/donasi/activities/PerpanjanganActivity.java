@@ -85,7 +85,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
             if(validasi()){
                 submit.setEnabled(false);
                 Helper.showProgress(progressBar, PerpanjanganActivity.this);
-                submitPerpanjangan();
+                postPerpanjangan();
             }
         });
 
@@ -109,7 +109,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         return check;
     }
 
-    public void submitPerpanjangan() {
+    public void postPerpanjangan() {
 
         String alasan = editTextAlasan.getEditText().getText().toString().trim();
 

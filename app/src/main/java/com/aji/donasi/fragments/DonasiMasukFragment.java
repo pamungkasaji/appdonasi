@@ -70,11 +70,11 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
     public void onResume(){
         super.onResume();
         progressBar.setVisibility(View.VISIBLE);
-        listDonaturUser();
-        Log.d(TAG, "Fragment on resume, listDonaturUser();");
+        getDonaturUser();
+        Log.d(TAG, "Fragment on resume, getDonaturUser();");
     }
 
-    private void listDonaturUser() {
+    private void getDonaturUser() {
         String token = Session.getInstance(getActivity()).getToken();
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -86,7 +86,7 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
 
                 if (response.body() != null) {
                     DonaturResponse donaturResponse = response.body();
-                    Log.d(TAG, "Muat ulang listDonaturUser()");
+                    Log.d(TAG, "Muat ulang getDonaturUser()");
                     donaturList = (ArrayList<Donatur>) donaturResponse.getData();
                     if (donaturList.isEmpty()){
                         Toast.makeText(getActivity(), "Belum ada donasi masuk", Toast.LENGTH_SHORT).show();
@@ -108,7 +108,7 @@ public class DonasiMasukFragment extends Fragment implements DonasiMasukAdapter.
             public void onFailure(Call<DonaturResponse> call, Throwable t) {
                 Log.e(TAG, "Request gagal");
                 progressBar.setVisibility(View.GONE);
-                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
+//                Helper.warningDialog(getActivity(), "Kesalahan", "Daftar konten penggalangan dana tidak bisa ditampilkan");
             }
         });
     }
