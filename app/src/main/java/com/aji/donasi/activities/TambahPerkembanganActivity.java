@@ -56,6 +56,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Call<DefaultResponse> call;
     private Button buttonChoose, buttonUpload;
+    private String token;
 
     //EventBus
     private int id_konten;
@@ -79,6 +80,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progBar);
 
         id_konten = kontenMessage.getId();
+        token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -151,7 +153,6 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
         Retrofit retrofit = NetworkClient.getApiClient();
         PerkembanganClient perkembanganClient = retrofit.create(PerkembanganClient.class);
-        String token = Session.getInstance(TambahPerkembanganActivity.this).getToken();
 
         //Create a file object using file path
         File file = new File(filePath);

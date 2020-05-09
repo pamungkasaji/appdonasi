@@ -6,8 +6,8 @@
         android:title="@string/semua" />
 
     <item
-        android:id="@+id/pengeluaran"
-        android:title="@string/pengeluaran" />
+        android:id="@+id/penggunaan_dana"
+        android:title="@string/penggunaan_dana" />
 
     <item
         android:id="@+id/terbaru"

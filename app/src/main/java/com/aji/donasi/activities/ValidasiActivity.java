@@ -36,6 +36,7 @@ public class ValidasiActivity extends AppCompatActivity {
     private int id, id_konten;
     private PhotoView gambarbukti;
     private ProgressBar progressBar;
+    private String token;
 
     private static final String TAG = "ValidasiActivity";
 
@@ -63,6 +64,8 @@ public class ValidasiActivity extends AppCompatActivity {
         initData(donatur);
         id = donatur.getId();
         id_konten = donatur.getIdKonten();
+
+        token = Session.getInstance(ValidasiActivity.this).getToken();
 
         buttonterima.setOnClickListener((View v) -> {
             Helper.showProgress(progressBar, ValidasiActivity.this);
@@ -108,7 +111,7 @@ public class ValidasiActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Helper.showProgress(progressBar, ValidasiActivity.this);
-                dissaprove();
+                disapprove();
             }
         });
         builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -122,7 +125,6 @@ public class ValidasiActivity extends AppCompatActivity {
     }
 
     private void approve() {
-        String token = Session.getInstance(ValidasiActivity.this).getToken();
         Retrofit retrofit = NetworkClient.getApiClient();
         DonaturClient donaturClient = retrofit.create(DonaturClient.class);
         Call<DefaultResponse> call = donaturClient.approveDonasi(id_konten, id, token,Helper.TERIMA_DONASI);
@@ -152,8 +154,7 @@ public class ValidasiActivity extends AppCompatActivity {
         });
     }
 
-    private void dissaprove() {
-        String token = Session.getInstance(ValidasiActivity.this).getToken();
+    private void disapprove() {
         Retrofit retrofit = NetworkClient.getApiClient();
         DonaturClient donaturClient = retrofit.create(DonaturClient.class);
         Call<DefaultResponse> call = donaturClient.disapproveDonasi(id_konten, id, token);

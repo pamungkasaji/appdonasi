@@ -24,9 +24,4 @@ public class DonaturResponse {
     public List<Donatur> getData() {
         return data;
     }
-
-    public Donatur getDonatur() {
-        return donatur;
-    }
-
 }

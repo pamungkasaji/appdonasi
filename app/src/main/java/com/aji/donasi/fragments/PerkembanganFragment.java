@@ -25,11 +25,9 @@ import com.aji.donasi.R;
 import com.aji.donasi.Session;
 import com.aji.donasi.activities.TambahPerkembanganActivity;
 import com.aji.donasi.adapters.PerkembanganAdapter;
-import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.api.PerkembanganClient;
 import com.aji.donasi.models.Konten;
-import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.Perkembangan;
 import com.aji.donasi.models.PerkembanganResponse;
 
@@ -88,12 +86,6 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         tambah.setVisibility(View.GONE);
 
         id_konten = kontenMessage.getId();
-
-        //displayData();
-
-//        if(Session.getInstance(getActivity()).isLoggedIn()) {
-//            initTambah();
-//        }
 
         if(is_user){
             tambah.setVisibility(View.VISIBLE);
@@ -158,37 +150,6 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         });
     }
 
-    private void initTambah(){
-        progressBar.setVisibility(View.VISIBLE);
-
-        Retrofit retrofit = NetworkClient.getApiClient();
-        KontenClient kontenClient = retrofit.create(KontenClient.class);
-
-        Call<KontenResponse> call = kontenClient.isUser(id_konten, token);
-
-        call.enqueue(new Callback<KontenResponse>() {
-            @Override
-            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
-
-                if (response.isSuccessful() && response.body() != null) {
-                    tambah.setVisibility(View.VISIBLE);
-                    Log.d(TAG, "Is user iya");
-                } else {
-                    Log.d(TAG, "bukan user");
-                }
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<KontenResponse> call, Throwable t) {
-                Log.e(TAG, "Request gagal");
-                progressBar.setVisibility(View.GONE);
-                //Helper.warningDialog(getActivity(), "Kesalahan", "Periksa koneksi internet anda");
-                //Toast.makeText(getActivity(), "Periksa koneksi internet anda", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KontenMessage event) {
         kontenMessage = event.konten;
@@ -211,12 +172,12 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
                 displayData();
                 sort_perkembangan.setText(getResources().getString(R.string.semua));
                 return true;
-            case R.id.pengeluaran:
-                filterPengeluaran();
-                sort_perkembangan.setText(getResources().getString(R.string.pengeluaran));
+            case R.id.penggunaan_dana:
+                filterPenggunaan();
+                sort_perkembangan.setText(getResources().getString(R.string.penggunaan_dana));
                 return true;
             case R.id.terbaru:
-                filterInfo();
+                filterBerita();
                 sort_perkembangan.setText(getResources().getString(R.string.terbaru));
                 return true;
             default:
@@ -224,7 +185,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         }
     }
 
-    private void filterPengeluaran(){
+    private void filterPenggunaan(){
         ArrayList<Perkembangan> pengeluaranList = new ArrayList<>() ;
 
         for (int i = 0 ; i<perkembanganList.size();i++){
@@ -243,7 +204,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         recyclerView.setAdapter(adapter);
     }
 
-    private void filterInfo(){
+    private void filterBerita(){
         ArrayList<Perkembangan> infoList = new ArrayList<>() ;
 
         for (int i = 0 ; i<perkembanganList.size();i++){
