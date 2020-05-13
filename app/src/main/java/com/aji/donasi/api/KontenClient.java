@@ -2,6 +2,7 @@ package com.aji.donasi.api;
 
 import com.aji.donasi.models.DefaultResponse;
 import com.aji.donasi.models.DonaturResponse;
+import com.aji.donasi.models.Konten;
 import com.aji.donasi.models.KontenResponse;
 import com.aji.donasi.models.LoginResponse;
 import com.aji.donasi.models.PerkembanganResponse;
@@ -11,6 +12,7 @@ import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -32,13 +34,8 @@ public interface KontenClient {
     @POST("konten")
     Call<DefaultResponse> createKonten(
             @Header("Authorization") String token,
-            @Part MultipartBody.Part partimage,
-            @Part("judul") RequestBody judul,
-            @Part("deskripsi") RequestBody deskripsi,
-            @Part("target") RequestBody target,
-            @Part("lama_donasi") RequestBody lama_donasi,
-            @Part("nomorrekening") RequestBody nomorrekening,
-            @Part("bank") RequestBody bank
+            @PartMap Map<String, RequestBody> konten,
+            @Part MultipartBody.Part partimage
     );
 
     @GET("konten/judul/{keyword}")

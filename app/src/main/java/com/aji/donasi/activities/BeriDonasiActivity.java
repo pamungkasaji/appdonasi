@@ -32,6 +32,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -147,16 +149,18 @@ public class BeriDonasiActivity extends AppCompatActivity{
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody fileReqBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("bukti", file.getName(), fileReqBody);
 
-        RequestBody nama = RequestBody.create(tnama, MediaType.parse("multipart/form-data"));
-        RequestBody jumlah = RequestBody.create(tjumlah, MediaType.parse("multipart/form-data"));
-        RequestBody nohp = RequestBody.create(tnohp, MediaType.parse("multipart/form-data"));
-        RequestBody is_anonim = RequestBody.create(tis_anonim, MediaType.parse("ultipart/form-data"));
+        Map<String, RequestBody> donatur = new HashMap<>();
 
-        Call<DefaultResponse> call = donaturClient.sendDonation(id_konten, pic, nama, jumlah, nohp, is_anonim);
+        donatur.put("nama", RequestBody.create(tnama, MediaType.parse("multipart/form-data")));
+        donatur.put("jumlah", RequestBody.create(tjumlah, MediaType.parse("multipart/form-data")));
+        donatur.put("nohp", RequestBody.create(tnohp, MediaType.parse("multipart/form-data")));
+        donatur.put("is_anonim", RequestBody.create(tis_anonim, MediaType.parse("multipart/form-data")));
+
+        Call<DefaultResponse> call = donaturClient.sendDonation(id_konten, donatur, pic);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

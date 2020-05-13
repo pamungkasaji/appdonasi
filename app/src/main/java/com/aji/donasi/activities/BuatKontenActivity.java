@@ -27,10 +27,13 @@ import com.aji.donasi.Session;
 import com.aji.donasi.api.KontenClient;
 import com.aji.donasi.api.NetworkClient;
 import com.aji.donasi.models.DefaultResponse;
+import com.aji.donasi.models.Konten;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -201,18 +204,20 @@ public class BuatKontenActivity extends AppCompatActivity{
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody fileReqBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("gambar", file.getName(), fileReqBody);
 
-        RequestBody judul = RequestBody.create(MediaType.parse("multipart/form-data"), tjudul);
-        RequestBody deskripsi = RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi);
-        RequestBody target = RequestBody.create(MediaType.parse("multipart/form-data"), ttarget);
-        RequestBody lama_donasi = RequestBody.create(MediaType.parse("multipart/form-data"), tlama_donasi);
-        RequestBody bank = RequestBody.create(MediaType.parse("multipart/form-data"), tbank);
-        RequestBody nomorrekening = RequestBody.create(MediaType.parse("multipart/form-data"), tnorek);
+        Map<String, RequestBody> konten = new HashMap<>();
 
-        Call<DefaultResponse> call = kontenClient.createKonten(token, pic, judul, deskripsi, target, lama_donasi, nomorrekening, bank);
+        konten.put("judul", RequestBody.create(tjudul, MediaType.parse("multipart/form-data")));
+        konten.put("deskripsi", RequestBody.create(tdeskripsi, MediaType.parse("multipart/form-data")));
+        konten.put("target", RequestBody.create(ttarget, MediaType.parse("multipart/form-data")));
+        konten.put("lama_donasi", RequestBody.create(tlama_donasi, MediaType.parse("multipart/form-data")));
+        konten.put("bank", RequestBody.create(tbank, MediaType.parse("multipart/form-data")));
+        konten.put("nomorrekening", RequestBody.create(tnorek, MediaType.parse("multipart/form-data")));
+
+        Call<DefaultResponse> call = kontenClient.createKonten(token, konten, pic);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

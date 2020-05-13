@@ -48,6 +48,15 @@ public class Konten {
     @Expose
     private Perpanjangan perpanjangan;
 
+    public Konten(String judul, String deskripsi, Integer target, Integer lamaDonasi, String nomorrekening, String bank) {
+        this.judul = judul;
+        this.deskripsi = deskripsi;
+        this.target = target;
+        this.lamaDonasi = lamaDonasi;
+        this.nomorrekening = nomorrekening;
+        this.bank = bank;
+    }
+
     public Integer getId() {
         return id;
     }

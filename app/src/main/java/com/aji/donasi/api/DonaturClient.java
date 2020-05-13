@@ -32,11 +32,8 @@ public interface DonaturClient {
     @POST("konten/{id}/donatur")
     Call<DefaultResponse> sendDonation(
             @Path("id") int id,
-            @Part MultipartBody.Part partimage,
-            @Part("nama") RequestBody nama,
-            @Part("jumlah") RequestBody jumlah,
-            @Part("nohp") RequestBody nohp,
-            @Part("is_anonim") RequestBody is_anonim
+            @PartMap Map<String, RequestBody> donatur,
+            @Part MultipartBody.Part partimage
     );
 
     @GET("user/me/donatur")

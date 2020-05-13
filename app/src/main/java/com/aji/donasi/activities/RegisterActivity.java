@@ -25,6 +25,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 import okhttp3.MediaType;
@@ -151,18 +153,20 @@ public class RegisterActivity extends AppCompatActivity {
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody fileReqBody = RequestBody.create(file, MediaType.parse("multipart/form-data"));
         // Create MultipartBody.Part using file request-body,file name and part name
         MultipartBody.Part pic = MultipartBody.Part.createFormData("fotoktp", file.getName(), fileReqBody);
 
-        RequestBody username = RequestBody.create(MediaType.parse("multipart/form-data"), tusername);
-        RequestBody password = RequestBody.create(MediaType.parse("multipart/form-data"), tpassword);
-        RequestBody nohp = RequestBody.create(MediaType.parse("multipart/form-data"), tnohp);
-        RequestBody alamat = RequestBody.create(MediaType.parse("multipart/form-data"), talamat);
-        RequestBody namalengkap = RequestBody.create(MediaType.parse("multipart/form-data"), tnamalengkap);
-        RequestBody nomorktp = RequestBody.create(MediaType.parse("multipart/form-data"), tnomorktp);
-        //
-        Call<DefaultResponse> call = authClient.createUser(pic, username, password, nohp, namalengkap, nomorktp, alamat);
+        Map<String, RequestBody> user = new HashMap<>();
+
+        user.put("username", RequestBody.create(tusername, MediaType.parse("multipart/form-data")));
+        user.put("password", RequestBody.create(tpassword, MediaType.parse("multipart/form-data")));
+        user.put("nohp", RequestBody.create(tnohp, MediaType.parse("multipart/form-data")));
+        user.put("alamat", RequestBody.create(talamat, MediaType.parse("multipart/form-data")));
+        user.put("namalengkap", RequestBody.create(tnamalengkap, MediaType.parse("multipart/form-data")));
+        user.put("nomorktp", RequestBody.create(tnomorktp, MediaType.parse("multipart/form-data")));
+
+        Call<DefaultResponse> call = authClient.createUser(user, pic);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

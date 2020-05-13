@@ -35,13 +35,8 @@ public interface AuthClient {
     @Multipart
     @POST("register")
     Call<DefaultResponse> createUser(
-            @Part MultipartBody.Part partimage,
-            @Part("username") RequestBody username,
-            @Part("password") RequestBody password,
-            @Part("nohp") RequestBody nohp,
-            @Part("namalengkap") RequestBody namalengkap,
-            @Part("nomorktp") RequestBody nomorktp,
-            @Part("alamat") RequestBody alamat
+            @PartMap Map<String, RequestBody> user,
+            @Part MultipartBody.Part partimage
     );
 
     @GET("logout")
