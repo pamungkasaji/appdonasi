@@ -40,7 +40,7 @@
                     android:text="Berita Baru"
                     android:checked="true"
                     android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_pengeluaran"
+                <RadioButton android:id="@+id/radio_penggunaan_dana"
                     android:layout_marginStart="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editTextPengeluaran"
+                android:id="@+id/editTextPenggunaan"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:visibility="gone"
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/jumlah_pengeluaran"
+                    android:hint="@string/jumlah_penggunaan_dana"
                     android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>

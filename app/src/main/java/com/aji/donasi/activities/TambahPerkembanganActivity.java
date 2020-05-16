@@ -49,7 +49,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
     //Declaring views
     private ImageView gambar;
-    private TextInputLayout editTextJudul, editTextDeskripsi, editTextPengeluaran;
+    private TextInputLayout editTextJudul, editTextDeskripsi, editTextPenggunaan;
     private TextView keterangan;
     private static final String TAG = "TambahPerkembangan";
     private String filePath = "";
@@ -75,7 +75,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
         gambar = findViewById(R.id.gambar);
         editTextJudul = findViewById(R.id.editTextJudul);
         editTextDeskripsi = findViewById(R.id.editTextDeskripsi);
-        editTextPengeluaran = findViewById(R.id.editTextPengeluaran);
+        editTextPenggunaan = findViewById(R.id.editTextPenggunaan);
         keterangan = findViewById(R.id.keterangan);
         progressBar = findViewById(R.id.progBar);
 
@@ -118,14 +118,14 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
                     editTextJudul.setHint("Judul");
                     editTextDeskripsi.setHint("Deskripsi");
                     editTextJudul.setVisibility(View.VISIBLE);
-                    editTextPengeluaran.setVisibility(View.GONE);
+                    editTextPenggunaan.setVisibility(View.GONE);
                 break;
-            case R.id.radio_pengeluaran:
+            case R.id.radio_penggunaan_dana:
                 if (checked)
-                    keterangan.setText(getResources().getString(R.string.menambahkan_pengeluaran));
+                    keterangan.setText(getResources().getString(R.string.menambahkan_penggunaan));
                     editTextDeskripsi.setHint("Rencana penggunaan dana");
                     editTextJudul.setVisibility(View.GONE);
-                    editTextPengeluaran.setVisibility(View.VISIBLE);
+                    editTextPenggunaan.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -134,11 +134,11 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
         boolean check = true;
 
-        if(editTextPengeluaran.getVisibility() == View.GONE) {
+        if(editTextPenggunaan.getVisibility() == View.GONE) {
             if (!Helper.notEmpty(editTextJudul, "Judul")) check = false;
             if (!Helper.notEmpty(editTextDeskripsi, "Deskripsi")) check = false;
         } else {
-            if (!Helper.notEmpty(editTextPengeluaran, "Pengeluaran")) check = false;
+            if (!Helper.notEmpty(editTextPenggunaan, "Jumlah Penggunaan Dana")) check = false;
             if (!Helper.notEmpty(editTextDeskripsi, "Rencana Penggunaan Dana")) check = false;
         }
 
@@ -148,7 +148,7 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
     public void postPerkembangan() {
 
         String tjudul = editTextJudul.getEditText().getText().toString();
-        String tpengeluaran = editTextPengeluaran.getEditText().getText().toString();
+        String tpenggunaan = editTextPenggunaan.getEditText().getText().toString();
         String tdeskripsi = editTextDeskripsi.getEditText().getText().toString();
 
         Retrofit retrofit = NetworkClient.getApiClient();
@@ -163,12 +163,12 @@ public class TambahPerkembanganActivity extends AppCompatActivity {
 
         Map<String, RequestBody> params = new HashMap<>();
 
-        if(editTextPengeluaran.getVisibility() == View.GONE){
-            params.put("judul", RequestBody.create(MediaType.parse("multipart/form-data"), tjudul));
-            params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
+        if(editTextPenggunaan.getVisibility() == View.GONE){
+            params.put("judul", RequestBody.create(tjudul, MediaType.parse("multipart/form-data")));
+            params.put("deskripsi", RequestBody.create(tdeskripsi, MediaType.parse("multipart/form-data")));
         } else {
-            params.put("pengeluaran", RequestBody.create(MediaType.parse("multipart/form-data"), tpengeluaran));
-            params.put("deskripsi", RequestBody.create(MediaType.parse("multipart/form-data"), tdeskripsi));
+            params.put("penggunaan_dana", RequestBody.create(tpenggunaan, MediaType.parse("multipart/form-data")));
+            params.put("deskripsi", RequestBody.create(tdeskripsi, MediaType.parse("multipart/form-data")));
         }
 
         Call<DefaultResponse> call = perkembanganClient.createPerkembanganImage(id_konten, token, pic, params);

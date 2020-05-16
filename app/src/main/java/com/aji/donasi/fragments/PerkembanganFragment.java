@@ -195,7 +195,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         Iterator<Perkembangan> perkembanganIterator = penggunaanList.iterator();
         while (perkembanganIterator.hasNext()) {
             Perkembangan p = perkembanganIterator.next();
-            if (p.getPengeluaran() == null) {
+            if (p.getPenggunaanDana() == null) {
                 perkembanganIterator.remove();
             }
         }
@@ -214,7 +214,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         Iterator<Perkembangan> perkembanganIterator = infoList.iterator();
         while (perkembanganIterator.hasNext()) {
             Perkembangan p = perkembanganIterator.next();
-            if (p.getPengeluaran() != null) {
+            if (p.getPenggunaanDana() != null) {
                 perkembanganIterator.remove();
             }
         }

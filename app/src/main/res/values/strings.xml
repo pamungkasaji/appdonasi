@@ -8,8 +8,6 @@
     <string name="cari">Cari</string>
     <string name="kata_kunci">Kata Kunci</string>
 
-    <string name="data_pengeluaran">Pengeluaran Dana : </string>
-
     <string name="info_penggalang">Penggalang Dana</string>
     <string name="hari_lagi">Hari Lagi</string>
     <string name="teks_target">Target :</string>
@@ -122,13 +120,12 @@
     <string name="terbanyak">Terbanyak</string>
     <string name="terbaru">Terbaru</string>
     <string name="logout">Logout</string>
-    <string name="pengeluaran">Pengeluaran</string>
-    <string name="pengeluaran_dana">Pengeluaran Dana : </string>
-    <string name="rincian_pengeluaran">Rincian pengeluaran : </string>
+    <string name="jumlah_penggunaan_dana_adl">Jumlah Penggunaan Dana : </string>
+    <string name="rincian_penggunaan_dana">Rincian : </string>
     <string name="tujuan_transfer">Tujuan transfer donasi dari donatur</string>
     <string name="isikan_informasi_konten">Isikan informasi konten penggalangan dana yang ingin diajukan</string>
     <string name="menambahkan_berita">Menambahkan berita terbaru terkait penggalangan dana</string>
-    <string name="menambahkan_pengeluaran">Penggunaan dana yang terkumpul dari donatur</string>
+    <string name="menambahkan_penggunaan">Penggunaan dana yang terkumpul dari donatur</string>
 
     <string name="judul_full">Judul : %1$s </string>
     <string name="nama_full">Nama Donatur : %1$s </string>
@@ -137,6 +134,6 @@
     <string name="info_baru">Info Baru</string>
     <string name="semua">Semua</string>
     <string name="galang_dana_sekarang">Galang Dana Sekarang</string>
-    <string name="jumlah_pengeluaran">Jumlah pengeluaran</string>
+    <string name="jumlah_penggunaan_dana">Jumlah Penggunaan Dana</string>
     <string name="penggunaan_dana">Penggunaan Dana</string>
 </resources>

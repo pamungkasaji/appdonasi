@@ -80,31 +80,23 @@
                 tool:text="The Title of a Blog"
                 />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/info_penggunaan_dana"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textAppearance="@style/textstyle3"
+                android:text="@string/jumlah_penggunaan_dana_adl"
+                />
 
-                <TextView
-                    android:id="@+id/info_pengeluaran"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textAppearance="@style/textstyle3"
-                    android:text="@string/pengeluaran_dana"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_pengeluaran"
-                    android:layout_marginStart="10dp"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/textstyle2"
-                    tool:text="Rp. 1.800.000"
-                    />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_penggunaan_dana"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/textstyle2"
+                tool:text="Rp. 1.800.000"
+                />
 
             <TextView
                 android:id="@+id/rincian"
@@ -113,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:textAppearance="@style/textstyle3"
-                android:text="@string/rincian_pengeluaran"
+                android:text="@string/rincian_penggunaan_dana"
                 />
 
             <TextView

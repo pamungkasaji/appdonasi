@@ -14,9 +14,9 @@ public class Perkembangan {
     @SerializedName("judul")
     @Expose
     private String judul;
-    @SerializedName("pengeluaran")
+    @SerializedName("penggunaan_dana")
     @Expose
-    private Integer pengeluaran;
+    private Integer penggunaan_dana;
     @SerializedName("gambar")
     @Expose
     private String gambar;
@@ -39,8 +39,8 @@ public class Perkembangan {
         return judul;
     }
 
-    public Integer getPengeluaran() {
-        return pengeluaran;
+    public Integer getPenggunaanDana() {
+        return penggunaan_dana;
     }
 
     public String getGambar() {

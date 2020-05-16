@@ -15,9 +15,7 @@ import com.aji.donasi.models.Perkembangan;
 import com.bumptech.glide.Glide;
 import com.github.vipulasri.timelineview.TimelineView;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapter.PerkembanganViewHolder> {
 
@@ -62,13 +60,13 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
         holder.tv_judul.setText(perkembangan.getJudul());
         holder.tv_deskripsi.setText(perkembangan.getDeskripsi());
 
-        //pengeluaran
-        if (perkembangan.getPengeluaran() != null){
-            holder.tv_pengeluaran.setVisibility(View.VISIBLE);
+        //penggunaan dana
+        if (perkembangan.getPenggunaanDana() != null){
+            holder.tv_penggunaan_dana.setVisibility(View.VISIBLE);
             holder.rincian.setVisibility(View.VISIBLE);
-            holder.info_pengeluaran.setVisibility(View.VISIBLE);
+            holder.info_penggunaan_dana.setVisibility(View.VISIBLE);
 
-            holder.tv_pengeluaran.setText(Helper.mataUang(perkembangan.getPengeluaran()));
+            holder.tv_penggunaan_dana.setText(Helper.mataUang(perkembangan.getPenggunaanDana()));
         }
 
         String createdAt = Helper.tanggal(perkembangan.getCreatedAt());
@@ -88,7 +86,7 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
     class PerkembanganViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_judul, tv_createdat, tv_deskripsi, tv_pengeluaran, rincian, info_pengeluaran;
+        TextView tv_judul, tv_createdat, tv_deskripsi, tv_penggunaan_dana, rincian, info_penggunaan_dana;
         ImageView gambar;
 
         private PerkembanganViewHolder(View itemView, int viewType) {
@@ -103,9 +101,9 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
             tv_createdat = itemView.findViewById(R.id.tv_createdat);
             tv_deskripsi = itemView.findViewById(R.id.tv_deskripsi);
 
-            tv_pengeluaran = itemView.findViewById(R.id.tv_pengeluaran);
+            tv_penggunaan_dana = itemView.findViewById(R.id.tv_penggunaan_dana);
             rincian = itemView.findViewById(R.id.rincian);
-            info_pengeluaran = itemView.findViewById(R.id.info_pengeluaran);
+            info_penggunaan_dana = itemView.findViewById(R.id.info_penggunaan_dana);
 
         }
     }
