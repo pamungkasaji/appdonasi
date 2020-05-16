@@ -18,9 +18,9 @@ import java.util.Locale;
 
 public class Helper {
 
-    public static final String IMAGE_URL_KONTEN = "http://donasi.pamungkasaji.com/images/konten/";
-    public static final String IMAGE_URL_DONATUR = "http://donasi.pamungkasaji.com/images/donatur/";
-    public static final String IMAGE_URL_PERKEMBANGAN = "http://donasi.pamungkasaji.com/images/perkembangan/";
+    public static final String IMAGE_URL_KONTEN = "https://pamungkasaji.com/images/konten/";
+    public static final String IMAGE_URL_DONATUR = "https://pamungkasaji.com/images/donatur/";
+    public static final String IMAGE_URL_PERKEMBANGAN = "https://pamungkasaji.com/images/perkembangan/";
     public static final String VERIFIKASI = "verifikasi";
     public static final String SELESAI = "selesai";
     public static final String TUNGGU = "tunggu";

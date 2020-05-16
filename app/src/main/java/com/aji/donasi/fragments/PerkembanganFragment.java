@@ -186,13 +186,13 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
     }
 
     private void filterPenggunaan(){
-        ArrayList<Perkembangan> pengeluaranList = new ArrayList<>() ;
+        ArrayList<Perkembangan> penggunaanList = new ArrayList<>() ;
 
         for (int i = 0 ; i<perkembanganList.size();i++){
-            pengeluaranList.add(perkembanganList.get(i)) ;
+            penggunaanList.add(perkembanganList.get(i)) ;
         }
 
-        Iterator<Perkembangan> perkembanganIterator = pengeluaranList.iterator();
+        Iterator<Perkembangan> perkembanganIterator = penggunaanList.iterator();
         while (perkembanganIterator.hasNext()) {
             Perkembangan p = perkembanganIterator.next();
             if (p.getPengeluaran() == null) {
@@ -200,7 +200,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
             }
         }
 
-        adapter = new PerkembanganAdapter(getActivity(), pengeluaranList);
+        adapter = new PerkembanganAdapter(getActivity(), penggunaanList);
         recyclerView.setAdapter(adapter);
     }
 
