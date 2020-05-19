@@ -41,6 +41,8 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
     private ProgressBar progressBar;
     private Button submit;
 
+    private String token;
+
     //spinner
     private String hari;
     private Spinner spinner;
@@ -64,6 +66,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         progressBar = findViewById(R.id.progBar);
 
         id_konten = kontenMessage.getId();
+        token = Session.getInstance(PerpanjanganActivity.this).getToken();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,7 +118,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
 
         Retrofit retrofit = NetworkClient.getApiClient();
         PerpanjanganClient perpanjanganClient = retrofit.create(PerpanjanganClient.class);
-        String token = Session.getInstance(PerpanjanganActivity.this).getToken();
+
         Call<DefaultResponse> call = perpanjanganClient.sendPerpanjangan(id_konten, token, hari, alasan);
 
         call.enqueue(new Callback<DefaultResponse>() {

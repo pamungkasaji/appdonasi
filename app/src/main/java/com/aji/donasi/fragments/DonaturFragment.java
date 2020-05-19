@@ -146,7 +146,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
                 sort.setText(getResources().getString(R.string.terbanyak));
                 return true;
             case R.id.terbaru:
-                displayData();
+                sortTerbaru();
                 sort.setText(getResources().getString(R.string.terbaru));
                 return true;
             default:
@@ -163,5 +163,9 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
         });
 
         adapter.notifyDataSetChanged();
+    }
+
+    private void sortTerbaru(){
+        displayData();
     }
 }

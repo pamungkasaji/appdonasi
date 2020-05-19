@@ -82,8 +82,6 @@ public class DetailFragment extends Fragment {
 
         layout_perpanjangan.setVisibility(View.GONE);
         layout_selesai.setVisibility(View.GONE);
-//        progressBar = view.findViewById(R.id.progBar);
-//        progressBar.setVisibility(View.GONE);
 
         token = Session.getInstance(getActivity()).getToken();
 

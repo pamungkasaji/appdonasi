@@ -52,6 +52,8 @@ public class BuatKontenActivity extends AppCompatActivity{
     private static final String TAG = "BuatKontenActivity";
     private String filePath = "";
 
+    private String token;
+
     private String tlama_donasi, tbank;
     private Spinner spinner_hari, spinner_bank;
 
@@ -77,6 +79,8 @@ public class BuatKontenActivity extends AppCompatActivity{
         editTextBank.setVisibility(View.GONE);
 
         progressBar = findViewById(R.id.progBar);
+
+        token = Session.getInstance(BuatKontenActivity.this).getToken();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -200,7 +204,6 @@ public class BuatKontenActivity extends AppCompatActivity{
         Retrofit retrofit = NetworkClient.getApiClient();
         KontenClient kontenClient = retrofit.create(KontenClient.class);
 
-        String token = Session.getInstance(BuatKontenActivity.this).getToken();
         //Create a file object using file path
         File file = new File(filePath);
         // Create a request body with file and image media type
