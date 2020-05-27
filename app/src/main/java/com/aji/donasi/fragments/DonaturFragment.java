@@ -49,7 +49,6 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
     private TextView sort;
 
     //EventBus
-    private int id_konten;
     private Konten kontenMessage;
 
     private static final String TAG = "DonaturFragment";
@@ -75,8 +74,6 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        id_konten = kontenMessage.getId();
-
         sort.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(getActivity(), v);
             popup.setOnMenuItemClickListener(this);
@@ -97,7 +94,7 @@ public class DonaturFragment extends Fragment implements PopupMenu.OnMenuItemCli
         Retrofit retrofit = NetworkClient.getApiClient();
         DonaturClient donaturClient = retrofit.create(DonaturClient.class);
 
-        Call<DonaturResponse> call = donaturClient.getDonatur(id_konten);
+        Call<DonaturResponse> call = donaturClient.getDonatur(kontenMessage.getLinks().getDonatur());
 
         call.enqueue(new Callback<DonaturResponse>() {
             @Override

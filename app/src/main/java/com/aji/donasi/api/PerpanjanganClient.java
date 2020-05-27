@@ -26,8 +26,8 @@ import retrofit2.http.Path;
 public interface PerpanjanganClient {
 
     @FormUrlEncoded
-    @POST("konten/{id}/sendPerpanjangan")
-    Call<DefaultResponse> sendPerpanjangan(
+    @POST("konten/{id}/perpanjangan")
+    Call<DefaultResponse> send(
             @Path("id") int id,
             @Header("Authorization") String token,
             @Field("jumlah_hari") String jumlah_hari,

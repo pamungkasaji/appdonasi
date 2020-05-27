@@ -101,7 +101,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
 
         if (!Helper.notEmpty(editTextAlasan, "Alasan")) check = false;
 
-        if (hari.equals("Jumlah hari sendPerpanjangan")) {
+        if (hari.equals("Jumlah hari perpanjangan")) {
             Toast.makeText(this, "Pilih jumlah hari", Toast.LENGTH_SHORT).show();
             spinner.requestFocus();
             return false;
@@ -119,7 +119,7 @@ public class PerpanjanganActivity extends AppCompatActivity implements AdapterVi
         Retrofit retrofit = NetworkClient.getApiClient();
         PerpanjanganClient perpanjanganClient = retrofit.create(PerpanjanganClient.class);
 
-        Call<DefaultResponse> call = perpanjanganClient.sendPerpanjangan(id_konten, token, hari, alasan);
+        Call<DefaultResponse> call = perpanjanganClient.send(id_konten, token, hari, alasan);
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override

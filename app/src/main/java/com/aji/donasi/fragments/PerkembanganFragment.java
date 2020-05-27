@@ -54,7 +54,6 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
     private TextView sort_perkembangan;
 
     //Eventbus
-    private int id_konten;
     private Konten kontenMessage;
     private boolean is_user;
 
@@ -84,8 +83,6 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
 
         tambah = view.findViewById(R.id.tambah);
         tambah.setVisibility(View.GONE);
-
-        id_konten = kontenMessage.getId();
 
         if(is_user){
             tambah.setVisibility(View.VISIBLE);
@@ -118,7 +115,7 @@ public class PerkembanganFragment extends Fragment implements PopupMenu.OnMenuIt
         Retrofit retrofit = NetworkClient.getApiClient();
         PerkembanganClient perkembanganClient = retrofit.create(PerkembanganClient.class);
 
-        Call<PerkembanganResponse> call = perkembanganClient.getPerkembangan(id_konten);
+        Call<PerkembanganResponse> call = perkembanganClient.getPerkembangan(kontenMessage.getLinks().getPerkembangan());
 
         call.enqueue(new Callback<PerkembanganResponse>() {
             @Override

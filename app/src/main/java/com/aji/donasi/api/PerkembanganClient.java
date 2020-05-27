@@ -22,11 +22,12 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 public interface PerkembanganClient {
 
-    @GET("konten/{id}/perkembangan")
-    Call<PerkembanganResponse> getPerkembangan(@Path("id") int id);
+    @GET
+    Call<PerkembanganResponse> getPerkembangan(@Url String url);
 
     @Multipart
     @POST("konten/{id}/perkembangan")

@@ -22,11 +22,15 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 public interface DonaturClient {
 
-    @GET("konten/{id}/donatur")
-    Call<DonaturResponse> getDonatur(@Path("id") int id);
+//    @GET("konten/{id}/donatur")
+//    Call<DonaturResponse> getDonatur(@Path("id") int id);
+
+    @GET
+    Call<DonaturResponse> getDonatur(@Url String url);
 
     @Multipart
     @POST("konten/{id}/donatur")

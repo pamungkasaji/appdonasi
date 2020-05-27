@@ -41,10 +41,13 @@ public class Konten {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("links")
+    @Expose
+    private Links links;
     @SerializedName("user")
     @Expose
     private User user;
-    @SerializedName("sendPerpanjangan")
+    @SerializedName("perpanjangan")
     @Expose
     private Perpanjangan perpanjangan;
 
@@ -103,6 +106,10 @@ public class Konten {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public Links getLinks() {
+        return links;
     }
 
     public User getUser() {
