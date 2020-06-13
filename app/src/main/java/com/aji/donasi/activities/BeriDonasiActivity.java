@@ -76,6 +76,7 @@ public class BeriDonasiActivity extends AppCompatActivity{
         anonim = findViewById(R.id.anonim);
         TextView norek = findViewById(R.id.norek);
         TextView bank = findViewById(R.id.bank);
+        TextView atasnama = findViewById(R.id.atasnama);
 
         progressBar = findViewById(R.id.progBar);
 
@@ -91,9 +92,11 @@ public class BeriDonasiActivity extends AppCompatActivity{
         id_konten = kontenMessage.getId();
         String nomorrekening = kontenMessage.getNomorrekening();
         String nama_bank = kontenMessage.getBank();
+        String atas_nama = kontenMessage.getUser().getNamalengkap();
 
         norek.setText(nomorrekening);
         bank.setText(nama_bank);
+        atasnama.setText(atas_nama);
 
         buttonChoose.setOnClickListener((View v) -> {
             captureImage();

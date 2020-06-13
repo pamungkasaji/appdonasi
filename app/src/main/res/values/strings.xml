@@ -108,7 +108,7 @@
     <string name="no_hp_">No HP :</string>
     <string name="lampirkan_bukti">Lampirkan bukti transfer berupa foto atau screenshot untuk menunjang validasi pemberian donasi</string>
     <string name="nama_bank">Nama Bank</string>
-    <string name="nama_bank_tujuan">Nama Bank Tujuan :</string>
+    <string name="nama_bank_tujuan">Bank Tujuan :</string>
     <string name="tambah_perkembangan">Tambah Perkembangan</string>
     <string name="perkembangan">Perkembangan</string>
     <string name="terkumpul">Terkumpul</string>
@@ -136,4 +136,5 @@
     <string name="galang_dana_sekarang">Galang Dana Sekarang</string>
     <string name="jumlah_penggunaan_dana">Jumlah Penggunaan Dana</string>
     <string name="penggunaan_dana">Penggunaan Dana</string>
+    <string name="atas_nama">Atas Nama:</string>
 </resources>

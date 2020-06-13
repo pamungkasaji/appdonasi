@@ -46,6 +46,29 @@
                     tool:text="2134124" />
 
                 <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/atas_nama"
+                        android:textAppearance="@style/textstyle3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/atasnama"
+                        tool:text="Pamungkas Aji"
+                        android:layout_marginStart="5dp"
+                        android:textAppearance="@style/textstyle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:orientation="horizontal"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="8dp"
