@@ -100,6 +100,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Glide.with(this)
                 .load(imagePath)
+                .centerCrop()
                 .placeholder(R.drawable.loading)
                 .into(gambar);
 
