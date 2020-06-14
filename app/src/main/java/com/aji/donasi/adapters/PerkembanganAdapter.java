@@ -62,10 +62,10 @@ public class PerkembanganAdapter extends RecyclerView.Adapter<PerkembanganAdapte
 
         //penggunaan dana
         if (perkembangan.getPenggunaanDana() != null){
+            holder.tv_judul.setVisibility(View.GONE);
             holder.tv_penggunaan_dana.setVisibility(View.VISIBLE);
             holder.rincian.setVisibility(View.VISIBLE);
             holder.info_penggunaan_dana.setVisibility(View.VISIBLE);
-
             holder.tv_penggunaan_dana.setText(Helper.mataUang(perkembangan.getPenggunaanDana()));
         }
 
